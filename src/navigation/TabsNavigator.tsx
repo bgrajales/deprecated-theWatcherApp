@@ -3,19 +3,19 @@ import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import { HomeScreen } from '../screens/HomeScreen';
 import { SearchScreen } from '../screens/SearchScreen';
 import { ProfileScreen } from '../screens/ProfileScreen';
 import { SeriesScreen } from '../screens/SeriesScreen';
 import { MoviesScreen } from '../screens/MoviesScreen';
 import { Platform } from 'react-native';
+import { DetailStack } from './DetailStack';
 
 const Tab = createBottomTabNavigator();
 
 export const TabsNavigator = () => {
   return (
     <Tab.Navigator
-        initialRouteName='HomeScreen'
+        initialRouteName='DetailStack'
         screenOptions={{
             headerShown: false,
             tabBarActiveTintColor: 'black',
@@ -54,8 +54,8 @@ export const TabsNavigator = () => {
           }}
         />
         <Tab.Screen 
-          name="HomeScreen" 
-          component={HomeScreen}
+          name="DetailStack" 
+          component={DetailStack}
           options={{
             tabBarLabel: 'Home',
             tabBarIcon: ({ color, size }) => (

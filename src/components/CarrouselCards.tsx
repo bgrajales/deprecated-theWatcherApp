@@ -13,7 +13,6 @@ interface Props {
 
 export const CarrouselCards = ({ moviePosters, seriesPosters, title, iconName }: Props) => {
 
-
   return (
     <>
         <View style={ homeStyles.categContainer }>
@@ -25,11 +24,12 @@ export const CarrouselCards = ({ moviePosters, seriesPosters, title, iconName }:
             <FlatList
                 data={ moviePosters }
                 renderItem={ ({ item }) => (
-                <MovieCard movie={item} width={ 160 } height={ 250 } />
+                <MovieCard movie={item} width={ 160 } height={ 250 } type='movie' />
                 )}
                 keyExtractor={ (item) => item.id.toString() }
                 horizontal={ true }
                 showsHorizontalScrollIndicator={ false }
+                style={{ paddingLeft: 20 }}
             />
         }
         {
@@ -37,11 +37,12 @@ export const CarrouselCards = ({ moviePosters, seriesPosters, title, iconName }:
             <FlatList
                 data={ seriesPosters }
                 renderItem={ ({ item }) => (
-                <MovieCard movie={item} width={ 160 } height={ 250 } />
+                <MovieCard movie={item} width={ 160 } height={ 250 } type='series' />
                 )}
                 keyExtractor={ (item) => item.id.toString() }
                 horizontal={ true }
                 showsHorizontalScrollIndicator={ false }
+                style={{ paddingLeft: 20 }}
             />
         }
     </>

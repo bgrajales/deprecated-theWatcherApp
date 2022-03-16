@@ -40,17 +40,15 @@ export const HomeScreen = () => {
         <Carousel
           data={ nowPlaying }
           renderItem={ ({ item }) => (
-            <MovieCard movie={item} />
+            <MovieCard movie={item} type='movie' />
           )}
           sliderWidth={ Dimensions.get('window').width }
-          itemWidth={ 230 }
-          loop={ true }
+          itemWidth={ 250 }
         />
 
         {/* Generic Carrousels */}
-        <CarrouselCards seriesPosters={ latestSerie } title="Latest" iconName="ios-tv" />
-        <CarrouselCards moviePosters={ popular } title="Popular" iconName="film"  />
         <CarrouselCards seriesPosters={ popularSerie } title="Popular" iconName="ios-tv" />
+        <CarrouselCards moviePosters={ popular } title="Popular" iconName="film"  />
         <CarrouselCards seriesPosters={ topRatedSerie } title="Top Rated" iconName="ios-tv" />
         <CarrouselCards moviePosters={ topRated } title="Top Rated" iconName="film" />
 

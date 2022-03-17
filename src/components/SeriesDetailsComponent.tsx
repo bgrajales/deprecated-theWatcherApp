@@ -45,6 +45,7 @@ export const SeriesDetailsComponent = ({seriesId}: Props ) => {
                 style={{
                     paddingHorizontal: 20,
                 }}
+                showsHorizontalScrollIndicator={ false }
             />
         </View>
         ) : <View style={{
@@ -137,6 +138,7 @@ export const SeriesDetailsComponent = ({seriesId}: Props ) => {
                 style={{
                     paddingHorizontal: 20,
                 }}
+                showsHorizontalScrollIndicator={ false }
             />
         </View>
     </ScrollView>

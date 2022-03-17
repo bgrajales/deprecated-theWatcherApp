@@ -16,6 +16,9 @@ export const SeriesNavigator = ({ seriesId }: Props) => {
     <Tab.Navigator
         initialRouteName="SeriesDetailScreen"
         sceneContainerStyle={{ backgroundColor: '#fff' }}
+        screenOptions={{
+            swipeEnabled: false,
+        }}
     >
         <Tab.Screen name="SeriesDetailsComponent" options={{ title: 'Details' }}>
             {

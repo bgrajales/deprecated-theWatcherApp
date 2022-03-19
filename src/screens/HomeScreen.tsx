@@ -16,7 +16,7 @@ export const HomeScreen = () => {
   const { top } = useSafeAreaInsets();
 
   const { isLoading, nowPlaying, popular, topRated } = useMovies();  
-  const { latestSerie, popularSerie, topRatedSerie } = useSeries();
+  const { popularSerie, topRatedSerie } = useSeries();
 
   if ( isLoading ) {
     return (

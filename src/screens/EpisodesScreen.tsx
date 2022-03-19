@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     },
 
     accContent: {
-        backgroundColor: '#E8E8E8',
+        backgroundColor: '#F5F5F5',
         paddingHorizontal: 20,
         paddingVertical: 15,
         borderRadius: 10,
@@ -152,8 +152,17 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         backgroundColor: '#fff',
         borderRadius: 10,
-        marginVertical: 5,
         position: 'relative',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22,
+
+        elevation: 3,
+        marginBottom: 20,
     },
 
     accContentEyeImage: {

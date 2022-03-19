@@ -1,28 +1,31 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import { SearchScreen } from '../screens/SearchScreen';
 import { ProfileScreen } from '../screens/ProfileScreen';
 import { SeriesScreen } from '../screens/SeriesScreen';
 import { MoviesScreen } from '../screens/MoviesScreen';
 import { Platform } from 'react-native';
 import { DetailStack } from './DetailStack';
+import { SearchDetailStack } from './SearchStack';
+import { AuthContext } from '../context/AuthContext';
 
 const Tab = createBottomTabNavigator();
 
 export const TabsNavigator = () => {
+
+  const { status } = useContext(AuthContext);
+
   return (
     <Tab.Navigator
-        initialRouteName='DetailStack'
+        initialRouteName='ProfileScreen'
         screenOptions={{
             headerShown: false,
             tabBarActiveTintColor: 'black',
             tabBarInactiveTintColor: '#fff',
             tabBarLabelStyle: {
               paddingBottom: ( Platform.OS === 'android' ? 10 : 0 ),
-              // color: '#fff',
             },
             tabBarStyle: {
               height: ( Platform.OS === 'android' ? 60 : 80 ),
@@ -64,8 +67,8 @@ export const TabsNavigator = () => {
           }}
         />
         <Tab.Screen 
-          name="SearchScreen" 
-          component={SearchScreen}
+          name="SearchDetailStack" 
+          component={SearchDetailStack}
           options={{
             tabBarLabel: 'Search',
             tabBarIcon: ({ color, size }) => (

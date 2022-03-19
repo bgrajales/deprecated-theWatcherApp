@@ -15,7 +15,6 @@ interface Props extends StackScreenProps<DetailStackParams, 'MovieDetailScreen'>
 export const MovieDetailScreen = ({ route }: Props) => {
 
     const movie = route.params
-
     const { isLoading, movieFull, cast, providers, videos } = useMovieDetails( movie.id )
 
     const uri = `https://image.tmdb.org/t/p/w500${movieFull?.poster_path}`;

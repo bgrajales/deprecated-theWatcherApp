@@ -1,10 +1,20 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Text, View } from 'react-native'
+import { NotAuth } from '../components/NotAuth';
+import { ProfileComponent } from '../components/ProfileComponent';
+import { AuthContext } from '../context/AuthContext';
 
 export const ProfileScreen = () => {
+
+  const { status } = useContext(AuthContext);
+
   return (
-    <View>
-        <Text>ProfileScreen</Text>
+    <View style={{ flex: 1 }}>
+    {
+      status === 'unauthenticated' 
+      ? <NotAuth />
+      : <ProfileComponent />
+    }
     </View>
   )
 }

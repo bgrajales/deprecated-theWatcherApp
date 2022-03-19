@@ -9,7 +9,6 @@ export const ProfileComponent = () => {
 
     const { user, logOut } = useContext( AuthContext )
 
-    console.log(user)
     return (
         <View style={{ paddingTop: top + 20, ...styles.container }}>
 

@@ -38,13 +38,6 @@ export const RegisterModal = ({ visible = false, setRegisterVisibleParent }: Pro
 
     const onSubmit = () => {
 
-        console.log(
-            'username: ', userName,
-            'email: ', email,
-            'password: ', password,
-            'repeatPassword: ', repeatPassword
-        )
-
         signUp({
             userName,
             email,

@@ -22,7 +22,6 @@ export const SearchScreen = () => {
 
   const getElements = async () => {
     
-    console.log(isFetching, searchedElementsArray)    
     setIsFetching(true)
 
     const searchParam = searchText.replaceAll(" ", "%20")

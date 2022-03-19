@@ -334,5 +334,10 @@ export enum OriginalLanguage {
     Nl = "nl",
 }
 
+export interface UserMovies {
+    id: string;
+    posterPath: string;
+    runTime: number;
+}
 
 

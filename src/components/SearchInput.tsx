@@ -16,7 +16,6 @@ export const SearchInput = ({ onDebounce }: Props) => {
 
     useEffect(() => {
         onDebounce(debauncedValue)
-        console.log(debauncedValue)
     }, [debauncedValue])
     
 

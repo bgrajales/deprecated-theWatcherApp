@@ -1,7 +1,7 @@
 import { StackScreenProps } from '@react-navigation/stack'
-import React from 'react'
+import React, { useContext } from 'react'
 
-import { ActivityIndicator, Dimensions, FlatList, Image, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, Dimensions, FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import StarRating from 'react-native-star-rating';
 import { LinearGradient } from "expo-linear-gradient";
 import YoutubePlayer from 'react-native-youtube-iframe';
@@ -9,6 +9,8 @@ import YoutubePlayer from 'react-native-youtube-iframe';
 import { useMovieDetails } from '../hooks/useMoviesDetail'
 import { DetailStackParams } from '../navigation/DetailStack'
 import Carousel from 'react-native-snap-carousel';
+import { markMovieAsWatched } from '../api/watcherActions';
+import { AuthContext } from '../context/AuthContext';
 
 interface Props extends StackScreenProps<DetailStackParams, 'MovieDetailScreen'>{}
 
@@ -16,8 +18,22 @@ export const MovieDetailScreen = ({ route }: Props) => {
 
     const movie = route.params
     const { isLoading, movieFull, cast, providers, videos } = useMovieDetails( movie.id )
+    const { user, token, updateWatchedMovies } = useContext( AuthContext )
 
     const uri = `https://image.tmdb.org/t/p/w500${movieFull?.poster_path}`;
+
+    const markMovieWatched = async () => {
+      if ( movieFull && user && token ) {
+        const marked = await markMovieAsWatched({ user, token, movieId: movieFull.id, posterPath: movieFull.poster_path, runTime: movieFull.runtime })
+
+        if ( marked.result ) {
+
+          updateWatchedMovies( marked.movies )
+
+        }
+
+      }
+    }
 
     if ( isLoading ) {
       return (
@@ -80,12 +96,12 @@ export const MovieDetailScreen = ({ route }: Props) => {
               </View>
               <View
                 style={{
+                    flexDirection: 'row',
                     position: 'absolute',
+                    alignItems: 'center',
                     bottom: '8%',
                     right: 0,
-                    paddingHorizontal: 20,
                     paddingVertical: 10,
-                    backgroundColor: '#fff',
                     borderBottomLeftRadius: 20,
                     borderTopLeftRadius: 20,
                     shadowColor: "#000",
@@ -99,14 +115,59 @@ export const MovieDetailScreen = ({ route }: Props) => {
                     elevation: 5,
                 }}
               >
-                  <StarRating 
-                    disabled={ true }
-                    maxStars={ 5 }
-                    rating={ movieFull ? movieFull.vote_average / 2 : 0 }
-                    starSize={ 20 }
-                    fullStarColor={ '#FFD700' }
-                    emptyStarColor={ '#FFD700' }
-                  />
+                  <View>
+
+                    {
+                      user?.movies.find( (m: any) => {
+                        return parseInt(m.id) === movie.id
+                      } ) ? (
+                        null
+                      ) : (
+                        <TouchableOpacity 
+                          style={{
+                            backgroundColor: '#fff',
+                            paddingHorizontal: 5,
+                            paddingVertical: 5,
+                            borderRadius: 100,
+                            height: 40,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                          activeOpacity={0.7}
+                          onPress={ markMovieWatched }
+                        >
+                          <Image 
+                            source={ require('../assets/empty.png') }
+                            style={{
+                                width: 37,
+                                height: 26,
+                            }}
+                          />
+                        </TouchableOpacity>
+                      )
+                    }
+                      
+                  </View>
+                  <View style={{ width: 15 }}/>
+                  <View style={{
+                      backgroundColor: '#fff',
+                      paddingHorizontal: 10,
+                      paddingVertical: 5,
+                      height: 40,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderTopLeftRadius: 100,
+                      borderBottomLeftRadius: 100,
+                  }}>
+                    <StarRating 
+                      disabled={ true }
+                      maxStars={ 5 }
+                      rating={ movieFull ? movieFull.vote_average / 2 : 0 }
+                      starSize={ 20 }
+                      fullStarColor={ '#FFD700' }
+                      emptyStarColor={ '#FFD700' }
+                    />
+                  </View>
               </View>
             </View>
             {

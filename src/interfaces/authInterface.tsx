@@ -1,3 +1,5 @@
+import { UserMovies } from "./movieInterface";
+
 export interface LoginData {
     email: string;
     password: string;
@@ -18,7 +20,7 @@ export interface LoginResponse {
 export interface WatcherUser {
     email: string,
     id: string,
-    movies: [],
+    movies: UserMovies[],
     region: string,
     series: [],
     userName: string,

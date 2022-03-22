@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LoginData, RegisterData, WatcherUser } from "../interfaces/authInterface";
 import { AuthReducer, AuthState } from "./AuthReducer";
 import { watcherApi } from "../api/watcherApi";
-import { UserMovies } from "../interfaces/movieInterface";
+import { UserMovies, UserSeries } from "../interfaces/movieInterface";
 
 // import cafeApi from "../api/cafeApi";
 // import { AuthReducer, AuthState } from "./AuthReducer";
@@ -20,6 +20,7 @@ type AuthContextProps = {
     logOut: () => void;
     removeError: () => void;
     updateWatchedMovies: ( movies: UserMovies[] ) => void;
+    updateWatchedSeries: ( series: UserSeries[] ) => void;
 }
 
 const authInitialState: AuthState = {
@@ -151,6 +152,16 @@ export const AuthProvider = ({ children }: any) => {
         })
     }
 
+    const updateWatchedSeries = async ( series: UserSeries[]) => {
+
+        dispatch({ 
+            type: 'updateWatchedSeries',
+            payload: {
+                series
+            }
+        })
+    }
+
     return (
         <AuthContext.Provider value={{
             ...state,
@@ -158,7 +169,8 @@ export const AuthProvider = ({ children }: any) => {
             signIn,
             logOut,
             removeError,
-            updateWatchedMovies
+            updateWatchedMovies,
+            updateWatchedSeries
         }}>
             {children}
         </AuthContext.Provider>

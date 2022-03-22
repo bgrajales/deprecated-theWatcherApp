@@ -340,4 +340,17 @@ export interface UserMovies {
     runTime: number;
 }
 
+export interface UserSeries {
+    id: string;
+    posterPath: string;
+    episodesTotal: number;
+    episodesWatched: number;
+    seasonsDetail: SeasonDetailSeries[];
+}
+
+export interface SeasonDetailSeries {
+    id: string;
+    number: number;
+    episodes: [number];
+}
 

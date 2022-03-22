@@ -19,7 +19,7 @@ export const TabsNavigator = () => {
 
   return (
     <Tab.Navigator
-        initialRouteName='MoviesScreen'
+        initialRouteName='DetailStack'
         screenOptions={{
             headerShown: false,
             tabBarActiveTintColor: 'black',

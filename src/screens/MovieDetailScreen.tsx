@@ -9,7 +9,7 @@ import YoutubePlayer from 'react-native-youtube-iframe';
 import { useMovieDetails } from '../hooks/useMoviesDetail'
 import { DetailStackParams } from '../navigation/DetailStack'
 import Carousel from 'react-native-snap-carousel';
-import { markMovieAsWatched } from '../api/watcherActions';
+import { markMovieAsWatched, markMovieUnwatched } from '../api/watcherActions';
 import { AuthContext } from '../context/AuthContext';
 
 interface Props extends StackScreenProps<DetailStackParams, 'MovieDetailScreen'>{}
@@ -33,6 +33,17 @@ export const MovieDetailScreen = ({ route }: Props) => {
         }
 
       }
+    }
+
+    const markMovieNotWatched = async () => {
+      if ( movieFull && user && token ) {
+        const marked = await markMovieUnwatched({ user, token, movieId: movieFull.id })
+
+        if ( marked.result ) {
+            updateWatchedMovies( marked.movies )
+        }
+      }
+
     }
 
     if ( isLoading ) {
@@ -121,7 +132,27 @@ export const MovieDetailScreen = ({ route }: Props) => {
                       user?.movies.find( (m: any) => {
                         return parseInt(m.id) === movie.id
                       } ) ? (
-                        null
+                        <TouchableOpacity 
+                          style={{
+                            backgroundColor: '#fff',
+                            paddingHorizontal: 5,
+                            paddingVertical: 5,
+                            borderRadius: 100,
+                            height: 40,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                          activeOpacity={0.7}
+                          onPress={ markMovieNotWatched }
+                        >
+                          <Image 
+                            source={ require('../assets/fullIcon.png') }
+                            style={{
+                                width: 37,
+                                height: 26,
+                            }}
+                          />
+                        </TouchableOpacity>
                       ) : (
                         <TouchableOpacity 
                           style={{

@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
-import { Text, View } from 'react-native'
+import { View } from 'react-native'
 import { NotAuth } from '../components/NotAuth';
+import { SeriesSeen } from '../components/SeriesSeen';
 import { AuthContext } from '../context/AuthContext';
 
 export const SeriesScreen = () => {
@@ -12,7 +13,7 @@ export const SeriesScreen = () => {
     {
       status === 'unauthenticated' 
       ? <NotAuth />
-      : <Text>SeriesScreen</Text>
+      : <SeriesSeen />
     }
     </View>
   )

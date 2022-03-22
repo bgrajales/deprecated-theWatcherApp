@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
 import Accordion from 'react-native-collapsible/Accordion';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { updateEpisode } from '../api/watcherActions';
+import { AuthContext } from '../context/AuthContext';
 
 import { useSeriesDetail } from '../hooks/useSeriesDetail';
 import { Episode, SeriesSeason } from '../interfaces/movieInterface';
@@ -13,15 +15,17 @@ interface Props {
 
 export const EpisodesScreen = ({ seriesId }: Props) => {
 
+    const { user, token, updateWatchedSeries } = useContext( AuthContext )
+
     const [activeSection, setActiveSection] = useState({
         section: null,
     })
+    
+    const { seasons, serieFull } = useSeriesDetail(seriesId)
 
-    const { seasons } = useSeriesDetail(seriesId)
     useEffect(() => {
-         
-            
     }, [activeSection.section])
+
     const renderHeader = ( season: SeriesSeason ) => {
  
         return(
@@ -37,6 +41,29 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
 
     }
 
+    const markEpisodeWatched = async (season: SeriesSeason, episode: Episode) => {
+        
+        if ( serieFull && user && token ) {
+            const marked = await updateEpisode({ 
+                user, 
+                token,
+                serieId: serieFull.id,
+                posterPath: serieFull.poster_path || '',
+                serieTotalEpisodes: serieFull.number_of_episodes,
+                seasonId: season.id,
+                seasonNumber: season.season_number,
+                episodeNumber: episode.episode_number  
+            })
+    
+            if ( marked.result ) {
+    
+                updateWatchedSeries( marked.series )
+    
+            }
+    
+          }
+    }
+
     const renderContent = ( season: SeriesSeason ) => {
 
         return (
@@ -46,10 +73,28 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
                         return (
                             <View key={ episode.id } style={ styles.accContentItem }>
 
-                                <Image 
-                                    source={ require('../assets/empty.png') }
+                                <TouchableOpacity
                                     style={ styles.accContentEyeImage }
-                                />
+                                    activeOpacity={ 0.6 }
+                                    onPress={ () => markEpisodeWatched(season, episode) }
+                                >
+                                    <Image 
+                                        source={
+                                            user?.series.find(serie => serie.id.toString() === serieFull?.id.toString()) &&
+                                            user?.series.find(serie => serie.id.toString() === serieFull?.id.toString())!.
+                                                seasonsDetail.find(seasonDet => seasonDet.id.toString() === season.id.toString()) &&
+                                                user?.series.find(serie => serie.id.toString() === serieFull?.id.toString())!.
+                                                seasonsDetail.find(seasonDet => seasonDet.id.toString() === season.id.toString())!.
+                                                episodes.find(episodeDet => episodeDet.toString() === episode.episode_number.toString())
+                                                ? require('../assets/fullIcon.png') 
+                                                : require('../assets/empty.png')
+                                        }
+                                        style={{
+                                            width: 40,
+                                            height: 30,
+                                        }}
+                                    />
+                                </TouchableOpacity>
 
                                 <View style={ styles.accContentImageText}>
                                     <Image 
@@ -171,7 +216,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right: 10,
         top: 10,
-        transform: [{ rotate: '15deg' }],
+        // transform: [{ rotate: '15deg' }],
 
     },
 

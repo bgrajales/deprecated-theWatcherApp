@@ -1,4 +1,4 @@
-import { UserMovies } from "./movieInterface";
+import { UserMovies, UserSeries } from "./movieInterface";
 
 export interface LoginData {
     email: string;
@@ -22,7 +22,7 @@ export interface WatcherUser {
     id: string,
     movies: UserMovies[],
     region: string,
-    series: [],
+    series: UserSeries[],
     userName: string,
     img?: string,
   }

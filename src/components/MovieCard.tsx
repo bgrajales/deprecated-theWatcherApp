@@ -1,7 +1,8 @@
 import React from 'react'
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { CommonActions, useNavigation } from '@react-navigation/native';
+import { FadeLoading } from 'react-native-fade-loading';
 
 import { Movie, Series } from '../interfaces/movieInterface';
 
@@ -10,13 +11,36 @@ interface Props {
     height?: number;
     width?: number;
     type: string;
+    isLoading?: boolean;
 }
 
-export const MovieCard = ({ movie, height = 350, width = 230, type }: Props) => {
+export const MovieCard = ({ movie, height = 350, width = 230, type, isLoading }: Props) => {
 
   const navigation = useNavigation<any>()
   
   const uri = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+
+//   if (isLoading !== true ) {
+//     return (
+//         <FadeLoading 
+//             style={{
+//                 height: height,
+//                 width: width,
+//                 borderRadius: 10,
+//                 marginRight: 20,
+//             }}
+//             primaryColor='lightgray'
+//             secondaryColor='whitesmoke'
+//             duration={2000}
+//             children={
+//                 <View />
+//             }
+//             visible={true}
+//             animated={true}
+//         />
+//     );
+
+//   }
 
   return (
     <TouchableOpacity

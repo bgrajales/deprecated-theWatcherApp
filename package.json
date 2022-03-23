@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "~1.15.0",
+    "@react-native-masked-view/masked-view": "^0.2.6",
     "@react-navigation/bottom-tabs": "^6.2.0",
     "@react-navigation/material-top-tabs": "^6.1.1",
     "@react-navigation/native": "^6.0.8",
@@ -26,12 +27,15 @@
     "react-dom": "17.0.1",
     "react-native": "0.64.3",
     "react-native-collapsible": "^1.6.0",
+    "react-native-fade-loading": "^0.1.3",
     "react-native-gesture-handler": "~2.1.0",
     "react-native-linear-gradient": "^2.5.6",
     "react-native-pager-view": "5.4.9",
     "react-native-ratings": "^8.1.0",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.10.1",
+    "react-native-skeleton-content": "^1.0.24",
+    "react-native-skeleton-placeholder": "^5.0.0",
     "react-native-snap-carousel": "^3.9.1",
     "react-native-star-rating": "^1.1.0",
     "react-native-svg": "^12.3.0",
@@ -40,7 +44,8 @@
     "react-native-web": "0.17.1",
     "react-native-webview": "^11.17.2",
     "react-native-youtube": "^2.0.2",
-    "react-native-youtube-iframe": "^2.2.2"
+    "react-native-youtube-iframe": "^2.2.2",
+    "expo-image-picker": "~12.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

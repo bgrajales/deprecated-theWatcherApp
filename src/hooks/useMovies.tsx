@@ -40,6 +40,7 @@ export const useMovies = () => {
     };
 
     useEffect(() => {
+        setIsLoading(true);
         getMovies();
     }, []);
 

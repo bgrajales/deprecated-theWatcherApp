@@ -4,12 +4,12 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { ProfileScreen } from '../screens/ProfileScreen';
-import { SeriesScreen } from '../screens/SeriesScreen';
-import { MoviesScreen } from '../screens/MoviesScreen';
 import { Platform } from 'react-native';
 import { DetailStack } from './DetailStack';
 import { SearchDetailStack } from './SearchStack';
 import { AuthContext } from '../context/AuthContext';
+import { MovieSeenStack } from './MovieSeenStack';
+import { SerieSeenStack } from './SerieSeenStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -37,8 +37,8 @@ export const TabsNavigator = () => {
         }}
     >
         <Tab.Screen 
-          name="SeriesScreen" 
-          component={SeriesScreen} 
+          name="SerieSeenStack" 
+          component={SerieSeenStack} 
           options={{ 
             tabBarLabel: 'Series',
             tabBarIcon: ({ color, size }) => (
@@ -47,8 +47,8 @@ export const TabsNavigator = () => {
           }} 
         />
         <Tab.Screen 
-          name="MoviesScreen" 
-          component={MoviesScreen}
+          name="MovieSeenStack" 
+          component={MovieSeenStack}
           options={{
             tabBarLabel: 'Movies',
             tabBarIcon: ({ color, size }) => (

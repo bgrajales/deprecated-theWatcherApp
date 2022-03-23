@@ -108,7 +108,7 @@ export const SeriesDetailScreen = ({ route }: Props) => {
                   />
               </View>
             </View>
-            <SeriesNavigator seriesId={ series.id }/>
+            <SeriesNavigator seriesId={ serieFull!.id }/>
         </ScrollView>
     )
 }

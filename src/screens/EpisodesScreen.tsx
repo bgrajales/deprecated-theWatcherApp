@@ -35,6 +35,37 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
                 borderBottomLeftRadius: activeSection.section === season.id ? 0 : 10,
             }}>
                 <Text style={ styles.accHeaderText}>{season.name}</Text>
+                
+                {/* Season progress bar */}
+
+                <View style={{
+                    flex: 1,
+                    backgroundColor: '#fff',
+                    height: 10,
+                    // borderColor: '#0055ff',
+                    // borderWidth: 1,
+                    borderRadius: 10,
+                    marginHorizontal: 20,
+                    // overflow: 'hidden',
+                    shadowColor: "#000",
+                    shadowOffset: {
+                        width: 0,
+                        height: 1,
+                    },
+                    shadowOpacity: 0.20,
+                    shadowRadius: 1.41,
+
+                    elevation: 2,
+                }}>
+                    <View style={{
+                        backgroundColor: '#0055ff',
+                        borderRadius: 10,
+                        height: 10,
+                        width: (user?.series?.find( serie => parseInt(serie.id) === seriesId )?.seasonsDetail?.find( seasonArr => parseInt(seasonArr.id) === season.id )?.episodes.length || 0 ) / season.episodes.length * 100 + '%',
+                    }}>
+                    </View>
+                </View>
+
                 <Icon name="ios-arrow-down" size={20} />
             </View>
         )

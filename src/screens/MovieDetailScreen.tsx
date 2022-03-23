@@ -130,7 +130,7 @@ export const MovieDetailScreen = ({ route }: Props) => {
 
                     {
                       user?.movies.find( (m: any) => {
-                        return parseInt(m.id) === movie.id
+                        return parseInt(m.id) === movieFull?.id
                       } ) ? (
                         <TouchableOpacity 
                           style={{

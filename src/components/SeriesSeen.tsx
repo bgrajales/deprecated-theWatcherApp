@@ -1,9 +1,12 @@
+import { useNavigation } from '@react-navigation/native'
 import React, { useContext } from 'react'
-import { ActivityIndicator, FlatList, Image, Text, View } from 'react-native'
+import { ActivityIndicator, FlatList, Image, Text, TouchableOpacity, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { AuthContext } from '../context/AuthContext'
 
 export const SeriesSeen = () => {
+
+  const navigation = useNavigation<any>()
 
   const { user } = useContext( AuthContext )
 
@@ -37,7 +40,7 @@ export const SeriesSeen = () => {
                   )}}
                   renderItem={ ({ item }: any) => {
                       return (
-                          <View style={{ 
+                          <TouchableOpacity style={{ 
                               flex: 1/3, 
                               marginHorizontal: 8,
                               shadowColor: "#000",
@@ -49,7 +52,9 @@ export const SeriesSeen = () => {
                               shadowRadius: 3.84,
 
                               elevation: 5,
-                          }}>
+                          }} activeOpacity={0.7}
+                                onPress={ () => { navigation.navigate('SeriesDetailScreen', item ) } }
+                          >
                               <Image
                                   source={{ uri: `https://image.tmdb.org/t/p/w500${item.posterPath}` }}
                                   style={{ width: "100%", height: 200, borderRadius: 10 }}
@@ -74,7 +79,7 @@ export const SeriesSeen = () => {
                                     borderBottomLeftRadius: 10,  
                                 }} />
                               </View>
-                          </View>
+                          </TouchableOpacity>
                       )
                   }}
                   numColumns={ 3 }

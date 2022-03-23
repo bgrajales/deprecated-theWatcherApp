@@ -42,18 +42,36 @@ export const ProfileComponent = () => {
 
     }
 
+    const turnMinutesSeries = ( total: number ) => {
+
+        const duration = intervalToDuration({
+            start: 0,
+            end: total * 60 * 1000
+        })
+
+        let result = []
+
+        result.push({
+            key: 'Months',
+            value: duration.months
+        },{
+            key: 'Days',
+            value: duration.days
+        },{
+            key: 'Hours',
+            value: duration.hours
+        })
+    
+        return result
+    
+    }
+
     return (
         <View style={{ paddingTop: top + 20, ...styles.container }}>
 
-            <View style={ styles.profileInfo }>
-                <Image 
-                    source={require('../assets/profile-placeholder.png')}
-                    style={{ width: 150, height: 150, borderRadius: 50, opacity: 0.7 }}
-                />
-                <Text style={ styles.profileUsername }>
-                    { user?.userName }
-                </Text>
-            </View>
+            <Text style={ styles.profileUsername }>
+                { user?.userName }
+            </Text>
 
             <View style={ styles.statsDiv}>
                 <View style={ styles.statsCard }>
@@ -73,14 +91,30 @@ export const ProfileComponent = () => {
                 </View>
 
                 <View style={ styles.statsCard }>
-                    <Text style={ styles.statsTitle }>Series Watched</Text>
-                    <Text style={ styles.statsStat }>{ user?.series.length }</Text>
+                    <Text style={ styles.statsTitle }>Episodes Watched</Text>
+                    <Text style={ styles.statsStat }>{
+                        user?.series.reduce((acc, curr) => {
+                            return acc + curr.episodesWatched
+                        }, 0)
+                    }</Text>
                 </View>
 
-                {/* <View style={ styles.statsCard }>
-                    <Text style={ styles.statsTitle }>Episodes Watched</Text>
-                    <Text style={ styles.statsStat }>{ user?.episodesWatched }</Text>
-                </View> */}
+                <View style={ styles.statsCard }>
+                    <Text style={ styles.statsTitle }>Time Watching Episodes</Text>
+                    <View style={ styles.statsTime }>{
+                        turnMinutesSeries(
+                        user?.series.reduce((acc, curr) => {
+                            return acc + curr.episodesWatched * 30
+                        }, 0) || 0
+                        ).map((m) =>{ 
+                            return (
+                            <View style={ styles.timeIndiv } key={ m.key }>
+                                <Text style={ styles.statsStat }>{ m.value }</Text>
+                                <Text style={ styles.timeKeys }>{ m.key }</Text>
+                            </View>)
+                        })
+                    }</View>
+                </View>
             </View>
 
             <View style={ styles.btnContainer }>
@@ -102,15 +136,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
 
-    profileInfo: {
-        marginTop: 20,
-        alignItems: 'center',
-    },
-
     profileUsername: {
-        fontSize: 25,
+        fontSize: 45,
         fontWeight: 'bold',
-        marginTop: 10,
     },
 
     btnContainer: {

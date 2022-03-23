@@ -40,7 +40,7 @@ export const HomeScreen = () => {
         <Carousel
           data={ nowPlaying }
           renderItem={ ({ item }) => (
-            <MovieCard movie={item} type='movie' />
+            <MovieCard movie={item} type='movie' isLoading={ isLoading } />
           )}
           sliderWidth={ Dimensions.get('window').width }
           itemWidth={ 250 }

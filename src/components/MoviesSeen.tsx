@@ -1,9 +1,12 @@
+import { useNavigation } from '@react-navigation/native'
 import React, { useContext } from 'react'
-import { ActivityIndicator, FlatList, Image, Text, View } from 'react-native'
+import { ActivityIndicator, FlatList, Image, Text, TouchableOpacity, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { AuthContext } from '../context/AuthContext'
 
 export const MoviesSeen = () => {
+
+    const navigation = useNavigation<any>()
 
     const { user } = useContext( AuthContext )
 
@@ -37,7 +40,7 @@ export const MoviesSeen = () => {
                     )}}
                     renderItem={ ({ item }: any) => {
                         return (
-                            <View style={{ 
+                            <TouchableOpacity style={{ 
                                 flex: 1/3, 
                                 marginHorizontal: 8,
                                 shadowColor: "#000",
@@ -49,12 +52,14 @@ export const MoviesSeen = () => {
                                 shadowRadius: 3.84,
 
                                 elevation: 5,
-                            }}>
+                            }} activeOpacity={0.8}
+                                onPress={ () => { navigation.navigate('MovieDetailScreen', item ) } }
+                            >
                                 <Image 
                                     source={{ uri: `https://image.tmdb.org/t/p/w500${item.posterPath}` }}
                                     style={{ width: "100%", height: 200, borderRadius: 10 }}
                                 />
-                            </View>
+                            </TouchableOpacity>
                         )
                     }}
                     numColumns={ 3 }

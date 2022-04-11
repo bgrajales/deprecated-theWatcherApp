@@ -9,12 +9,12 @@ export const ProfileScreen = () => {
   const { status } = useContext(AuthContext);
 
   return (
-    <ScrollView style={{ flex: 1 }}>
+    <View style={{ flex: 1 }}>
     {
       status === 'unauthenticated' 
       ? <NotAuth />
       : <ProfileComponent />
     }
-    </ScrollView>
+    </View>
   )
 }

@@ -70,7 +70,6 @@ export const AuthProvider = ({ children }: any) => {
     const signIn = async ( { email, password }: LoginData ) => {
 
         try {
-            console.log(email, password)
             const { data } = await watcherApi.post('/login', { email, password })
 
             dispatch({
@@ -86,12 +85,10 @@ export const AuthProvider = ({ children }: any) => {
             await AsyncStorage.setItem('refreshToken', data.refreshToken)
 
         } catch (error: any) {
-
             dispatch({
                 type: 'addError',
                 payload: error.response.data.error || 'Wrong information'
             })
-
         }
 
     };

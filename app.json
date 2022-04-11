@@ -17,8 +17,7 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "infoPlist": "./src/ios/Info.plist"
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {

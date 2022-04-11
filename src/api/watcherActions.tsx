@@ -25,7 +25,6 @@ export const markMovieAsWatched = async ({ user, token, movieId, posterPath, run
     const resp = await watcherApi.post("/markMovieAsWatched", { user, movie }, { headers });
 
     if (resp.data.error) {
-        console.log(resp.data.error);
         return {
             result: false
         };
@@ -54,7 +53,6 @@ export const markMovieUnwatched = async ({ user, token, movieId }: MarkMovieUnwa
     const resp = await watcherApi.post("/markMovieUnwatched", { user, movieId }, { headers });
 
     if (resp.data.error) {
-        console.log(resp.data.error);
         return {
             result: false
         };
@@ -97,7 +95,6 @@ export const updateEpisode = async ({ user, token, serieId, posterPath, serieTot
     }, { headers });
 
     if (resp.data.error) {
-        console.log(resp.data.error);
         return {
             result: false
         };

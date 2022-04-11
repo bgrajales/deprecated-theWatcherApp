@@ -4,6 +4,7 @@ import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'rea
 import Accordion from 'react-native-collapsible/Accordion';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { updateEpisode } from '../api/watcherActions';
+import { EpisodeModal } from '../components/EpisodeModal';
 import { AuthContext } from '../context/AuthContext';
 
 import { useSeriesDetail } from '../hooks/useSeriesDetail';
@@ -19,6 +20,14 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
 
     const [activeSection, setActiveSection] = useState({
         section: null,
+    })
+
+    const [ showEpisode, setShowEpisode ] = useState(false)
+
+    const [ episodeModalParameters, setEpisodeModalParameters ] = useState({
+        seriesId: 0,
+        seasonNumber: 0,
+        episode: 0,
     })
     
     const { seasons, serieFull } = useSeriesDetail(seriesId)
@@ -95,6 +104,18 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
           }
     }
 
+    const showEpisodeContent = ( episode: number, seasonNumber: number ) => {
+
+        setShowEpisode(true)
+
+        setEpisodeModalParameters({
+            seriesId,
+            seasonNumber,
+            episode
+        })
+
+    }
+
     const renderContent = ( season: SeriesSeason ) => {
 
         return (
@@ -127,7 +148,11 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
                                     />
                                 </TouchableOpacity>
 
-                                <View style={ styles.accContentImageText}>
+                                <TouchableOpacity 
+                                    style={ styles.accContentImageText}
+                                    activeOpacity={0.6}
+                                    onPress={ () => showEpisodeContent(episode.episode_number, season.season_number) }
+                                >
                                     <Image 
                                         style={ styles.accContentItemPoster }
                                         source={{ uri: episode.still_path ? `https://image.tmdb.org/t/p/w500${episode.still_path}` : `https://critics.io/img/movies/poster-placeholder.png` }}
@@ -136,11 +161,20 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
                                         <Text style={ styles.accContentItemText }>{ episode.name }</Text>
                                         <Text style={ styles.accContentEpisode }>Episode {episode.episode_number}</Text>
                                     </View>
-                                </View>
+                                </TouchableOpacity>
+
                             </View>
                         )
                     })
                 }
+
+                <EpisodeModal 
+                    visible={ showEpisode }
+                    setVisible={ setShowEpisode }
+                    seriesId={ episodeModalParameters.seriesId }
+                    seasonNumber={ episodeModalParameters.seasonNumber }
+                    episodeNumber={ episodeModalParameters.episode }
+                />
             </View>
         )    
     

@@ -284,7 +284,6 @@ export const MovieDetailScreen = ({ route }: Props) => {
                     itemHeight={ 170 }
                     layout={ 'default' }
                     loop={ false }
-                    onSnapToItem={ ( index ) => console.log( index ) }
                 />
             </View>
             

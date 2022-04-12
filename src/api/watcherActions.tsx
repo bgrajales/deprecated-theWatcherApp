@@ -106,3 +106,68 @@ export const updateEpisode = async ({ user, token, serieId, posterPath, serieTot
     }
 
 }
+
+interface PostCommentsProps {
+    userName: string;
+    comment: string;
+    elementId: number;
+    type: string;
+}
+
+export const postComment = async ({ userName, comment, elementId, type }: PostCommentsProps) => {
+
+    const headers = {
+        // authorization: token,
+        'Content-Type': 'application/json'
+    }
+
+    const resp = await watcherApi.post("/postComment", { userName, comment, elementId, type }, { headers });
+
+    console.log(resp.data)
+    if (resp.data.error) {
+        return {
+            result: false
+        };
+    } else {
+        return {
+            result: true,
+            comments: resp.data.comments,
+        };
+    }
+
+}
+
+interface FetchCommentsProps {
+    elementId: number;
+}
+
+export const fetchComments = async ({ elementId }: FetchCommentsProps) => {
+
+    const headers = {
+        // authorization: token,
+        'Content-Type': 'application/json'
+    }
+
+    const resp = await watcherApi.get("/fetchComments", { params: { elementId }, headers });
+
+    if (resp.data.error) {
+        return {
+            result: false
+        };
+    } else {
+
+        if (resp.data.forum) {
+            return {
+                result: true,
+                comments: resp.data.forum.comments,
+            };
+        } else {
+
+            return {
+                result: false,
+            };
+
+        }
+    }
+
+}

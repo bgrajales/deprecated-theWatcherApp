@@ -22,18 +22,24 @@ export const TabsNavigator = () => {
         initialRouteName='DetailStack'
         screenOptions={{
             headerShown: false,
-            tabBarActiveTintColor: 'black',
+            tabBarActiveTintColor: '#fff',
             tabBarInactiveTintColor: '#fff',
+            tabBarActiveBackgroundColor: '#003AAF',
             tabBarLabelStyle: {
               paddingBottom: ( Platform.OS === 'android' ? 10 : 0 ),
             },
             tabBarStyle: {
-              height: ( Platform.OS === 'android' ? 60 : 80 ),
+              height: ( Platform.OS === 'android' ? 60 : 85 ),
               borderWidth: 0,
               elevation: 0,
-              opacity: 0.8,
               backgroundColor: '#0055FF',
             },
+            tabBarItemStyle: {
+              borderRadius: 20,
+              padding: 6,
+              marginTop: 5,
+              marginHorizontal: 10,
+            }
         }}
     >
         <Tab.Screen 

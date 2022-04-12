@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import { Dimensions, FlatList, Image, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Dimensions, FlatList, Image, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import Carousel from 'react-native-snap-carousel';
 import Icon from 'react-native-vector-icons/Ionicons'
 import StarRating from 'react-native-star-rating';
@@ -105,15 +105,18 @@ export const EpisodeModal = ({ visible = false, setVisible, seriesId, seasonNumb
             </View>
 
                 
-                    <ScrollView
-                        style={styles.modal}
-                        contentContainerStyle={{
-                            overflow: 'visible',
-                        }}
+                    <View
+                        style={ styles.modal }
                     >
                             {
                                 fullEpisode ? (
-                                    <>
+                                    <ScrollView
+                                        contentContainerStyle={{
+                                            overflow: 'visible',
+                                            paddingHorizontal: 20,
+                                        }}
+                                        showsVerticalScrollIndicator={false}
+                                    >
                                     <View style={{ paddingTop: 20 }}>
                                         <View
                                             style={{
@@ -269,27 +272,6 @@ export const EpisodeModal = ({ visible = false, setVisible, seriesId, seasonNumb
                                                     </View>
                                                 </BlurView>
                                             </Modal>
-                                            {/* <FlatList
-                                                data={ fullEpisode.comments }
-                                                renderItem={({ item }: any) => (
-                                                    <View
-                                                        style={ styles.commentCard }
-                                                    >
-                                                        <View style={{ width: '100%', marginTop: 0, flexDirection: 'row'}}>
-                                                            <Text style={{ fontSize: 16, fontWeight: 'bold', marginRight: 5 }}>{ item.userName }</Text>
-                                                            <Text style={{ fontSize: 12, color: '#999'}}>Author</Text>
-                                                        </View>
-                                                        <Text style={{ marginTop: 10 }}>{ item.comment }</Text>
-                                                    </View>
-                                                )}
-                                                keyExtractor={(item: any) => item.id}
-                                                nestedScrollEnabled={true}
-                                                contentContainerStyle={{
-                                                    flexDirection: 'column',
-                                                    alignItems: 'center',
-                                                    width: '100%',
-                                                }}
-                                            /> */}
                                             <View
                                                 style={{
                                                     width: '100%',
@@ -307,13 +289,43 @@ export const EpisodeModal = ({ visible = false, setVisible, seriesId, seasonNumb
                                                         >
                                                             <View style={{ width: '100%', marginTop: 0, flexDirection: 'row', borderBottomColor: '#0055FF', borderBottomWidth: 1, paddingBottom: 5, alignItems: 'center'}}>
                                                                 <Text style={{ 
-                                                                    fontSize: 16, 
+                                                                    fontSize: 14, 
                                                                     fontWeight: 'bold', 
                                                                     marginRight: 5,
                                                                 }}>{ item.userName }</Text>
                                                                 <Text style={{ fontSize: 12, color: '#999'}}>Author</Text>
+                                                                <Text style={{ fontSize: 12, color: '#999', marginLeft: 10 }}>{ item.date }</Text>
                                                             </View>
-                                                            <Text style={{ marginTop: 10 }}>{ item.comment }</Text>
+                                                            <Text style={{ 
+                                                                marginTop: 10,
+                                                                fontSize: 16,
+                                                            }}>{ item.comment }</Text>
+
+                                                            <View
+                                                                style={{
+                                                                    width: '100%',
+                                                                    flexDirection: 'row',
+                                                                    justifyContent: 'space-evenly',
+                                                                    alignItems: 'center',
+                                                                    marginTop: 10,
+                                                                    backgroundColor: '#e8e8e8',
+                                                                    padding: 10,
+                                                                    borderRadius: 10,
+                                                                }}
+                                                            >
+                                                                <View style={ styles.likesAndComment }>
+                                                                    <Icon name="heart-outline" size={20} color="#0055FF" style={{ marginLeft: 10 }} />
+                                                                    <Text style={{ fontSize: 12, color: '#999', marginLeft: 10 }}>{ item.likes } {
+                                                                        item.likes === 1 ? 'like' : 'likes'
+                                                                    }</Text>
+                                                                </View>
+                                                                <View style={ styles.likesAndComment }>
+                                                                    <Icon name="chatbubble" size={20} color="#0055FF" style={{ marginLeft: 10 }} />
+                                                                    <Text style={{ fontSize: 12, color: '#999', marginLeft: 10 }}>{ item.replies.length } {
+                                                                        item.replies.length === 1 ? 'comment' : 'comments'
+                                                                    }</Text>
+                                                                </View>
+                                                            </View>
                                                         </View>
                                                     ))
                                                 }
@@ -321,14 +333,29 @@ export const EpisodeModal = ({ visible = false, setVisible, seriesId, seasonNumb
                                         </View>
                                     </View>
                                     <View  style={{ height: 30 }}/>
-                                    </>
+                                    </ScrollView>
                                 ) : (
-                                    <View>
-                                        <Text>Loading...</Text>
+                                    <View
+                                        style={{
+                                            flex: 1,
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            position: 'absolute',
+                                            top: 0,
+                                            left: 0,
+                                            right: 0,
+                                            bottom: 0,
+
+                                        }}
+                                    >
+                                        <ActivityIndicator 
+                                            size="small"
+                                            color="#0055FF"
+                                        />
                                     </View>
                                 )
                             }
-                    </ScrollView>
+                    </View>
         </Modal>
     )
 }
@@ -339,7 +366,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         width: '100%',
-        paddingHorizontal: 20,
         marginBottom: 200,
         top: 200,
         shadowColor: "#000",
@@ -413,6 +439,11 @@ const styles = StyleSheet.create({
 
         elevation: 7,
         width: '90%',
+    },
+
+    likesAndComment: {
+        flexDirection: 'row',
+        alignItems: 'center',
     },
 
 })

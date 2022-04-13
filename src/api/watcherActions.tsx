@@ -171,3 +171,32 @@ export const fetchComments = async ({ elementId }: FetchCommentsProps) => {
     }
 
 }
+
+interface LikeCommentProps {
+    userName: string;
+    commentId: string;
+    elementId: number;
+}
+
+export const likeComment = async ({ userName, commentId, elementId }: LikeCommentProps) => {
+
+    const headers = {
+        // authorization: token,
+        'Content-Type': 'application/json'
+    }
+
+    const resp = await watcherApi.post("/likeComment", { userName, commentId, elementId }, { headers });
+
+    if (resp.data.error) {
+        return {
+            result: false
+        };
+    } else {
+        return {
+            result: true,
+            action: resp.data.action,
+        };
+    }
+
+
+}

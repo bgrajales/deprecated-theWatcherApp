@@ -21,6 +21,7 @@ type AuthContextProps = {
     removeError: () => void;
     updateWatchedMovies: ( movies: UserMovies[] ) => void;
     updateWatchedSeries: ( series: UserSeries[] ) => void;
+    updateLikedComments: ( likedComments: string[] ) => void;
 }
 
 const authInitialState: AuthState = {
@@ -159,6 +160,17 @@ export const AuthProvider = ({ children }: any) => {
         })
     }
 
+    const updateLikedComments = async ( likedComments: string[]) => {
+
+        dispatch({
+            type: 'updateLikedComments',
+            payload: {
+                likedComments
+            }
+        })
+
+    }
+
     return (
         <AuthContext.Provider value={{
             ...state,
@@ -167,7 +179,8 @@ export const AuthProvider = ({ children }: any) => {
             logOut,
             removeError,
             updateWatchedMovies,
-            updateWatchedSeries
+            updateWatchedSeries,
+            updateLikedComments
         }}>
             {children}
         </AuthContext.Provider>

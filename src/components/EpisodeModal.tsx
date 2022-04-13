@@ -6,7 +6,7 @@ import StarRating from 'react-native-star-rating';
 import { getEpisodeData } from '../api/TMDBActions';
 import { Comments, EpisodeModalResponse } from '../interfaces/movieInterface';
 import { BlurView } from 'expo-blur';
-import { postComment } from '../api/watcherActions';
+import { likeComment, postComment } from '../api/watcherActions';
 import { AuthContext } from '../context/AuthContext';
 
 
@@ -20,7 +20,7 @@ interface Props {
 
 export const EpisodeModal = ({ visible = false, setVisible, seriesId, seasonNumber, episodeNumber }: Props) => {
   
-    const { user } = useContext( AuthContext )
+    const { user, updateLikedComments } = useContext( AuthContext )
 
     const [isVisible, setIsVisible] = useState(visible);
     const [ writeCommentVisible, setWriteCommentVisible ] = useState(false);
@@ -65,7 +65,6 @@ export const EpisodeModal = ({ visible = false, setVisible, seriesId, seasonNumb
 
             if ( resp.result && fullEpisode ) {
 
-                
                 const commentMade: Comments = {
                     userName,
                     comment: commentToPost,
@@ -88,6 +87,46 @@ export const EpisodeModal = ({ visible = false, setVisible, seriesId, seasonNumb
             }
         
         }
+    }
+
+    const likeCommentAction = async (commentId: string, commentUserName: string) => {
+
+        if (commentUserName === user?.userName) {
+            return;
+        }
+
+        const resp = await likeComment({ userName: user!.userName, commentId, elementId: fullEpisode!.id })
+
+        if ( resp.result && fullEpisode ) {
+
+            const comments = fullEpisode!.comments.map( (comment: Comments) => {
+                if ( comment.id === commentId ) {
+                    return {
+                        ...comment,
+                        likes: resp.action === 'like' ? comment.likes + 1 : comment.likes - 1
+                    }
+                } else {
+                    return comment;
+                }
+            })
+
+            setFullEpisode({
+                ...fullEpisode,
+                comments
+            })
+
+            let newLikedComments
+
+            if ( resp.action === 'like' ) {
+                newLikedComments = [ ...user!.likedComments, commentId ]    
+            } else {
+                newLikedComments = user!.likedComments.filter( (commentId: string) => commentId !== commentId )
+            }
+
+            updateLikedComments(newLikedComments)
+            
+        }
+        
     }
 
     return (
@@ -313,12 +352,17 @@ export const EpisodeModal = ({ visible = false, setVisible, seriesId, seasonNumb
                                                                     borderRadius: 10,
                                                                 }}
                                                             >
-                                                                <View style={ styles.likesAndComment }>
-                                                                    <Icon name="heart-outline" size={20} color="#0055FF" style={{ marginLeft: 10 }} />
+                                                                <TouchableOpacity 
+                                                                    style={ styles.likesAndComment }
+                                                                    onPress={() => likeCommentAction(item.id, item.userName)}
+                                                                >
+                                                                    <Icon name={
+                                                                        user?.likedComments.includes(item.id) ? 'heart' : 'heart-outline'
+                                                                    } size={20} color="#0055FF" style={{ marginLeft: 10 }} />
                                                                     <Text style={{ fontSize: 12, color: '#999', marginLeft: 10 }}>{ item.likes } {
                                                                         item.likes === 1 ? 'like' : 'likes'
                                                                     }</Text>
-                                                                </View>
+                                                                </TouchableOpacity>
                                                                 <View style={ styles.likesAndComment }>
                                                                     <Icon name="chatbubble" size={20} color="#0055FF" style={{ marginLeft: 10 }} />
                                                                     <Text style={{ fontSize: 12, color: '#999', marginLeft: 10 }}>{ item.replies.length } {

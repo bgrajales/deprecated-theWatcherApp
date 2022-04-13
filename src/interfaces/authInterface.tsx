@@ -24,5 +24,6 @@ export interface WatcherUser {
     region: string,
     series: UserSeries[],
     userName: string,
+    likedComments: string[],
     img?: string,
   }

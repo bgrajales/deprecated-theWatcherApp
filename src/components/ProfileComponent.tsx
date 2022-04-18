@@ -1,16 +1,24 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { intervalToDuration  } from 'date-fns'
 
 import { AuthContext } from '../context/AuthContext'
+import { PickGenresModal } from './PickGenresModal'
+import Icon from 'react-native-vector-icons/Ionicons'
+import { ProfileDrawer } from '../navigation/ProfileDrawer'
+import { DrawerActions, useNavigation } from '@react-navigation/native'
 
 export const ProfileComponent = () => {
 
+    const navigation = useNavigation()
+
     const { top } = useSafeAreaInsets()
 
-    const { user, logOut } = useContext( AuthContext )
+    const [pickGenresVisible, setPickGenresVisible] = useState(false)
+
+    const { user } = useContext( AuthContext )
 
     const turnMinutesMovies = () => {
 
@@ -71,6 +79,11 @@ export const ProfileComponent = () => {
 
             <Text style={ styles.profileUsername }>
                 { user?.userName }
+                <TouchableOpacity
+                    onPress={ () => navigation.dispatch( DrawerActions.openDrawer() ) }
+                >
+                    <Icon name='cog' size={40} color='#000' style={{ marginLeft: 20 }} />
+                </TouchableOpacity>
             </Text>
 
             <View style={ styles.statsDiv}>
@@ -115,14 +128,6 @@ export const ProfileComponent = () => {
                         })
                     }</View>
                 </View>
-            </View>
-
-            <View style={ styles.btnContainer }>
-                <TouchableOpacity style={ styles.btn } activeOpacity={0.8} onPress={logOut}>
-                    <Text style={ styles.btnText }>
-                        LogOut
-                    </Text>
-                </TouchableOpacity>
             </View>
         </View>
     )

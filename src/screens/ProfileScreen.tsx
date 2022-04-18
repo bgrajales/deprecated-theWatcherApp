@@ -1,8 +1,9 @@
 import React, { useContext } from 'react'
-import { ScrollView, Text, View } from 'react-native'
+import { View } from 'react-native'
 import { NotAuth } from '../components/NotAuth';
 import { ProfileComponent } from '../components/ProfileComponent';
 import { AuthContext } from '../context/AuthContext';
+import { ProfileDrawer } from '../navigation/ProfileDrawer';
 
 export const ProfileScreen = () => {
 
@@ -13,7 +14,7 @@ export const ProfileScreen = () => {
     {
       status === 'unauthenticated' 
       ? <NotAuth />
-      : <ProfileComponent />
+      : <ProfileDrawer />
     }
     </View>
   )

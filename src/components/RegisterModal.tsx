@@ -18,7 +18,7 @@ export const RegisterModal = ({ visible = false, setRegisterVisibleParent }: Pro
 
     const { signUp, errorMessage, removeError } = useContext( AuthContext )
 
-    const { userName, email, password, repeatPassword ,onChange } = useForm({
+    const { userName, email, password, repeatPassword, onChange } = useForm({
         userName: '',
         email: '',
         password: '',
@@ -44,6 +44,7 @@ export const RegisterModal = ({ visible = false, setRegisterVisibleParent }: Pro
             password,
             repeatPassword
         })
+
         Keyboard.dismiss();
     }    
     

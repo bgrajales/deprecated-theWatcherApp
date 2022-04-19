@@ -200,3 +200,31 @@ export const likeComment = async ({ userName, commentId, elementId }: LikeCommen
 
 
 }
+
+interface SetGenresProps {
+    userName: string;
+    moviesGenresPicked: { id: number; genre: string; }[];
+    seriesGenresPicked: { id: number; genre: string; }[];
+}
+
+export const setGenres = async ({ userName, moviesGenresPicked, seriesGenresPicked }: SetGenresProps) => {
+
+    const headers = {
+        // authorization: token,
+        'Content-Type': 'application/json'
+    }
+
+    const resp = await watcherApi.post("/setGenres", { userName, moviesGenresPicked, seriesGenresPicked }, { headers });
+
+    if (resp.data.error) {
+        return {
+            result: false
+        };
+    } else {
+        return {
+            result: true,
+            action: resp.data,
+        };
+    }
+
+}

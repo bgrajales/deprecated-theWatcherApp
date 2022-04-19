@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { intervalToDuration  } from 'date-fns'
@@ -86,48 +86,60 @@ export const ProfileComponent = () => {
                 </TouchableOpacity>
             </Text>
 
-            <View style={ styles.statsDiv}>
-                <View style={ styles.statsCard }>
-                    <Text style={ styles.statsTitle }>Movies Watched</Text>
-                    <Text style={ styles.statsStat }>{ user?.movies.length }</Text>
-                </View>
+            <View style={ styles.statsDiv }>
+                <ScrollView
+                    style={{
+                        width: '100%',
+                        height: '100%',
+                        paddingHorizontal: 20,
+                        paddingVertical: 20,
+                    }}
+                    contentContainerStyle={{
+                        alignItems: 'center',
+                    }}
+                >
+                    <View style={ styles.statsCard }>
+                        <Text style={ styles.statsTitle }>Movies Watched</Text>
+                        <Text style={ styles.statsStat }>{ user?.movies.length }</Text>
+                    </View>
 
-                <View style={ styles.statsCard }>
-                    <Text style={ styles.statsTitle }>Time Watching Movies</Text>
-                    <View style={ styles.statsTime }>{ user && turnMinutesMovies().map((m) =>{
-                        return (
-                        <View style={ styles.timeIndiv } key={ m.key }>
-                            <Text style={ styles.statsStat }>{ m.value }</Text>
-                            <Text style={ styles.timeKeys }>{ m.key }</Text>
-                        </View>)
-                    })}</View>
-                </View>
-
-                <View style={ styles.statsCard }>
-                    <Text style={ styles.statsTitle }>Episodes Watched</Text>
-                    <Text style={ styles.statsStat }>{
-                        user?.series.reduce((acc, curr) => {
-                            return acc + curr.episodesWatched
-                        }, 0)
-                    }</Text>
-                </View>
-
-                <View style={ styles.statsCard }>
-                    <Text style={ styles.statsTitle }>Time Watching Episodes</Text>
-                    <View style={ styles.statsTime }>{
-                        turnMinutesSeries(
-                        user?.series.reduce((acc, curr) => {
-                            return acc + curr.episodesWatched * 30
-                        }, 0) || 0
-                        ).map((m) =>{ 
+                    <View style={ styles.statsCard }>
+                        <Text style={ styles.statsTitle }>Time Watching Movies</Text>
+                        <View style={ styles.statsTime }>{ user && turnMinutesMovies().map((m) =>{
                             return (
                             <View style={ styles.timeIndiv } key={ m.key }>
                                 <Text style={ styles.statsStat }>{ m.value }</Text>
                                 <Text style={ styles.timeKeys }>{ m.key }</Text>
                             </View>)
-                        })
-                    }</View>
-                </View>
+                        })}</View>
+                    </View>
+
+                    <View style={ styles.statsCard }>
+                        <Text style={ styles.statsTitle }>Episodes Watched</Text>
+                        <Text style={ styles.statsStat }>{
+                            user?.series.reduce((acc, curr) => {
+                                return acc + curr.episodesWatched
+                            }, 0)
+                        }</Text>
+                    </View>
+
+                    <View style={ styles.statsCard }>
+                        <Text style={ styles.statsTitle }>Time Watching Episodes</Text>
+                        <View style={ styles.statsTime }>{
+                            turnMinutesSeries(
+                            user?.series.reduce((acc, curr) => {
+                                return acc + curr.episodesWatched * 30
+                            }, 0) || 0
+                            ).map((m) =>{ 
+                                return (
+                                <View style={ styles.timeIndiv } key={ m.key }>
+                                    <Text style={ styles.statsStat }>{ m.value }</Text>
+                                    <Text style={ styles.timeKeys }>{ m.key }</Text>
+                                </View>)
+                            })
+                        }</View>
+                    </View>
+                </ScrollView>
             </View>
         </View>
     )

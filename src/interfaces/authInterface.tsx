@@ -26,4 +26,6 @@ export interface WatcherUser {
     userName: string,
     likedComments: string[],
     img?: string,
+    moviesGenres: { genreId: number; genre: string; }[],
+    seriesGenres: { genreId: number; genre: string; }[],
   }

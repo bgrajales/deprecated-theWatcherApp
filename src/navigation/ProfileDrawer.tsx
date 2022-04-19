@@ -17,6 +17,9 @@ export const ProfileDrawer = () => {
             screenOptions={{
                 headerShown: false,
                 drawerPosition: 'right',
+                sceneContainerStyle: {
+                    backgroundColor: '#fff'
+                }
             }}
             drawerContent={props => {
                 return (

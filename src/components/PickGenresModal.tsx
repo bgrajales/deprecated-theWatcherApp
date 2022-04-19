@@ -1,10 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import { DrawerActions, useNavigation } from '@react-navigation/native';
+import React, { useContext, useEffect, useState } from 'react'
 import { Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { setGenres } from '../api/watcherActions';
+import { AuthContext } from '../context/AuthContext';
 import { moviesGenres, seriesGenres } from '../data/generesData';
 
 
 export const PickGenresModal = () => {
+
+    const { user } = useContext( AuthContext );
+
+    const navigation = useNavigation()
 
     const [moviesGenresPicked, setMoviesGenresPicked] = useState<{ id: number; genre: string; }[]>([]);
     const [seriesGenresPicked, setSeriesGenresPicked] = useState<{ id: number; genre: string; }[]>([]);
@@ -47,20 +55,74 @@ export const PickGenresModal = () => {
         }
     }
 
+    const saveSelectedGenres = () => {
+
+        if (moviesGenresPicked.length >= 4 && seriesGenresPicked.length >= 4) {
+
+            const userName = user?.userName!
+            setGenres({ userName, moviesGenresPicked, seriesGenresPicked })
+
+        } else {
+            // implement error handling
+        }
+    }
+
+    useEffect(() => {
+
+        console.log(user?.moviesGenres, user?.seriesGenres)
+      
+        if (user?.moviesGenres) {
+
+            const newMoviesGenresPicked = user?.moviesGenres.map(item => {
+                return {
+                    id: item.genreId,
+                    genre: item.genre
+                }
+            })
+
+            setMoviesGenresPicked(newMoviesGenresPicked)
+        }
+
+        if (user?.seriesGenres) {
+
+            const newSeriesGenresPicked = user?.seriesGenres.map(item => {
+                return {
+                    id: item.genreId,
+                    genre: item.genre
+                }
+            })
+
+            setSeriesGenresPicked(newSeriesGenresPicked)
+        }
+
+
+    }, [])
+    
+
     return (
             <View
                 style={{
                     ...styles.modal,
-                    top: top + 20
+                    top: top + 20,
+                    marginBottom: 60
                 }}
             >
                 <Text
                     style={styles.title}
                 >
-                    Pick at least 5 genres for movies and series
+                    Pick at least 4 genres for movies and series
+                    <TouchableOpacity
+                        onPress={ () => navigation.dispatch( DrawerActions.openDrawer() ) }
+                    >
+                        <Icon name='cog' size={30} color='#000' style={{ marginLeft: 20 }} />
+                    </TouchableOpacity>
                 </Text>
 
-                <ScrollView>
+                <ScrollView
+                    style={{
+                        paddingBottom: 30
+                    }}
+                >
                     <Text style={styles.modalTitle}>
                         Movies
                     </Text>
@@ -128,6 +190,7 @@ export const PickGenresModal = () => {
                     >
                         <TouchableOpacity
                             style={styles.btn}
+                            onPress={saveSelectedGenres}
                         >
                             <Text
                                 style={{
@@ -135,10 +198,11 @@ export const PickGenresModal = () => {
                                     fontWeight: 'bold'
                                 }}
                             >
-                                Done
+                                Save
                             </Text>
                         </TouchableOpacity>
                     </View>
+                    <View style={{ height: 40 }}/>
                 </ScrollView>
             </View>
     )
@@ -188,7 +252,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
         marginBottom: 20,
-        marginTop: 20,
         paddingHorizontal: 10,
     },
 

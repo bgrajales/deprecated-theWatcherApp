@@ -1,4 +1,4 @@
-import { seriesDB } from '../api/movieDB';
+import { multiDB, seriesDB } from '../api/movieDB';
 import { EpisodeModalResponse } from '../interfaces/movieInterface';
 import { fetchComments } from './watcherActions';
 
@@ -24,5 +24,25 @@ export const getEpisodeData = async (episodeData: EpisodeData) => {
     if ( resp.data ) {
         return fullResponse;
     }
+
+}
+
+interface GetGenresListsProps {
+    type: 'movie' | 'tv';
+    genreId: number
+}
+
+export const getGenresLists = async ({ type, genreId}: GetGenresListsProps) => {
+
+    const resp = await multiDB.get(`/discover/${type}`, {
+        params: {
+            with_genres: genreId,
+            page: 1,
+            language: 'en-US',
+            sort_by: 'popularity.desc',
+        }
+    })
+
+    return resp.data;
 
 }

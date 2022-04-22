@@ -26,10 +26,10 @@ export const TabsNavigator = () => {
             tabBarInactiveTintColor: '#fff',
             tabBarActiveBackgroundColor: '#003AAF',
             tabBarLabelStyle: {
-              paddingBottom: ( Platform.OS === 'android' ? 10 : 0 ),
+              paddingBottom: ( Platform.OS === 'android' ? 5 : 0 ),
             },
             tabBarStyle: {
-              height: ( Platform.OS === 'android' ? 60 : 85 ),
+              height: ( Platform.OS === 'android' ? 75 : 85 ),
               borderWidth: 0,
               elevation: 0,
               backgroundColor: '#0055FF',
@@ -38,6 +38,7 @@ export const TabsNavigator = () => {
               borderRadius: 20,
               padding: 6,
               marginTop: 5,
+              marginBottom: ( Platform.OS === 'android' ? 6 : 0 ),
               marginHorizontal: 10,
             }
         }}

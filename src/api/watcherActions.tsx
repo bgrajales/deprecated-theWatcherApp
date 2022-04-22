@@ -123,7 +123,6 @@ export const postComment = async ({ userName, comment, elementId, type }: PostCo
 
     const resp = await watcherApi.post("/postComment", { userName, comment, elementId, type }, { headers });
 
-    console.log(resp.data)
     if (resp.data.error) {
         return {
             result: false
@@ -195,6 +194,36 @@ export const likeComment = async ({ userName, commentId, elementId }: LikeCommen
         return {
             result: true,
             action: resp.data.action,
+        };
+    }
+
+
+}
+
+interface PostReplyProps {
+    userName: string;
+    commentId: string;
+    reply: string;
+    elementId: number;
+}
+
+export const postReply = async ({ userName, commentId, reply, elementId }: PostReplyProps) => {
+
+    const headers = {
+        // authorization: token,
+        'Content-Type': 'application/json'
+    }
+
+    const resp = await watcherApi.post("/postReply", { userName, commentId, reply, elementId }, { headers });
+
+    if (resp.data.error) {
+        return {
+            result: false
+        };
+    } else {
+        return {
+            result: true,
+            replies: resp.data,
         };
     }
 

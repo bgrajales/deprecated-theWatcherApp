@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { intervalToDuration  } from 'date-fns'
@@ -77,13 +77,20 @@ export const ProfileComponent = () => {
     return (
         <View style={{ paddingTop: top + 20, ...styles.container }}>
 
+            <TouchableOpacity
+                onPress={ () => navigation.dispatch( DrawerActions.openDrawer() ) }
+                style={{
+                    position: 'absolute',
+                    top: top + 5,
+                    right: 20,
+                    zIndex: 10
+                }}
+            >
+                <Icon name='menu' size={30} color='#000' style={{ marginLeft: 20 }} />
+            </TouchableOpacity>
+
             <Text style={ styles.profileUsername }>
                 { user?.userName }
-                <TouchableOpacity
-                    onPress={ () => navigation.dispatch( DrawerActions.openDrawer() ) }
-                >
-                    <Icon name='cog' size={40} color='#000' style={{ marginLeft: 20 }} />
-                </TouchableOpacity>
             </Text>
 
             <View style={ styles.statsDiv }>
@@ -92,7 +99,7 @@ export const ProfileComponent = () => {
                         width: '100%',
                         height: '100%',
                         paddingHorizontal: 20,
-                        paddingVertical: 20,
+                        paddingTop: 20,
                     }}
                     contentContainerStyle={{
                         alignItems: 'center',
@@ -139,6 +146,8 @@ export const ProfileComponent = () => {
                             })
                         }</View>
                     </View>
+                    
+                    <View style={{ width: '100%', height: 90 }}/>
                 </ScrollView>
             </View>
         </View>

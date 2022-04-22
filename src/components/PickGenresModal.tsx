@@ -69,8 +69,6 @@ export const PickGenresModal = () => {
 
     useEffect(() => {
 
-        console.log(user?.moviesGenres, user?.seriesGenres)
-      
         if (user?.moviesGenres) {
 
             const newMoviesGenresPicked = user?.moviesGenres.map(item => {
@@ -107,15 +105,22 @@ export const PickGenresModal = () => {
                     marginBottom: 60
                 }}
             >
+                <TouchableOpacity
+                    onPress={ () => navigation.dispatch( DrawerActions.openDrawer() ) }
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        right: 20,
+                        zIndex: 10
+                    }}
+                >
+                    <Icon name='menu' size={30} color='#000' style={{ marginLeft: 20 }} />
+                </TouchableOpacity>
+
                 <Text
                     style={styles.title}
                 >
-                    Pick at least 4 genres for movies and series
-                    <TouchableOpacity
-                        onPress={ () => navigation.dispatch( DrawerActions.openDrawer() ) }
-                    >
-                        <Icon name='cog' size={30} color='#000' style={{ marginLeft: 20 }} />
-                    </TouchableOpacity>
+                    Pick at least 4 genres for each
                 </Text>
 
                 <ScrollView
@@ -212,10 +217,6 @@ const styles = StyleSheet.create({
 
     modal: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#fff',
-        width: '100%',
     },
 
     genres: {

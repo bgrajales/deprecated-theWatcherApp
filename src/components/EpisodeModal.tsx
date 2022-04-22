@@ -8,6 +8,7 @@ import { Comments, EpisodeModalResponse } from '../interfaces/movieInterface';
 import { BlurView } from 'expo-blur';
 import { likeComment, postComment } from '../api/watcherActions';
 import { AuthContext } from '../context/AuthContext';
+import { format } from 'date-fns';
 
 
 interface Props {
@@ -333,7 +334,9 @@ export const EpisodeModal = ({ visible = false, setVisible, seriesId, seasonNumb
                                                                     marginRight: 5,
                                                                 }}>{ item.userName }</Text>
                                                                 <Text style={{ fontSize: 12, color: '#999'}}>Author</Text>
-                                                                <Text style={{ fontSize: 12, color: '#999', marginLeft: 10 }}>{ item.date }</Text>
+                                                                <Text style={{ fontSize: 12, color: '#999', marginLeft: 10 }}>{
+                                                                    format(new Date(item.date), 'dd/MM/yyyy') 
+                                                                }</Text>
                                                             </View>
                                                             <Text style={{ 
                                                                 marginTop: 10,

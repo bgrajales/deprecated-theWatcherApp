@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { CommonActions, useNavigation } from '@react-navigation/native';
@@ -14,33 +14,41 @@ interface Props {
     isLoading?: boolean;
 }
 
-export const MovieCard = ({ movie, height = 350, width = 230, type, isLoading }: Props) => {
+export const MovieCard = ({ movie, height = 350, width = 230, type }: Props) => {
 
   const navigation = useNavigation<any>()
   
   const uri = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
 
-//   if (isLoading !== true ) {
-//     return (
-//         <FadeLoading 
-//             style={{
-//                 height: height,
-//                 width: width,
-//                 borderRadius: 10,
-//                 marginRight: 20,
-//             }}
-//             primaryColor='lightgray'
-//             secondaryColor='whitesmoke'
-//             duration={2000}
-//             children={
-//                 <View />
-//             }
-//             visible={true}
-//             animated={true}
-//         />
-//     );
+  const [isLoading, setIsLoading] = useState(true)
 
-//   }
+  useEffect(() => {
+        setIsLoading(false)
+  }, [])
+
+
+
+  if (isLoading) {
+    return (
+        <FadeLoading 
+            style={{
+                height: height,
+                width: width,
+                borderRadius: 10,
+                marginRight: 20,
+            }}
+            primaryColor='lightgray'
+            secondaryColor='whitesmoke'
+            duration={2000}
+            children={
+                <View />
+            }
+            visible={true}
+            animated={true}
+        />
+    );
+
+  }
 
   return (
     <TouchableOpacity

@@ -5,12 +5,11 @@ import { ActivityIndicator, Dimensions, FlatList, Image, Modal, ScrollView, Styl
 import StarRating from 'react-native-star-rating';
 import { LinearGradient } from "expo-linear-gradient";
 import YoutubePlayer from 'react-native-youtube-iframe';
-import { format, parseISO } from 'date-fns'
 
 import { useMovieDetails } from '../hooks/useMoviesDetail'
 import { DetailStackParams } from '../navigation/DetailStack'
 import Carousel from 'react-native-snap-carousel';
-import { likeComment, markMovieAsWatched, markMovieUnwatched, postComment, postReply } from '../api/watcherActions';
+import { likeComment, markMovieAsWatched, markMovieUnwatched, postComment, postReply, updateWatchlist } from '../api/watcherActions';
 import { AuthContext } from '../context/AuthContext';
 import { BlurView } from 'expo-blur';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -25,7 +24,7 @@ export const MovieDetailScreen = ({ route }: Props) => {
     const [commentsToShow, setCommentsToShow] = useState<Comments[]>([]);
     
     const { isLoading, movieFull, cast, providers, videos, comments } = useMovieDetails( movie.id, setCommentsToShow )
-    const { user, token, updateWatchedMovies, updateLikedComments } = useContext( AuthContext )
+    const { user, token, updateWatchedMovies, updateLikedComments, updateWatchListContext } = useContext( AuthContext )
 
     const [ writeCommentVisible, setWriteCommentVisible ] = useState(false);
     const [ commentToPost, setCommentToPost ] = useState<string>('');
@@ -90,96 +89,143 @@ export const MovieDetailScreen = ({ route }: Props) => {
           }
       
       }
-  }
-
-  const likeCommentAction = async (commentId: string, commentUserName: string) => {
-
-    if (commentUserName === user?.userName) {
-        return;
     }
 
-    const resp = await likeComment({ userName: user!.userName, commentId, elementId: movieFull!.id })
+    const likeCommentAction = async (commentId: string, commentUserName: string) => {
 
-    if ( resp.result && movieFull ) {
+      if ( !user ) return;
 
-        const commentsArr = commentsToShow.map( (comment: Comments) => {
-            if ( comment.id === commentId ) {
-                return {
-                    ...comment,
-                    likes: resp.action === 'like' ? comment.likes + 1 : comment.likes - 1
-                }
-            } else {
-                return comment;
-            }
-        })
+      if (commentUserName === user?.userName) {
+          return;
+      }
 
-        setCommentsToShow( commentsArr );
+      const resp = await likeComment({ userName: user!.userName, commentId, elementId: movieFull!.id })
 
-        let newLikedComments
+      if ( resp.result && movieFull ) {
 
-        if ( resp.action === 'like' ) {
-            newLikedComments = [ ...user!.likedComments, commentId ]    
-        } else {
-            newLikedComments = user!.likedComments.filter( (commentId: string) => commentId !== commentId )
-        }
+          const commentsArr = commentsToShow.map( (comment: Comments) => {
+              if ( comment.id === commentId ) {
+                  return {
+                      ...comment,
+                      likes: resp.action === 'like' ? comment.likes + 1 : comment.likes - 1
+                  }
+              } else {
+                  return comment;
+              }
+          })
 
-        updateLikedComments(newLikedComments)
+          setCommentsToShow( commentsArr );
+
+          let newLikedComments
+
+          if ( resp.action === 'like' ) {
+              newLikedComments = [ ...user!.likedComments, commentId ]    
+          } else {
+              newLikedComments = user!.likedComments.filter( (commentId: string) => commentId !== commentId )
+          }
+
+          updateLikedComments(newLikedComments)
+          
+      }
         
     }
-      
-  }
 
-  const showRepliesFunction = (comment: Comments) => {
+    const showRepliesFunction = (comment: Comments) => {
 
-    setShowReplies(true);
-    setCommentToShow(comment);
-
-  }
-
-  const replyCommentAction = async (commentId: string) => {
-
-    console.log(commentId, replyText)
-
-    if ( replyText.length > 3 ) {
-
-        const resp = await postReply({ userName: user!.userName, reply: replyText, commentId, elementId: movieFull!.id})
-
-        console.log(resp.result)
-
-        if ( resp.result && movieFull ) {
-
-            const newCommentShow = {
-                ...commentToShow,
-                replies: [ ...commentToShow.replies, {
-                    userName: user!.userName,
-                    comment: replyText,
-                    date: new Date().toLocaleDateString(),
-                    likes: 0,
-                    id: Math.floor(Math.random() * 1000000).toString()
-                }]
-            }
-
-            console.log(newCommentShow.replies[0].date)
-
-            const commentsArr = commentsToShow.map( (comment: Comments) => {
-                if ( comment.id === commentId ) {
-                    return newCommentShow
-                } else {
-                    return comment;
-                }
-            })
-
-            setCommentsToShow( commentsArr );
-            setCommentToShow(newCommentShow);
-
-            setReplyText('');
-            setWriteCommentVisible(false);
-
-        }
+      setShowReplies(true);
+      setCommentToShow(comment);
 
     }
 
-  }
+    const replyCommentAction = async (commentId: string) => {
+
+      console.log(commentId, replyText)
+
+      if ( replyText.length > 3 ) {
+
+          const resp = await postReply({ userName: user!.userName, reply: replyText, commentId, elementId: movieFull!.id})
+
+          console.log(resp.result)
+
+          if ( resp.result && movieFull ) {
+
+              const newCommentShow = {
+                  ...commentToShow,
+                  replies: [ ...commentToShow.replies, {
+                      userName: user!.userName,
+                      comment: replyText,
+                      date: new Date().toLocaleDateString(),
+                      likes: 0,
+                      id: Math.floor(Math.random() * 1000000).toString()
+                  }]
+              }
+
+              console.log(newCommentShow.replies[0].date)
+
+              const commentsArr = commentsToShow.map( (comment: Comments) => {
+                  if ( comment.id === commentId ) {
+                      return newCommentShow
+                  } else {
+                      return comment;
+                  }
+              })
+
+              setCommentsToShow( commentsArr );
+              setCommentToShow(newCommentShow);
+
+              setReplyText('');
+              setWriteCommentVisible(false);
+
+          }
+
+      }
+
+    }
+
+    const saveToWatchList = async () => {
+
+      if ( user ) {
+
+        const elementExists = user!.watchlist.find( (movie: any) => movie.elementId.toString() === movieFull!.id.toString() )
+        let resp
+        let action
+
+        if ( elementExists ) {
+          action = 'remove'
+          resp = await updateWatchlist({ userName: user!.userName, id: movieFull!.id, posterPath: movieFull!.poster_path, type: 'movie', action: 'remove' })
+        } else {
+          action = 'add'
+          resp = await updateWatchlist({ userName: user!.userName, id: movieFull!.id, posterPath: movieFull!.poster_path, type: 'movie', action: 'add' })
+        }
+
+        console.log(resp.result, action)
+        if ( resp.result ) { 
+
+          if ( action === 'remove' ) {
+
+            const newWatchList = user.watchlist.filter( (element: any) => element.elementId !== movieFull!.id.toString() )
+
+            console.log(newWatchList)
+            updateWatchListContext(newWatchList)
+
+          } else {
+
+            const newWatchList = [
+                ...user!.watchlist,
+                {
+                  elementId: movieFull!.id.toString(),
+                    posterPath: movieFull!.poster_path,
+                    type: 'movie'
+                }
+            ]
+            updateWatchListContext(newWatchList)
+
+          }
+
+        }
+      }
+
+    }
 
     if ( isLoading ) {
       return (
@@ -212,7 +258,7 @@ export const MovieDetailScreen = ({ route }: Props) => {
               <View
                 style={{
                     position: 'absolute',
-                    bottom: '20%',
+                    bottom: '23%',
                     left: 0,
                     paddingHorizontal: 20,
                     paddingVertical: 10,
@@ -261,8 +307,61 @@ export const MovieDetailScreen = ({ route }: Props) => {
                     elevation: 5,
                 }}
               >
-                  <View>
+                  <View
+                    style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                    }}
+                  >
 
+                  {
+                      user?.watchlist.find( (m: any) => {
+                        return parseInt(m.elementId) === movieFull?.id
+                      } ) ? (
+                        <TouchableOpacity
+                          style={{
+                            backgroundColor: '#fff',
+                            paddingHorizontal: 5,
+                            paddingVertical: 5,
+                            borderRadius: 100,
+                            height: 40,
+                            width: 50,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                          activeOpacity={0.7}
+                          onPress={ () => saveToWatchList() }
+                        >
+                          <Icon
+                            name="bookmark"
+                            size={ 30 }
+                            color="#0055FF"
+                          />
+                        </TouchableOpacity>
+                      ) : (
+                        <TouchableOpacity
+                          style={{
+                            backgroundColor: '#fff',
+                            paddingHorizontal: 5,
+                            paddingVertical: 5,
+                            borderRadius: 100,
+                            height: 40,
+                            width: 50,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                          activeOpacity={0.7}
+                          onPress={ () => saveToWatchList() }
+                        >
+                          <Icon
+                            name="bookmark-outline"
+                            size={ 30 }
+                            color="#0055FF"
+                          />
+                        </TouchableOpacity>
+                      )
+                    }
+                    <View style={{ width: 10 }}/>
                     {
                       user?.movies.find( (m: any) => {
                         return parseInt(m.id) === movieFull?.id
@@ -274,6 +373,7 @@ export const MovieDetailScreen = ({ route }: Props) => {
                             paddingVertical: 5,
                             borderRadius: 100,
                             height: 40,
+                            width: 50,
                             alignItems: 'center',
                             justifyContent: 'center',
                           }}
@@ -296,6 +396,7 @@ export const MovieDetailScreen = ({ route }: Props) => {
                             paddingVertical: 5,
                             borderRadius: 100,
                             height: 40,
+                            width: 50,
                             alignItems: 'center',
                             justifyContent: 'center',
                           }}
@@ -312,6 +413,51 @@ export const MovieDetailScreen = ({ route }: Props) => {
                         </TouchableOpacity>
                       )
                     }
+                    
+
+                    {/* {
+                      user?.watchlist.includes((el: any) => {el.id === movieFull?.id} ) ? (
+                        <TouchableOpacity
+                          style={{
+                            backgroundColor: '#fff',
+                            paddingHorizontal: 5,
+                            paddingVertical: 5,
+                            borderRadius: 100,
+                            height: 40,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                          activeOpacity={0.7}
+                          onPress={ () => {} }
+                        >
+                          <Icon
+                            name="bookmark"
+                            size={ 30 }
+                            color="#0055FF"
+                          />
+                        </TouchableOpacity>
+                      ) : (
+                        <TouchableOpacity
+                          style={{
+                            backgroundColor: '#fff',
+                            paddingHorizontal: 5,
+                            paddingVertical: 5,
+                            borderRadius: 100,
+                            height: 40,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                          activeOpacity={0.7}
+                          onPress={ () => {} }
+                        >
+                          <Icon
+                            name="bookmark-outline"
+                            size={ 30 }
+                            color="#0055FF"
+                          />
+                        </TouchableOpacity>
+                      )
+                    } */}
                       
                   </View>
                   <View style={{ width: 15 }}/>
@@ -673,51 +819,57 @@ export const MovieDetailScreen = ({ route }: Props) => {
 
                                         {/* Write a reply */}
 
-                                        <View
-                                            style={{
-                                                width: '100%',
-                                                flexDirection: 'row',
-                                                justifyContent: 'space-evenly',
-                                                alignItems: 'center',
-                                                marginTop: 10,
-                                                backgroundColor: '#e8e8e8',
-                                                padding: 10,
-                                                borderRadius: 10,
-                                            }}
-                                        >
-                                            <TextInput
-                                                style={{
-                                                    height: 40,
-                                                    borderColor: '#0055FF',
-                                                    borderWidth: 1,
-                                                    padding: 10,
-                                                    flex: 1,
-                                                    borderTopStartRadius: 10,
-                                                    borderBottomStartRadius: 10,
-                                                }}
-                                                placeholder="Write a reply"
-                                                onChangeText={(text) => setReplyText(text)}
-                                            />
-                                            <TouchableOpacity
-                                                style={{
-                                                    width: '20%',
-                                                    height: 40,
-                                                    backgroundColor: '#0055FF',
-                                                    justifyContent: 'center',
-                                                    alignItems: 'center',
-                                                    borderBottomEndRadius: 10,
-                                                    borderTopEndRadius: 10,
-                                                }}
-                                                onPress={() => {
-                                                    if (replyText.length > 0) {
-                                                        replyCommentAction(commentToShow.id);
-                                                        setReplyText('');
-                                                    }
-                                                }}
-                                            >
-                                                <Text style={{ color: '#fff', fontSize: 16 }}>Reply</Text>
-                                            </TouchableOpacity>
-                                        </View>
+                                        {
+                                            user ? (
+                                                <View
+                                                    style={{
+                                                        width: '100%',
+                                                        flexDirection: 'row',
+                                                        justifyContent: 'space-evenly',
+                                                        alignItems: 'center',
+                                                        marginTop: 10,
+                                                        padding: 10,
+                                                        borderRadius: 10,
+                                                    }}
+                                                >
+                                                    <TextInput
+                                                        style={{
+                                                            height: 40,
+                                                            borderColor: '#0055FF',
+                                                            borderWidth: 2,
+                                                            padding: 10,
+                                                            flex: 1,
+                                                            borderTopStartRadius: 10,
+                                                            borderBottomStartRadius: 10,
+                                                        }}
+                                                        placeholder="Write a reply"
+                                                        onChangeText={(text) => setReplyText(text)}
+                                                    />
+                                                    <TouchableOpacity
+                                                        style={{
+                                                            width: '20%',
+                                                            height: 40,
+                                                            backgroundColor: '#0055FF',
+                                                            justifyContent: 'center',
+                                                            alignItems: 'center',
+                                                            borderBottomEndRadius: 10,
+                                                            borderTopEndRadius: 10,
+                                                        }}
+                                                        onPress={() => {
+                                                            if (replyText.length > 0) {
+                                                                replyCommentAction(commentToShow.id);
+                                                                setReplyText('');
+                                                            }
+                                                        }}
+                                                    >
+                                                        <Text style={{ color: '#fff', fontSize: 16 }}>Reply</Text>
+                                                    </TouchableOpacity>
+                                                </View>
+                                            
+                                            ) : (
+                                                null
+                                            )
+                                        }
                                         <View
                                             style={{
                                                 width: '100%',

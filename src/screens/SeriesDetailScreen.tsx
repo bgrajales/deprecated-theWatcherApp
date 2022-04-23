@@ -1,8 +1,11 @@
 import { StackScreenProps } from '@react-navigation/stack'
-import React from 'react'
-import { ActivityIndicator, Image, ScrollView, Text, View } from 'react-native'
+import React, { useContext } from 'react'
+import { ActivityIndicator, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 
 import StarRating from 'react-native-star-rating';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { updateWatchlist } from '../api/watcherActions';
+import { AuthContext } from '../context/AuthContext';
 
 import { useSeriesDetail } from '../hooks/useSeriesDetail'
 import { DetailStackParams } from '../navigation/DetailStack'
@@ -14,9 +17,56 @@ export const SeriesDetailScreen = ({ route }: Props) => {
 
     const series = route.params
 
+    const { user, updateWatchListContext } = useContext( AuthContext )
+
     const { isLoading, serieFull } = useSeriesDetail(series.id)
 
     const uri = `https://image.tmdb.org/t/p/w500${serieFull?.poster_path}`;
+
+    const saveToWatchList = async () => {
+
+      if ( user ) {
+
+        const elementExists = user!.watchlist.find( (movie: any) => movie.elementId.toString() === serieFull!.id.toString() )
+        let resp
+        let action
+
+        if ( elementExists ) {
+          action = 'remove'
+          resp = await updateWatchlist({ userName: user!.userName, id: serieFull!.id, posterPath: serieFull!.poster_path!, type: 'tv', action: 'remove' })
+        } else {
+          action = 'add'
+          resp = await updateWatchlist({ userName: user!.userName, id: serieFull!.id, posterPath: serieFull!.poster_path!, type: 'tv', action: 'add' })
+        }
+
+        console.log(resp.result, action)
+        if ( resp.result ) { 
+
+          if ( action === 'remove' ) {
+
+            const newWatchList = user.watchlist.filter( (element: any) => element.elementId !== serieFull!.id.toString() )
+
+            console.log(newWatchList)
+            updateWatchListContext(newWatchList)
+
+          } else {
+
+            const newWatchList = [
+                ...user!.watchlist,
+                {
+                  elementId: serieFull!.id.toString(),
+                    posterPath: serieFull!.poster_path!,
+                    type: 'tv'
+                }
+            ]
+            updateWatchListContext(newWatchList)
+
+          }
+
+        }
+      }
+
+    }
 
     if ( isLoading ) {
         return (
@@ -77,35 +127,86 @@ export const SeriesDetailScreen = ({ route }: Props) => {
                   { serieFull?.name }
                 </Text>
               </View>
+
               <View
                 style={{
-                    position: 'absolute',
-                    bottom: '8%',
-                    right: 0,
-                    paddingHorizontal: 20,
-                    paddingVertical: 10,
-                    backgroundColor: '#fff',
-                    borderBottomLeftRadius: 20,
-                    borderTopLeftRadius: 20,
-                    shadowColor: "#000",
-                    shadowOffset: {
-                      width: 0,
-                      height: 2,
-                    },
-                    shadowOpacity: 0.25,
-                    shadowRadius: 3.84,
-
-                    elevation: 5,
+                  flexDirection: 'row',
+                  position: 'absolute',
+                  bottom: '8%',
+                  right: 0,
+                  
                 }}
               >
-                  <StarRating
-                    disabled={ true }
-                    maxStars={ 5 }
-                    rating={ serieFull ? serieFull.vote_average / 2 : 0 }
-                    starSize={ 20 }
-                    fullStarColor={ '#FFD700' }
-                    emptyStarColor={ '#FFD700' }
-                  />
+
+                {
+                  user?.watchlist.find( (m: any) => {
+                    return parseInt(m.elementId) === serieFull?.id
+                  } ) ? (
+                    <TouchableOpacity
+                      style={{
+                        backgroundColor: '#fff',
+                        paddingHorizontal: 5,
+                        paddingVertical: 5,
+                        borderRadius: 100,
+                        height: 40,
+                        width: 50,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      activeOpacity={0.7}
+                      onPress={ () => saveToWatchList() }
+                    >
+                      <Icon
+                        name="bookmark"
+                        size={ 30 }
+                        color="#0055FF"
+                      />
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity
+                      style={{
+                        backgroundColor: '#fff',
+                        paddingHorizontal: 5,
+                        paddingVertical: 5,
+                        borderRadius: 100,
+                        height: 40,
+                        width: 50,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      activeOpacity={0.7}
+                      onPress={ () => saveToWatchList() }
+                    >
+                      <Icon
+                        name="bookmark-outline"
+                        size={ 30 }
+                        color="#0055FF"
+                      />
+                    </TouchableOpacity>
+                  )
+                }
+                <View style={{ width: 10 }}/>
+                <View
+                  style={{
+                    backgroundColor: '#fff',
+                    height: 40,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    paddingVertical: 10,
+                    paddingHorizontal: 12,
+                    borderBottomLeftRadius: 20,
+                    borderTopLeftRadius: 20,
+                  }}
+                >
+                    <StarRating
+                      disabled={ true }
+                      maxStars={ 5 }
+                      rating={ serieFull ? serieFull.vote_average / 2 : 0 }
+                      starSize={ 20 }
+                      fullStarColor={ '#FFD700' }
+                      emptyStarColor={ '#FFD700' }
+                    />
+                </View>
               </View>
             </View>
             <SeriesNavigator seriesId={ serieFull!.id }/>

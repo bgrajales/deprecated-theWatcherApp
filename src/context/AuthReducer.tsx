@@ -17,6 +17,7 @@ type AuthAction =
     | { type: 'updateWatchedMovies', payload: { movies: WatcherUser['movies'] } }
     | { type: 'updateWatchedSeries', payload: { series: WatcherUser['series'] } }
     | { type: 'updateLikedComments', payload: { likedComments: WatcherUser['likedComments'] } }
+    | { type: 'updateWatchList', payload: { watchlist: WatcherUser['watchlist'] } }
 
 
 export const AuthReducer = (state: AuthState, action: AuthAction): AuthState => {
@@ -83,6 +84,15 @@ export const AuthReducer = (state: AuthState, action: AuthAction): AuthState => 
                 user: {
                     ...state.user!,
                     likedComments: action.payload.likedComments,
+                }
+            }
+
+        case 'updateWatchList':
+            return {
+                ...state,
+                user: {
+                    ...state.user!,
+                    watchlist: action.payload.watchlist,
                 }
             }
 

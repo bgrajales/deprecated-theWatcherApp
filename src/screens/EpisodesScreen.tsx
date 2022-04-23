@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
 import Accordion from 'react-native-collapsible/Accordion';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -21,8 +21,9 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
     const [activeSection, setActiveSection] = useState({
         section: null,
     })
-
     const [ showEpisode, setShowEpisode ] = useState(false)
+
+    const [ actionLoader, setActionLoader ] = useState(false)
 
     const [ episodeModalParameters, setEpisodeModalParameters ] = useState({
         seriesId: 0,
@@ -83,6 +84,8 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
 
     const markEpisodeWatched = async (season: SeriesSeason, episode: Episode) => {
         
+        setActionLoader(true)
+
         if ( serieFull && user && token ) {
             const marked = await updateEpisode({ 
                 user, 
@@ -97,8 +100,8 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
     
             if ( marked.result ) {
     
+                setActionLoader(false)
                 updateWatchedSeries( marked.series )
-    
             }
     
           }
@@ -117,7 +120,6 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
     }
 
     const renderContent = ( season: SeriesSeason ) => {
-
         return (
             <View style={ styles.accContent }>
                 {
@@ -125,6 +127,7 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
                         return (
                             <View key={ episode.id } style={ styles.accContentItem }>
 
+                               
                                 <TouchableOpacity
                                     style={ styles.accContentEyeImage }
                                     activeOpacity={ 0.6 }
@@ -147,6 +150,8 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
                                         }}
                                     />
                                 </TouchableOpacity>
+
+                                
 
                                 <TouchableOpacity 
                                     style={ styles.accContentImageText}

@@ -6,7 +6,7 @@ import StarRating from 'react-native-star-rating';
 import { getEpisodeData } from '../api/TMDBActions';
 import { Comments, EpisodeModalResponse } from '../interfaces/movieInterface';
 import { BlurView } from 'expo-blur';
-import { likeComment, postComment } from '../api/watcherActions';
+import { likeComment, postComment, postReply } from '../api/watcherActions';
 import { AuthContext } from '../context/AuthContext';
 import { format } from 'date-fns';
 
@@ -26,6 +26,11 @@ export const EpisodeModal = ({ visible = false, setVisible, seriesId, seasonNumb
     const [isVisible, setIsVisible] = useState(visible);
     const [ writeCommentVisible, setWriteCommentVisible ] = useState(false);
     const [ commentToPost, setCommentToPost ] = useState<string>('');
+
+    const [ showReplies, setShowReplies ] = useState(false);
+    const [ commentToShow, setCommentToShow ] = useState<Comments>({} as Comments);
+
+    const [ replyText, setReplyText] = useState('');
 
     const [ fullEpisode, setFullEpisode ] = useState<EpisodeModalResponse>();
 
@@ -92,6 +97,8 @@ export const EpisodeModal = ({ visible = false, setVisible, seriesId, seasonNumb
 
     const likeCommentAction = async (commentId: string, commentUserName: string) => {
 
+        if ( !user ) return;
+
         if (commentUserName === user?.userName) {
             return;
         }
@@ -128,6 +135,61 @@ export const EpisodeModal = ({ visible = false, setVisible, seriesId, seasonNumb
             
         }
         
+    }
+
+    const replyCommentAction = async (commentId: string) => {
+
+        console.log(commentId, replyText)
+
+        if ( replyText.length > 3 ) {
+
+            const resp = await postReply({ userName: user!.userName, reply: replyText, commentId, elementId: fullEpisode!.id})
+
+            console.log(resp.result)
+
+            if ( resp.result && fullEpisode ) {
+
+                const newCommentShow = {
+                    ...commentToShow,
+                    replies: [ ...commentToShow.replies, {
+                        userName: user!.userName,
+                        comment: replyText,
+                        date: new Date().toLocaleDateString(),
+                        likes: 0,
+                        id: Math.floor(Math.random() * 1000000).toString()
+                    }]
+                }
+
+                console.log(newCommentShow.replies[0].date)
+
+                const commentsArr = fullEpisode!.comments.map( (comment: Comments) => {
+                    if ( comment.id === commentId ) {
+                        return newCommentShow;
+                    } else {
+                        return comment;
+                    }
+                })
+
+                setFullEpisode({
+                    ...fullEpisode,
+                    comments: commentsArr
+                })
+                setCommentToShow(newCommentShow);
+
+                setReplyText('');
+                setWriteCommentVisible(false);
+
+            }
+
+        }
+
+    }
+
+    const showRepliesFunction = (comment: Comments) => {
+
+        setShowReplies(true);
+        setCommentToShow(comment);
+
     }
 
     return (
@@ -335,7 +397,7 @@ export const EpisodeModal = ({ visible = false, setVisible, seriesId, seasonNumb
                                                                 }}>{ item.userName }</Text>
                                                                 <Text style={{ fontSize: 12, color: '#999'}}>Author</Text>
                                                                 <Text style={{ fontSize: 12, color: '#999', marginLeft: 10 }}>{
-                                                                    format(new Date(item.date), 'dd/MM/yyyy') 
+                                                                    item.date
                                                                 }</Text>
                                                             </View>
                                                             <Text style={{ 
@@ -366,12 +428,15 @@ export const EpisodeModal = ({ visible = false, setVisible, seriesId, seasonNumb
                                                                         item.likes === 1 ? 'like' : 'likes'
                                                                     }</Text>
                                                                 </TouchableOpacity>
-                                                                <View style={ styles.likesAndComment }>
+                                                                <TouchableOpacity 
+                                                                    style={ styles.likesAndComment }
+                                                                    onPress={() => showRepliesFunction(item)}    
+                                                                >
                                                                     <Icon name="chatbubble" size={20} color="#0055FF" style={{ marginLeft: 10 }} />
                                                                     <Text style={{ fontSize: 12, color: '#999', marginLeft: 10 }}>{ item.replies.length } {
                                                                         item.replies.length === 1 ? 'comment' : 'comments'
                                                                     }</Text>
-                                                                </View>
+                                                                </TouchableOpacity>
                                                             </View>
                                                         </View>
                                                     ))
@@ -402,6 +467,154 @@ export const EpisodeModal = ({ visible = false, setVisible, seriesId, seasonNumb
                                     </View>
                                 )
                             }
+                        <Modal
+                            animationType="slide"
+                            transparent={true}
+                            visible={ showReplies }
+                        >
+                            <BlurView
+                                style={{ flex: 1, padding: 20, alignItems: 'center', justifyContent: 'center' }}
+                                tint="dark"
+                                intensity={20}
+                            >
+                                <View
+                                    style={{
+                                        width: '95%',
+                                        maxHeight: '90%',
+                                        backgroundColor: '#fff',
+                                        borderRadius: 10,
+                                        padding: 10,
+                                        marginTop: 10,
+                                    }}
+                                >
+                                <ScrollView>
+                                    {
+                                    commentToShow.id ? (
+                                        <>
+                                        <View style={{ ...styles.subTitleDiv, width: '100%', justifyContent: 'space-between', marginTop: 0}}>
+                                            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{commentToShow.userName}</Text>
+                                            <Icon name="md-close" size={30} color="#000" onPress={() => setShowReplies(false)} />
+                                        </View>
+                                        <Text style={{
+                                            marginTop: 10,
+                                            fontSize: 16,
+                                        }}>{ commentToShow.comment }</Text>
+                                        <View
+                                            style={{
+                                                width: '100%',
+                                                flexDirection: 'row',
+                                                justifyContent: 'space-evenly',
+                                                alignItems: 'center',
+                                                marginTop: 10,
+                                                backgroundColor: '#e8e8e8',
+                                                padding: 10,
+                                                borderRadius: 10,
+                                            }}
+                                        >
+                                            <TouchableOpacity
+                                                style={ styles.likesAndComment }
+                                                onPress={() => likeCommentAction(commentToShow.id, commentToShow.userName)}
+                                            >
+                                                <Icon name={
+                                                    user?.likedComments.includes(commentToShow.id) ? 'heart' : 'heart-outline'
+                                                } size={20} color="#0055FF" style={{ marginLeft: 10 }} />
+                                                <Text style={{ fontSize: 12, color: '#999', marginLeft: 10 }}>{ commentToShow.likes } {
+                                                    commentToShow.likes === 1 ? 'like' : 'likes'
+                                                }</Text>
+                                            </TouchableOpacity>
+                                            </View>
+
+                                            {/* Write a reply */}
+
+                                            {
+                                                user ? (
+                                                    <View
+                                                        style={{
+                                                            width: '100%',
+                                                            flexDirection: 'row',
+                                                            justifyContent: 'space-evenly',
+                                                            alignItems: 'center',
+                                                            marginTop: 10,
+                                                            padding: 10,
+                                                            borderRadius: 10,
+                                                        }}
+                                                    >
+                                                        <TextInput
+                                                            style={{
+                                                                height: 40,
+                                                                borderColor: '#0055FF',
+                                                                borderWidth: 2,
+                                                                padding: 10,
+                                                                flex: 1,
+                                                                borderTopStartRadius: 10,
+                                                                borderBottomStartRadius: 10,
+                                                            }}
+                                                            placeholder="Write a reply"
+                                                            onChangeText={(text) => setReplyText(text)}
+                                                        />
+                                                        <TouchableOpacity
+                                                            style={{
+                                                                width: '20%',
+                                                                height: 40,
+                                                                backgroundColor: '#0055FF',
+                                                                justifyContent: 'center',
+                                                                alignItems: 'center',
+                                                                borderBottomEndRadius: 10,
+                                                                borderTopEndRadius: 10,
+                                                            }}
+                                                            onPress={() => {
+                                                                if (replyText.length > 0) {
+                                                                    replyCommentAction(commentToShow.id);
+                                                                    setReplyText('');
+                                                                }
+                                                            }}
+                                                        >
+                                                            <Text style={{ color: '#fff', fontSize: 16 }}>Reply</Text>
+                                                        </TouchableOpacity>
+                                                    </View>
+                                                
+                                                ) : (
+                                                    null
+                                                )
+                                            }
+                                            <View
+                                                style={{
+                                                    width: '100%',
+                                                    alignItems: 'center',
+                                                }}
+                                            >
+                                            {
+                                                commentToShow.replies.map((item: any, index: number) => (
+                                                <View
+                                                    style={ styles.commentCard }
+                                                    key={index}
+                                                >
+                                                    <View style={{ width: '100%', marginTop: 0, flexDirection: 'row', borderBottomColor: '#0055FF', borderBottomWidth: 1, paddingBottom: 5, alignItems: 'center'}}>
+                                                        <Text style={{
+                                                            fontSize: 14,
+                                                            fontWeight: 'bold',
+                                                            marginRight: 5,
+                                                        }}>{ item.userName }</Text>
+                                                        <Text style={{ fontSize: 12, color: '#999'}}>Author</Text>
+                                                        <Text style={{ fontSize: 12, color: '#999', marginLeft: 10 }}>{
+                                                            item.date
+                                                        }</Text>
+                                                    </View>
+                                                    <Text style={{
+                                                        marginTop: 10,
+                                                        fontSize: 16,
+                                                    }}>{ item.comment }</Text>                                          
+                                                </View>
+                                                ))
+                                            }
+                                            </View>
+                                        </>
+                                    ) : null
+                                    }
+                                </ScrollView>
+                                </View>
+                            </BlurView>
+                        </Modal>
                     </View>
         </Modal>
     )

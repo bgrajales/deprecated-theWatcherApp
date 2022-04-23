@@ -22,6 +22,7 @@ type AuthContextProps = {
     updateWatchedMovies: ( movies: UserMovies[] ) => void;
     updateWatchedSeries: ( series: UserSeries[] ) => void;
     updateLikedComments: ( likedComments: string[] ) => void;
+    updateWatchListContext: ( watchlist: { elementId: string; posterPath: string; type: string; }[] ) => void;
 }
 
 const authInitialState: AuthState = {
@@ -171,6 +172,17 @@ export const AuthProvider = ({ children }: any) => {
 
     }
 
+    const updateWatchListContext = async ( watchlist: { elementId: string; posterPath: string; type: string; }[]) => {
+
+        dispatch({
+            type: 'updateWatchList',
+            payload: {
+                watchlist
+            }
+        })
+
+    }
+
     return (
         <AuthContext.Provider value={{
             ...state,
@@ -180,7 +192,8 @@ export const AuthProvider = ({ children }: any) => {
             removeError,
             updateWatchedMovies,
             updateWatchedSeries,
-            updateLikedComments
+            updateLikedComments,
+            updateWatchListContext
         }}>
             {children}
         </AuthContext.Provider>

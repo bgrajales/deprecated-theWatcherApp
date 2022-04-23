@@ -257,3 +257,33 @@ export const setGenres = async ({ userName, moviesGenresPicked, seriesGenresPick
     }
 
 }
+
+interface UpdateWatchListProps {
+    userName: string;
+    id: number;
+    posterPath: string;
+    type: string;
+    action: string;
+}
+
+export const updateWatchlist = async ({ userName, id, posterPath, type, action }: UpdateWatchListProps) => {
+
+    const headers = {
+        // authorization: token,
+        'Content-Type': 'application/json'
+    }
+
+    const resp = await watcherApi.post("/updateWatchlist", { userName, id, posterPath, type, action }, { headers });
+
+    if (resp.data.error) {
+        return {
+            result: false
+        };
+    } else {
+        return {
+            result: true,
+            action: resp.data,
+        };
+    }
+
+}

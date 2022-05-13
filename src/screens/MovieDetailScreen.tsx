@@ -139,13 +139,9 @@ export const MovieDetailScreen = ({ route }: Props) => {
 
     const replyCommentAction = async (commentId: string) => {
 
-      console.log(commentId, replyText)
-
       if ( replyText.length > 3 ) {
 
           const resp = await postReply({ userName: user!.userName, reply: replyText, commentId, elementId: movieFull!.id})
-
-          console.log(resp.result)
 
           if ( resp.result && movieFull ) {
 
@@ -159,8 +155,6 @@ export const MovieDetailScreen = ({ route }: Props) => {
                       id: Math.floor(Math.random() * 1000000).toString()
                   }]
               }
-
-              console.log(newCommentShow.replies[0].date)
 
               const commentsArr = commentsToShow.map( (comment: Comments) => {
                   if ( comment.id === commentId ) {
@@ -198,14 +192,12 @@ export const MovieDetailScreen = ({ route }: Props) => {
           resp = await updateWatchlist({ userName: user!.userName, id: movieFull!.id, posterPath: movieFull!.poster_path, type: 'movie', action: 'add' })
         }
 
-        console.log(resp.result, action)
         if ( resp.result ) { 
 
           if ( action === 'remove' ) {
 
             const newWatchList = user.watchlist.filter( (element: any) => element.elementId !== movieFull!.id.toString() )
 
-            console.log(newWatchList)
             updateWatchListContext(newWatchList)
 
           } else {

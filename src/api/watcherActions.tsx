@@ -1,4 +1,5 @@
 import { WatcherUser } from "../interfaces/authInterface";
+import { Season } from "../interfaces/movieInterface";
 import { watcherApi } from "./watcherApi";
 
 interface MarkAsWatchedProps {
@@ -283,6 +284,38 @@ export const updateWatchlist = async ({ userName, id, posterPath, type, action }
         return {
             result: true,
             action: resp.data,
+        };
+    }
+
+}
+
+interface MarkSerieWatchedProps {
+    userName: string;
+    id: number;
+    posterPath: string;
+    action: string;
+    serieTotalEpisodes: number | undefined;
+    seriesSeasons: Season[] | undefined;
+}
+
+export const markSerieAsWatched = async ({ userName, id, posterPath, action, serieTotalEpisodes, seriesSeasons }: MarkSerieWatchedProps) => {
+
+    const headers = {
+        // authorization: token,
+        'Content-Type': 'application/json'
+    }
+
+    const resp = await watcherApi.post("/markSerieAsWatched", { userName, id, posterPath, action, serieTotalEpisodes, seriesSeasons }, { headers });
+
+    if (resp.data.error) {
+        return {
+            result: false
+        };
+    } else {
+        return {
+            result: true,
+            message: resp.data.message,
+            seriesUpdate: resp.data.series
         };
     }
 

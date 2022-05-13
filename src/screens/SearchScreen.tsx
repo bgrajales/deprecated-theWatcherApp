@@ -24,7 +24,13 @@ export const SearchScreen = () => {
     
     setIsFetching(true)
 
-    const searchParam = searchText.replaceAll(" ", "%20")
+    let searchParam
+
+    if ( searchText.indexOf(" ") >= 0 ) {
+      searchParam = searchText.replace(/\s/g, '%20')
+    } else {
+      searchParam = searchText
+    }
 
     const searchedElements = multiDB.get<SearchResponse>(`/search/multi?query=${searchParam}`)
 

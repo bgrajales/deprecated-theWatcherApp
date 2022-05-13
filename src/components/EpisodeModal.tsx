@@ -139,13 +139,9 @@ export const EpisodeModal = ({ visible = false, setVisible, seriesId, seasonNumb
 
     const replyCommentAction = async (commentId: string) => {
 
-        console.log(commentId, replyText)
-
         if ( replyText.length > 3 ) {
 
             const resp = await postReply({ userName: user!.userName, reply: replyText, commentId, elementId: fullEpisode!.id})
-
-            console.log(resp.result)
 
             if ( resp.result && fullEpisode ) {
 
@@ -159,8 +155,6 @@ export const EpisodeModal = ({ visible = false, setVisible, seriesId, seasonNumb
                         id: Math.floor(Math.random() * 1000000).toString()
                     }]
                 }
-
-                console.log(newCommentShow.replies[0].date)
 
                 const commentsArr = fullEpisode!.comments.map( (comment: Comments) => {
                     if ( comment.id === commentId ) {
@@ -199,11 +193,12 @@ export const EpisodeModal = ({ visible = false, setVisible, seriesId, seasonNumb
             visible={isVisible}
             style={{
                 position: 'relative',
+                zIndex: 1
             }}
         >
             
             <View style={{ ...styles.closeSection }}>
-                <Icon name="md-close" size={30} color="#000" onPress={() => closeModal()} />
+                <Icon style={{ ...styles.iconClose }}name="md-close" size={30} color="#000" onPress={() => closeModal()} />
             </View>
 
                 
@@ -643,10 +638,20 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right: 20,
         backgroundColor: '#fff',
-        padding: 2,
         borderRadius: 100,
         top: 220,
-        zIndex: 2,
+        zIndex: 5,
+        width: 44,
+        height: 44,
+        justifyContent: 'center',
+        alignItems: 'center',
+        elevation: 5,
+    },
+
+    iconClose: {
+        // position: 'absolute',
+        // right: 0,
+        // top: 0,
     },
 
     title: {

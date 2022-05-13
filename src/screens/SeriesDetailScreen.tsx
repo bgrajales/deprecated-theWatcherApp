@@ -1,10 +1,10 @@
 import { StackScreenProps } from '@react-navigation/stack'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { ActivityIndicator, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 
 import StarRating from 'react-native-star-rating';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { updateWatchlist } from '../api/watcherActions';
+import { markSerieAsWatched, updateWatchlist } from '../api/watcherActions';
 import { AuthContext } from '../context/AuthContext';
 
 import { useSeriesDetail } from '../hooks/useSeriesDetail'
@@ -16,11 +16,11 @@ interface Props extends StackScreenProps<DetailStackParams, 'SeriesDetailScreen'
 export const SeriesDetailScreen = ({ route }: Props) => {
 
     const series = route.params
-
-    const { user, updateWatchListContext } = useContext( AuthContext )
-
+    
+    
+    const { user, updateWatchListContext, updateSeries } = useContext( AuthContext )
     const { isLoading, serieFull } = useSeriesDetail(series.id)
-
+    
     const uri = `https://image.tmdb.org/t/p/w500${serieFull?.poster_path}`;
 
     const saveToWatchList = async () => {
@@ -39,14 +39,12 @@ export const SeriesDetailScreen = ({ route }: Props) => {
           resp = await updateWatchlist({ userName: user!.userName, id: serieFull!.id, posterPath: serieFull!.poster_path!, type: 'tv', action: 'add' })
         }
 
-        console.log(resp.result, action)
         if ( resp.result ) { 
 
           if ( action === 'remove' ) {
 
             const newWatchList = user.watchlist.filter( (element: any) => element.elementId !== serieFull!.id.toString() )
 
-            console.log(newWatchList)
             updateWatchListContext(newWatchList)
 
           } else {
@@ -65,6 +63,27 @@ export const SeriesDetailScreen = ({ route }: Props) => {
 
         }
       }
+
+    }
+
+    const markAllSerieWatched = async (action: string) => {
+
+      if ( user ) {
+
+        const resp = await markSerieAsWatched({ 
+          userName: user!.userName, 
+          id: serieFull!.id, 
+          posterPath: serieFull!.poster_path!, 
+          action: action,
+          serieTotalEpisodes: serieFull?.number_of_episodes,
+          seriesSeasons: serieFull?.seasons
+        })
+  
+        if ( resp.result ) {
+          updateSeries(resp.seriesUpdate)
+        }
+      }
+
 
     }
 
@@ -127,7 +146,7 @@ export const SeriesDetailScreen = ({ route }: Props) => {
                   { serieFull?.name }
                 </Text>
               </View>
-
+                
               <View
                 style={{
                   flexDirection: 'row',
@@ -160,6 +179,7 @@ export const SeriesDetailScreen = ({ route }: Props) => {
                         name="bookmark"
                         size={ 30 }
                         color="#0055FF"
+                        
                       />
                     </TouchableOpacity>
                   ) : (
@@ -185,6 +205,156 @@ export const SeriesDetailScreen = ({ route }: Props) => {
                     </TouchableOpacity>
                   )
                 }
+                <View style={{ width: 10 }}/>
+                {
+                  user?.series.find( (m: any) => { return parseInt(m.id) === serieFull?.id })?.episodesWatched === serieFull?.number_of_episodes ? (
+                    <TouchableOpacity 
+                      style={{
+                        backgroundColor: '#fff',
+                        paddingHorizontal: 5,
+                        paddingVertical: 5,
+                        borderRadius: 100,
+                        height: 40,
+                        width: 50,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      activeOpacity={0.7}
+                      onPress={ () => markAllSerieWatched('remove') }
+                    >
+                      <Image 
+                        source={require('../assets/fullIcon.png')}
+                        style={{
+                            width: 37,
+                            height: 26,
+                        }}
+                      />
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity 
+                      style={{
+                        backgroundColor: '#fff',
+                        paddingHorizontal: 5,
+                        paddingVertical: 5,
+                        borderRadius: 100,
+                        height: 40,
+                        width: 50,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      activeOpacity={0.7}
+                      onPress={ () => markAllSerieWatched('add') }
+                    >
+                      <Image 
+                        source={require('../assets/empty.png')}
+                        style={{
+                            width: 37,
+                            height: 26,
+                        }}
+                      />
+                    </TouchableOpacity>
+                  )
+                }
+                {/* {
+                  serieWatched ? (
+                    <TouchableOpacity 
+                      style={{
+                        backgroundColor: '#fff',
+                        paddingHorizontal: 5,
+                        paddingVertical: 5,
+                        borderRadius: 100,
+                        height: 40,
+                        width: 50,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      activeOpacity={0.7}
+                      onPress={ () => {} }
+                    >
+                      <Image 
+                        source={require('../assets/fullIcon.png')}
+                        style={{
+                            width: 37,
+                            height: 26,
+                        }}
+                      />
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity 
+                      style={{
+                        backgroundColor: '#fff',
+                        paddingHorizontal: 5,
+                        paddingVertical: 5,
+                        borderRadius: 100,
+                        height: 40,
+                        width: 50,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      activeOpacity={0.7}
+                      onPress={ () => {} }
+                    >
+                      <Image 
+                        source={require('../assets/empty.png')}
+                        style={{
+                            width: 37,
+                            height: 26,
+                        }}
+                      />
+                    </TouchableOpacity>
+                  )
+                } */}
+                {/* {
+                  user?.movies.find( (m: any) => {
+                    return parseInt(m.id) === movieFull?.id
+                  } ) ? (
+                    <TouchableOpacity 
+                      style={{
+                        backgroundColor: '#fff',
+                        paddingHorizontal: 5,
+                        paddingVertical: 5,
+                        borderRadius: 100,
+                        height: 40,
+                        width: 50,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      activeOpacity={0.7}
+                      onPress={ markMovieNotWatched }
+                    >
+                      <Image 
+                        source={ require('../assets/fullIcon.png') }
+                        style={{
+                            width: 37,
+                            height: 26,
+                        }}
+                      />
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity 
+                      style={{
+                        backgroundColor: '#fff',
+                        paddingHorizontal: 5,
+                        paddingVertical: 5,
+                        borderRadius: 100,
+                        height: 40,
+                        width: 50,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      activeOpacity={0.7}
+                      onPress={ markMovieWatched }
+                    >
+                      <Image 
+                        source={ require('../assets/empty.png') }
+                        style={{
+                            width: 37,
+                            height: 26,
+                        }}
+                      />
+                    </TouchableOpacity>
+                  )
+                } */}
                 <View style={{ width: 10 }}/>
                 <View
                   style={{

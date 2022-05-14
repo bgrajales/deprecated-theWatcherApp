@@ -3,7 +3,7 @@ import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, TouchableOpacit
 
 import Accordion from 'react-native-collapsible/Accordion';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { updateEpisode } from '../api/watcherActions';
+import { markSeasonAsWatchedAction, updateEpisode } from '../api/watcherActions';
 import { EpisodeModal } from '../components/EpisodeModal';
 import { AuthContext } from '../context/AuthContext';
 
@@ -16,7 +16,7 @@ interface Props {
 
 export const EpisodesScreen = ({ seriesId }: Props) => {
 
-    const { user, token, updateWatchedSeries } = useContext( AuthContext )
+    const { user, token, updateWatchedSeries, updateSeries } = useContext( AuthContext )
 
     const [activeSection, setActiveSection] = useState({
         section: null,
@@ -76,9 +76,57 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
                     </View>
                 </View>
 
-                <Icon name="ios-arrow-down" size={20} />
+                {
+                    (user?.series?.find( serie => parseInt(serie.id) === seriesId )?.seasonsDetail?.find( seasonArr => parseInt(seasonArr.id) === season.id )?.episodes.length || 0 ) / season.episodes.length * 100 === 100 
+                    ?   <>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    markSeasonAsWatched(season, 'remove')
+                                }}
+                            >
+                                <Icon name="checkmark-circle" size={30} color="#0055ff" />
+                            </TouchableOpacity>
+                        </>
+                    :   <>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    markSeasonAsWatched(season, 'add')
+                                }}
+                            >
+                                <Icon name="ellipse-outline" size={30} color="#0055ff" />
+                            </TouchableOpacity>
+                        </>
+                }
             </View>
         )
+
+    }
+
+    const markSeasonAsWatched = async ( season: SeriesSeason, action: string ) => {
+
+        console.log(seriesId, season.id, season.season_number, season.episodes.length, serieFull?.poster_path, serieFull?.number_of_episodes)
+
+        if( serieFull && user && token ) {
+            const marked = await markSeasonAsWatchedAction({
+                userName: user.userName,
+                serieId: seriesId,
+                seasonId: season.id,
+                seasonNumber: season.season_number,
+                seasonEpisodes: season.episodes.length,
+                posterPath: serieFull.poster_path || '',
+                serieEpisodes: serieFull.number_of_episodes,
+                action: action,
+            })
+
+            if( marked.result ) {
+                // updateWatchedSeries(marked.data)
+                console.log('marked')
+                updateSeries(marked.seriesUpdate)
+            } else {
+                console.log('error')
+            }
+
+        }
 
     }
 

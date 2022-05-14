@@ -8,7 +8,6 @@ import { Comments, EpisodeModalResponse } from '../interfaces/movieInterface';
 import { BlurView } from 'expo-blur';
 import { likeComment, postComment, postReply } from '../api/watcherActions';
 import { AuthContext } from '../context/AuthContext';
-import { format } from 'date-fns';
 
 
 interface Props {

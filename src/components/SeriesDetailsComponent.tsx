@@ -23,7 +23,6 @@ export const SeriesDetailsComponent = ({seriesId}: Props ) => {
         }}
     >
     {
-
         providers?.length > 0 ? (
         <View style={ styles.section }>
             <Text style={ styles.title }>Watch</Text>
@@ -72,10 +71,7 @@ export const SeriesDetailsComponent = ({seriesId}: Props ) => {
             fontWeight: 'bold',
             }}>Not available on any platform</Text>
         </View>
-
-
     }
-
         <View style={ styles.section }>
             <Text style={ styles.title }>Overview</Text>
             <Text style={ styles.text }>{ serieFull?.overview }</Text>

@@ -320,3 +320,55 @@ export const markSerieAsWatched = async ({ userName, id, posterPath, action, ser
     }
 
 }
+
+interface MarkSeasonWatchedProps {
+    userName: WatcherUser['userName'];
+    serieId: number;
+    seasonId: number;
+    seasonNumber: number;
+    seasonEpisodes: number;
+    posterPath: string;
+    serieEpisodes: number;
+    action: string;
+}
+
+export const markSeasonAsWatchedAction = async ({
+    userName,
+    serieId,
+    seasonId,
+    seasonNumber,
+    seasonEpisodes,
+    posterPath,
+    serieEpisodes,
+    action
+}: MarkSeasonWatchedProps) => {
+
+    const headers = {
+        // authorization: token,
+        'Content-Type': 'application/json'
+    }
+
+    const resp = await watcherApi.post("/markSeasonWatched", {
+        userName,
+        serieId,
+        seasonId,
+        seasonNumber,
+        seasonEpisodes,
+        posterPath,
+        serieEpisodes,
+        action
+    }, { headers });
+
+    if (resp.data.error) {
+        return {
+            result: false
+        };
+    } else {
+        return {
+            result: true,
+            message: resp.data.message,
+            seriesUpdate: resp.data.series
+        };
+    }
+
+}

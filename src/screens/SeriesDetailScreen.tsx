@@ -153,7 +153,8 @@ export const SeriesDetailScreen = ({ route }: Props) => {
                   position: 'absolute',
                   bottom: '8%',
                   right: 0,
-                  
+                  zIndex: 5,
+                  elevation: 5,
                 }}
               >
 

@@ -12,7 +12,7 @@ interface SeriesDetails {
     seasons: SeriesSeason[];
 }
 
-export const useSeriesDetail = ( serieId: number ) => {
+export const useSeriesDetail = ( serieId: number, userRegion: string | undefined ) => {
 
     const [state, setState] = useState<SeriesDetails>({
         isLoading: true,
@@ -48,11 +48,19 @@ export const useSeriesDetail = ( serieId: number ) => {
            
         }
 
+        let userRegionProviders
+
+        if ( userRegion ) {
+            userRegionProviders = providersResponse.data.results.hasOwnProperty(userRegion) ? providersResponse.data.results[userRegion] : providersResponse.data.results.US;
+        } else {
+            userRegionProviders = providersResponse.data.results.US;
+        }
+
         setState({
             isLoading: false,
             serieFull: serieDetailsResponse.data,
             cast: castResponse.data.cast,
-            providers: providersResponse.data.results.US ? providersResponse.data.results.US.flatrate : [],
+            providers: userRegionProviders.flatrate ? userRegionProviders.flatrate : [],
             videos: videosResponse.data.results || [],
             seasons: seasonsArray,
         });

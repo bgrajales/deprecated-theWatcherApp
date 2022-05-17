@@ -68,6 +68,9 @@ export const MoviesSeen = () => {
                             <View style={{ height: 20}}></View>
                         )
                     }}
+                    contentContainerStyle={{
+                        paddingBottom: 20,
+                    }}
                 />
             </View>
         )

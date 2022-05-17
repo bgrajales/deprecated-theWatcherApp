@@ -96,10 +96,9 @@ export const AuthProvider = ({ children }: any) => {
 
     };
 
-    const signUp = async ({ userName, email, password, repeatPassword }: RegisterData) => {
+    const signUp = async ({ userName, email, password, repeatPassword, region }: RegisterData) => {
 
         try {
-            const region = "US"
 
             const { data } = await watcherApi.post('/register', { userName, email, password, repeatPassword, region })
 

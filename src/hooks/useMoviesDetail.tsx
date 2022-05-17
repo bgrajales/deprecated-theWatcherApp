@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { movieDB } from '../api/movieDB';
 import { fetchComments } from '../api/watcherActions';
+import { AuthContext } from '../context/AuthContext';
 import { Comments, MovieCast, MovieCreditsResponse, MovieFull, Providers, Video, VideosResponse } from '../interfaces/movieInterface';
 
 interface MovieDetails {
@@ -13,8 +14,11 @@ interface MovieDetails {
     comments: Comments[];
 }
 
-export const useMovieDetails = ( movieId: number, setCommentsToShow: (arg0: Comments[]) => void) => {
+export const useMovieDetails = ( movieId: number, setCommentsToShow: (arg0: Comments[]) => void, userRegion: string | undefined) => {
 
+    // const { user } = useContext( AuthContext )
+
+    console.log(userRegion)
     const [state, setState] = useState<MovieDetails>({
         isLoading: true,
         movieFull: undefined,
@@ -36,12 +40,20 @@ export const useMovieDetails = ( movieId: number, setCommentsToShow: (arg0: Comm
         const [movieDetailsResponse, castResponse, providersResponse, videosResponse] = await Promise.all([movieDetailsPromise, castPromise, providersPromise, videosPromise]);
 
         setCommentsToShow(comments.result ? comments.comments : []);
+
+        let userRegionProviders
+
+        if ( userRegion ) {
+            userRegionProviders = providersResponse.data.results.hasOwnProperty(userRegion) ? providersResponse.data.results[userRegion] : providersResponse.data.results.US;
+        } else {
+            userRegionProviders = providersResponse.data.results.US;
+        }
         
         setState({
             isLoading: false,
             movieFull: movieDetailsResponse.data,
             cast: castResponse.data.cast,
-            providers: providersResponse.data.results.US ? providersResponse.data.results.US.flatrate : [],
+            providers: userRegionProviders.flatrate ? userRegionProviders.flatrate : [],
             videos: videosResponse.data.results || [],
             comments: comments.result ? comments.comments : [],
         });

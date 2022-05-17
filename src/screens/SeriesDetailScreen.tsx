@@ -19,7 +19,7 @@ export const SeriesDetailScreen = ({ route }: Props) => {
     
     
     const { user, updateWatchListContext, updateSeries } = useContext( AuthContext )
-    const { isLoading, serieFull } = useSeriesDetail(series.id)
+    const { isLoading, serieFull } = useSeriesDetail(series.id, user?.region)
     
     const uri = `https://image.tmdb.org/t/p/w500${serieFull?.poster_path}`;
 

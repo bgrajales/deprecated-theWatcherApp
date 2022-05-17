@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Dimensions, FlatList, Image, ScrollView, StyleSheet, Text, View } from 'react-native'
 
 import Carousel from 'react-native-snap-carousel'
@@ -6,6 +6,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import YoutubePlayer from 'react-native-youtube-iframe';
 
 import { useSeriesDetail } from '../hooks/useSeriesDetail'
+import { AuthContext } from '../context/AuthContext';
 
 interface Props {
     seriesId: number;
@@ -13,7 +14,9 @@ interface Props {
 
 export const SeriesDetailsComponent = ({seriesId}: Props ) => {
 
-    const { serieFull, cast, providers, videos } = useSeriesDetail(seriesId)
+    const { user } = useContext( AuthContext )
+
+    const { serieFull, cast, providers, videos } = useSeriesDetail(seriesId, user?.region)
 
     return (
     <ScrollView
@@ -45,6 +48,7 @@ export const SeriesDetailsComponent = ({seriesId}: Props ) => {
                     paddingHorizontal: 20,
                 }}
                 showsHorizontalScrollIndicator={ false }
+                contentContainerStyle={{ paddingRight: 20 }}
             />
         </View>
         ) : <View style={{
@@ -135,6 +139,7 @@ export const SeriesDetailsComponent = ({seriesId}: Props ) => {
                     paddingHorizontal: 20,
                 }}
                 showsHorizontalScrollIndicator={ false }
+                contentContainerStyle={{ paddingRight: 20 }}
             />
         </View>
     </ScrollView>

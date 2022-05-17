@@ -4,6 +4,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { AuthContext } from '../context/AuthContext';
 import { useForm } from '../hooks/useForm';
+import CountryPicker, { CountryCode } from 'react-native-country-picker-modal'
+
 
 interface Props {
     visible: boolean
@@ -13,6 +15,7 @@ interface Props {
 export const RegisterModal = ({ visible = false, setRegisterVisibleParent }: Props) => {
 
     const [isVisible, setIsVisible] = useState(visible);
+    const [ countryCodeState, setCountryCode ] = useState<CountryCode>('US');
 
     const { top } = useSafeAreaInsets();
 
@@ -42,7 +45,8 @@ export const RegisterModal = ({ visible = false, setRegisterVisibleParent }: Pro
             userName,
             email,
             password,
-            repeatPassword
+            repeatPassword,
+            region: countryCodeState
         })
 
         Keyboard.dismiss();
@@ -91,6 +95,24 @@ export const RegisterModal = ({ visible = false, setRegisterVisibleParent }: Pro
                         value={email}
                         onChangeText={(value) => onChange(value, 'email')}
                     />
+
+                    <View
+                        style={ styles.countryPicker }
+                    >
+                        <CountryPicker
+                            countryCode={ countryCodeState }
+                            withAlphaFilter={true}
+                            withFlagButton={true}
+                            withFilter={true}
+                            withFlag={true}
+                            withEmoji={true}
+                            withCountryNameButton={true}
+                            withCloseButton={true}
+                            onSelect={(country) => {
+                                setCountryCode(country.cca2)  
+                            }}
+                        />
+                    </View>
 
                     <Text style={ styles.inputLabel }>Password:</Text>
                     <TextInput
@@ -202,5 +224,14 @@ const styles = StyleSheet.create({
         padding: 2,
         borderRadius: 100,
     },
+
+    countryPicker: {
+        marginBottom: 10,
+        textAlign: 'center',
+        alignItems: 'center',
+        backgroundColor: '#DEDEDE',
+        paddingVertical: 5,
+        borderRadius: 5,
+    }
 
 });

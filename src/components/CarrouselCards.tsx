@@ -30,6 +30,7 @@ export const CarrouselCards = ({ moviePosters, seriesPosters, title, iconName }:
                 horizontal={ true }
                 showsHorizontalScrollIndicator={ false }
                 style={{ paddingLeft: 20 }}
+                contentContainerStyle={{ paddingRight: 30 }}
             />
         }
         {
@@ -43,6 +44,7 @@ export const CarrouselCards = ({ moviePosters, seriesPosters, title, iconName }:
                 horizontal={ true }
                 showsHorizontalScrollIndicator={ false }
                 style={{ paddingLeft: 20 }}
+                contentContainerStyle={{ paddingRight: 30 }}
             />
         }
     </>

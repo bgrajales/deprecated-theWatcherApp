@@ -31,7 +31,7 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
         episode: 0,
     })
     
-    const { seasons, serieFull } = useSeriesDetail(seriesId)
+    const { seasons, serieFull } = useSeriesDetail(seriesId, user?.region)
 
     useEffect(() => {
     }, [activeSection.section])
@@ -233,25 +233,25 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
     
     }
 
-  return (
-    <ScrollView style={ styles.episodesBody }>
-        <Accordion
-            activeSections={[activeSection.section as any]}
-            sections={seasons}
-            renderHeader={renderHeader}
-            renderContent={renderContent}
-            onChange={(activeSection) => {
-                setActiveSection({
-                    section: activeSection[0] as any
-                })
-            }}
-            touchableComponent={TouchableOpacity}
-            touchableProps={{
-                activeOpacity: 0.5,
-            }}
-        />
-    </ScrollView>
-  )
+    return (
+        <ScrollView style={ styles.episodesBody }>
+            <Accordion
+                activeSections={[activeSection.section as any]}
+                sections={seasons}
+                renderHeader={renderHeader}
+                renderContent={renderContent}
+                onChange={(activeSection) => {
+                    setActiveSection({
+                        section: activeSection[0] as any
+                    })
+                }}
+                touchableComponent={TouchableOpacity}
+                touchableProps={{
+                    activeOpacity: 0.5,
+                }}
+            />
+        </ScrollView>
+    )
 }
 
 const styles = StyleSheet.create({

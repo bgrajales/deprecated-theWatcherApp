@@ -23,8 +23,8 @@ export const MovieDetailScreen = ({ route }: Props) => {
     
     const [commentsToShow, setCommentsToShow] = useState<Comments[]>([]);
     
-    const { isLoading, movieFull, cast, providers, videos, comments } = useMovieDetails( movie.id, setCommentsToShow )
     const { user, token, updateWatchedMovies, updateLikedComments, updateWatchListContext } = useContext( AuthContext )
+    const { isLoading, movieFull, cast, providers, videos, comments } = useMovieDetails( movie.id, setCommentsToShow, user?.region )
 
     const [ writeCommentVisible, setWriteCommentVisible ] = useState(false);
     const [ commentToPost, setCommentToPost ] = useState<string>('');
@@ -497,6 +497,7 @@ export const MovieDetailScreen = ({ route }: Props) => {
                         style={{
                           paddingHorizontal: 20,
                         }}
+                        contentContainerStyle={{ paddingRight: 20 }}
                     />
                 </View>
               ) : <View style={{
@@ -589,6 +590,7 @@ export const MovieDetailScreen = ({ route }: Props) => {
                     style={{
                       paddingHorizontal: 20,
                     }}
+                    contentContainerStyle={{ paddingRight: 20 }}
                 />
             </View>
             <View

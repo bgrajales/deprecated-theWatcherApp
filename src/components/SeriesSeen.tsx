@@ -88,6 +88,9 @@ export const SeriesSeen = () => {
                           <View style={{ height: 20}}></View>
                       )
                   }}
+                  contentContainerStyle={{
+                        paddingBottom: 20, 
+                  }}
               />
           </View>
       )

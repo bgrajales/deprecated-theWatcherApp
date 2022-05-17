@@ -10,6 +10,7 @@ export interface RegisterData {
     email: string;
     password: string;
     repeatPassword: string;
+    region: string;
 }
 
 export interface LoginResponse {
@@ -29,4 +30,4 @@ export interface WatcherUser {
     moviesGenres: { genreId: number; genre: string; }[],
     seriesGenres: { genreId: number; genre: string; }[],
     watchlist: { elementId: string; posterPath: string; type: string; }[],
-  }
+}

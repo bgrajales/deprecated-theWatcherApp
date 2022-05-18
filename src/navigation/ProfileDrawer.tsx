@@ -8,12 +8,13 @@ import { Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { About } from '../components/About';
 import { WatchList } from '../components/WatchList';
+import { Settings } from '../components/Settings';
 
 const Drawer = createDrawerNavigator();
 
 export const ProfileDrawer = () => {
 
-    const { logOut } = useContext( AuthContext )
+    const { logOut, colorScheme} = useContext( AuthContext )
 
     return (
         <Drawer.Navigator
@@ -22,7 +23,10 @@ export const ProfileDrawer = () => {
                 headerShown: false,
                 drawerPosition: 'right',
                 sceneContainerStyle: {
-                    backgroundColor: '#fff'
+                    backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff'
+                },
+                drawerStyle: {
+                    backgroundColor: colorScheme === 'dark' ? '#000' : '#fff'
                 }
             }}
             drawerContent={props => {
@@ -32,7 +36,7 @@ export const ProfileDrawer = () => {
                         focused={props.state.index === 0}
                         label={({focused}) => (
                             <Text style={{ 
-                                color: focused ? '#fff' : '#000', 
+                                color: focused ? '#fff' : colorScheme === 'dark' ? '#fff' : '#000', 
                                 fontWeight: focused ? 'bold' : 'normal',
                             }}>
                                 Profile
@@ -40,14 +44,14 @@ export const ProfileDrawer = () => {
                         )}
                         onPress={() => props.navigation.navigate('Profile')}
                         icon={({focused}) => <Icon name="md-person" size={24} color={
-                            focused ? '#fff' : '#292929'
+                            focused ? '#fff' : colorScheme === 'dark' ? '#fff' : '#292929'
                         }/>}
                         activeBackgroundColor="#0055ff"
                     />
                     <DrawerItem 
                          label={({focused}) => (
                             <Text style={{ 
-                                color: focused ? '#fff' : '#292929', 
+                                color: focused ? '#fff' : colorScheme === 'dark' ? '#fff' : '#000', 
                                 fontWeight: focused ? 'bold' : 'normal',
                             }}>
                                 Genres
@@ -56,7 +60,7 @@ export const ProfileDrawer = () => {
                         labelStyle={{ color: '#292929' }}
                         onPress={() => props.navigation.navigate('Genres')}
                         icon={({focused}) => <Icon name="md-heart" size={24} color={
-                            focused ? '#fff' : '#292929'
+                            focused ? '#fff' : colorScheme === 'dark' ? '#fff' : '#292929'
                         }/>}
                         focused={props.state.index === 1}
                         activeBackgroundColor="#0055ff"
@@ -64,7 +68,7 @@ export const ProfileDrawer = () => {
                     <DrawerItem 
                          label={({focused}) => (
                             <Text style={{ 
-                                color: focused ? '#fff' : '#292929', 
+                                color: focused ? '#fff' : colorScheme === 'dark' ? '#fff' : '#000', 
                                 fontWeight: focused ? 'bold' : 'normal',
                             }}>
                                 Watchlist
@@ -73,7 +77,7 @@ export const ProfileDrawer = () => {
                         labelStyle={{ color: '#292929' }}
                         onPress={() => props.navigation.navigate('Watchlist')}
                         icon={({focused}) => <Icon name="bookmark" size={24} color={
-                            focused ? '#fff' : '#292929'
+                            focused ? '#fff' : colorScheme === 'dark' ? '#fff' : '#292929'
                         }/>}
                         focused={props.state.index === 2}
                         activeBackgroundColor="#0055ff"
@@ -81,7 +85,7 @@ export const ProfileDrawer = () => {
                     <DrawerItem 
                          label={({focused}) => (
                             <Text style={{ 
-                                color: focused ? '#fff' : '#292929', 
+                                color: focused ? '#fff' : colorScheme === 'dark' ? '#fff' : '#000', 
                                 fontWeight: focused ? 'bold' : 'normal',
                             }}>
                                 About
@@ -90,9 +94,26 @@ export const ProfileDrawer = () => {
                         labelStyle={{ color: '#292929' }}
                         onPress={() => props.navigation.navigate('About')}
                         icon={({focused}) => <Icon name="information-circle" size={24} color={
-                            focused ? '#fff' : '#292929'
+                            focused ? '#fff' : colorScheme === 'dark' ? '#fff' : '#292929'
                         }/>}
                         focused={props.state.index === 3}
+                        activeBackgroundColor="#0055ff"
+                    /> 
+                    <DrawerItem 
+                         label={({focused}) => (
+                            <Text style={{ 
+                                color: focused ? '#fff' : colorScheme === 'dark' ? '#fff' : '#000', 
+                                fontWeight: focused ? 'bold' : 'normal',
+                            }}>
+                                Settings
+                            </Text>
+                        )}
+                        labelStyle={{ color: '#292929' }}
+                        onPress={() => props.navigation.navigate('Settings')}
+                        icon={({focused}) => <Icon name="settings" size={24} color={
+                            focused ? '#fff' : colorScheme === 'dark' ? '#fff' : '#292929'
+                        }/>}
+                        focused={props.state.index === 4}
                         activeBackgroundColor="#0055ff"
                     /> 
                     <DrawerItem 
@@ -117,6 +138,7 @@ export const ProfileDrawer = () => {
             <Drawer.Screen name="Genres" component={PickGenresModal} />
             <Drawer.Screen name="Watchlist" component={WatchList} />
             <Drawer.Screen name="About" component={About} />
+            <Drawer.Screen name="Settings" component={Settings} />
         </Drawer.Navigator>
     );
 }

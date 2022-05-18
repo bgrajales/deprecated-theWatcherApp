@@ -23,7 +23,7 @@ export const MovieDetailScreen = ({ route }: Props) => {
     
     const [commentsToShow, setCommentsToShow] = useState<Comments[]>([]);
     
-    const { user, token, updateWatchedMovies, updateLikedComments, updateWatchListContext } = useContext( AuthContext )
+    const { user, token, updateWatchedMovies, updateLikedComments, updateWatchListContext, colorScheme } = useContext( AuthContext )
     const { isLoading, movieFull, cast, providers, videos, comments } = useMovieDetails( movie.id, setCommentsToShow, user?.region )
 
     const [ writeCommentVisible, setWriteCommentVisible ] = useState(false);
@@ -221,7 +221,12 @@ export const MovieDetailScreen = ({ route }: Props) => {
 
     if ( isLoading ) {
       return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{ 
+          flex: 1, 
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff'
+        }}>
           <ActivityIndicator size={ 80 }/>
         </View>
       );
@@ -232,6 +237,7 @@ export const MovieDetailScreen = ({ route }: Props) => {
           showsVerticalScrollIndicator={ false }
           contentContainerStyle={{
             paddingBottom: 30,
+            backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff'
           }}
         >
             <View 
@@ -285,17 +291,7 @@ export const MovieDetailScreen = ({ route }: Props) => {
                     alignItems: 'center',
                     bottom: '8%',
                     right: 0,
-                    paddingVertical: 10,
-                    borderBottomLeftRadius: 20,
-                    borderTopLeftRadius: 20,
-                    shadowColor: "#000",
-                    shadowOffset: {
-                      width: 0,
-                      height: 2,
-                    },
-                    shadowOpacity: 0.25,
-                    shadowRadius: 3.84,
-
+                    zIndex: 5,
                     elevation: 5,
                 }}
               >
@@ -312,7 +308,7 @@ export const MovieDetailScreen = ({ route }: Props) => {
                       } ) ? (
                         <TouchableOpacity
                           style={{
-                            backgroundColor: '#fff',
+                            backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff',
                             paddingHorizontal: 5,
                             paddingVertical: 5,
                             borderRadius: 100,
@@ -333,7 +329,7 @@ export const MovieDetailScreen = ({ route }: Props) => {
                       ) : (
                         <TouchableOpacity
                           style={{
-                            backgroundColor: '#fff',
+                            backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff',
                             paddingHorizontal: 5,
                             paddingVertical: 5,
                             borderRadius: 100,
@@ -360,7 +356,7 @@ export const MovieDetailScreen = ({ route }: Props) => {
                       } ) ? (
                         <TouchableOpacity 
                           style={{
-                            backgroundColor: '#fff',
+                            backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff',
                             paddingHorizontal: 5,
                             paddingVertical: 5,
                             borderRadius: 100,
@@ -383,7 +379,7 @@ export const MovieDetailScreen = ({ route }: Props) => {
                       ) : (
                         <TouchableOpacity 
                           style={{
-                            backgroundColor: '#fff',
+                            backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff',
                             paddingHorizontal: 5,
                             paddingVertical: 5,
                             borderRadius: 100,
@@ -404,57 +400,11 @@ export const MovieDetailScreen = ({ route }: Props) => {
                           />
                         </TouchableOpacity>
                       )
-                    }
-                    
-
-                    {/* {
-                      user?.watchlist.includes((el: any) => {el.id === movieFull?.id} ) ? (
-                        <TouchableOpacity
-                          style={{
-                            backgroundColor: '#fff',
-                            paddingHorizontal: 5,
-                            paddingVertical: 5,
-                            borderRadius: 100,
-                            height: 40,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                          }}
-                          activeOpacity={0.7}
-                          onPress={ () => {} }
-                        >
-                          <Icon
-                            name="bookmark"
-                            size={ 30 }
-                            color="#0055FF"
-                          />
-                        </TouchableOpacity>
-                      ) : (
-                        <TouchableOpacity
-                          style={{
-                            backgroundColor: '#fff',
-                            paddingHorizontal: 5,
-                            paddingVertical: 5,
-                            borderRadius: 100,
-                            height: 40,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                          }}
-                          activeOpacity={0.7}
-                          onPress={ () => {} }
-                        >
-                          <Icon
-                            name="bookmark-outline"
-                            size={ 30 }
-                            color="#0055FF"
-                          />
-                        </TouchableOpacity>
-                      )
-                    } */}
-                      
+                    }                  
                   </View>
                   <View style={{ width: 15 }}/>
                   <View style={{
-                      backgroundColor: '#fff',
+                      backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff',
                       paddingHorizontal: 10,
                       paddingVertical: 5,
                       height: 40,
@@ -475,10 +425,12 @@ export const MovieDetailScreen = ({ route }: Props) => {
               </View>
             </View>
             {
-
               providers?.length > 0 ? (
                 <View style={ styles.section }>
-                    <Text style={ styles.title }>Watch</Text>
+                    <Text style={{ 
+                      ...styles.title, 
+                      color: colorScheme === 'dark' ? '#fff' : '#000',
+                    }}>Available on</Text>
                     <FlatList 
                         horizontal={ true }
                         data={ providers }
@@ -529,12 +481,21 @@ export const MovieDetailScreen = ({ route }: Props) => {
             }
 
             <View style={ styles.section }>
-                <Text style={ styles.title }>Overview</Text>
-                <Text style={ styles.text }>{ movieFull?.overview }</Text>
+                <Text style={{ 
+                  ...styles.title, 
+                  color: colorScheme === 'dark' ? '#fff' : '#000',
+                }}>Overview</Text>
+                <Text style={{ 
+                  ...styles.text, 
+                  color: colorScheme === 'dark' ? '#e6e6e6' : '#000',
+                }}>{ movieFull?.overview }</Text>
             </View>
             
             <View style={ styles.section }>
-                <Text style={ styles.title }>Videos</Text>
+                <Text style={{ 
+                  ...styles.title, 
+                  color: colorScheme === 'dark' ? '#fff' : '#000',
+                }}>Videos</Text>
                 <Carousel 
                     data={ videos }
                     renderItem={ ({ item }) => (
@@ -562,7 +523,10 @@ export const MovieDetailScreen = ({ route }: Props) => {
             </View>
             
             <View style={ styles.section }>
-                <Text style={ styles.title }>Cast</Text>
+                <Text style={{ 
+                  ...styles.title, 
+                  color: colorScheme === 'dark' ? '#fff' : '#000',
+                }}>Cast</Text>
                 <FlatList 
                     horizontal={ true }
                     data={ cast }
@@ -599,10 +563,15 @@ export const MovieDetailScreen = ({ route }: Props) => {
               }}
             >
               <View style={ styles.subTitleDiv }>
-                  <Text style={ styles.subTitle }>
+                  <Text style={{ 
+                    ...styles.subTitle, 
+                    color: colorScheme === 'dark' ? '#fff' : '#000',
+                  }}>
                       Comments
                   </Text>
-                  <Icon name="chatbubbles" color="#000" size={20} style={{ marginLeft: 10 }} />
+                  <Icon name="chatbubbles" color={
+                    colorScheme === 'dark' ? '#fff' : '#000'
+                  } size={20} style={{ marginLeft: 10 }} />
               </View>
               <View>
                   {

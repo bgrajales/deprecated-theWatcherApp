@@ -6,6 +6,7 @@ import { LoginData, RegisterData, WatcherUser } from "../interfaces/authInterfac
 import { AuthReducer, AuthState } from "./AuthReducer";
 import { watcherApi } from "../api/watcherApi";
 import { Series, UserMovies, UserSeries } from "../interfaces/movieInterface";
+import { Appearance, useColorScheme } from "react-native";
 
 // import cafeApi from "../api/cafeApi";
 // import { AuthReducer, AuthState } from "./AuthReducer";
@@ -24,6 +25,7 @@ type AuthContextProps = {
     updateLikedComments: ( likedComments: string[] ) => void;
     updateWatchListContext: ( watchlist: { elementId: string; posterPath: string; type: string; }[] ) => void;
     updateSeries: ( series: UserSeries[] ) => void;
+    colorScheme: string | null | undefined;
 }
 
 const authInitialState: AuthState = {
@@ -39,6 +41,7 @@ export const AuthContext = createContext({} as AuthContextProps);
 export const AuthProvider = ({ children }: any) => {
 
     const [ state, dispatch ] = useReducer(AuthReducer, authInitialState)
+    const colorScheme = Appearance.getColorScheme();
 
     useEffect(() => {
 
@@ -205,7 +208,8 @@ export const AuthProvider = ({ children }: any) => {
             updateWatchedSeries,
             updateLikedComments,
             updateWatchListContext,
-            updateSeries
+            updateSeries,
+            colorScheme
         }}>
             {children}
         </AuthContext.Provider>

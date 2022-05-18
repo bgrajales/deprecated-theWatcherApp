@@ -15,7 +15,7 @@ const Tab = createBottomTabNavigator();
 
 export const TabsNavigator = () => {
 
-  const { status } = useContext(AuthContext);
+  const { status, colorScheme } = useContext(AuthContext);
 
   return (
     <Tab.Navigator
@@ -24,7 +24,7 @@ export const TabsNavigator = () => {
             headerShown: false,
             tabBarActiveTintColor: '#fff',
             tabBarInactiveTintColor: '#fff',
-            tabBarActiveBackgroundColor: '#003AAF',
+            tabBarActiveBackgroundColor: colorScheme === 'dark' ? '#252525' : '#003AAF',
             tabBarLabelStyle: {
               paddingBottom: ( Platform.OS === 'android' ? 5 : 0 ),
             },
@@ -32,7 +32,8 @@ export const TabsNavigator = () => {
               height: ( Platform.OS === 'android' ? 75 : 85 ),
               borderWidth: 0,
               elevation: 0,
-              backgroundColor: '#0055FF',
+              backgroundColor: colorScheme === 'dark' ? '#383838' : '#0055ff',
+              borderTopColor: colorScheme === 'dark' ? '#383838' : '#0055ff',
             },
             tabBarItemStyle: {
               borderRadius: 20,
@@ -42,6 +43,7 @@ export const TabsNavigator = () => {
               marginHorizontal: 10,
             }
         }}
+        sceneContainerStyle={ { backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff' } }
     >
         <Tab.Screen 
           name="SerieSeenStack" 

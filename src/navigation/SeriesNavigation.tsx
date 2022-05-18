@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 import { EpisodesScreen } from '../screens/EpisodesScreen';
 import { SeriesDetailsComponent } from '../components/SeriesDetailsComponent';
+import { AuthContext } from '../context/AuthContext';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -12,14 +13,28 @@ interface Props {
 }
 
 export const SeriesNavigator = ({ seriesId }: Props) => {
+
+    const { colorScheme } = useContext(AuthContext);
+
   return (
     <Tab.Navigator
         initialRouteName="SeriesDetailScreen"
-        sceneContainerStyle={{ backgroundColor: '#fff' }}
+        sceneContainerStyle={{
+            backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff',
+        }}
         screenOptions={{
             swipeEnabled: false,
+            tabBarStyle: {
+                backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff',
+                borderTopWidth: 0,
+                elevation: 0,
+            },
+            tabBarLabelStyle: {
+                color: colorScheme === 'dark' ? '#fff' : '#000',
+            },
         }}
-    >
+
+        >
         <Tab.Screen name="SeriesDetailsComponent" options={{ title: 'Details' }}>
             {
                 () => <SeriesDetailsComponent seriesId={seriesId} />

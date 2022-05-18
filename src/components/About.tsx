@@ -1,13 +1,17 @@
 import { DrawerActions, useNavigation } from '@react-navigation/native'
-import React from 'react'
+import React, { useContext } from 'react'
 import { Image, Text, TouchableOpacity, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { AuthContext } from '../context/AuthContext'
 
 export const About = () => {
     
     const navigation = useNavigation()
     const { top } = useSafeAreaInsets()
+
+    const { colorScheme } = useContext( AuthContext )
+
 
   return (
     <View
@@ -28,7 +32,9 @@ export const About = () => {
                 zIndex: 10
             }}
         >
-            <Icon name='menu' size={30} color='#000' style={{ marginLeft: 20 }} />
+            <Icon name='menu' size={30} color={
+                colorScheme === 'dark' ? '#fff' : '#000'
+            } style={{ marginLeft: 20 }} />
         </TouchableOpacity>
 
         <View
@@ -46,16 +52,31 @@ export const About = () => {
 
                 }}
             />
-            <Text style={{ fontSize: 26, fontWeight: 'bold', marginBottom: 20 }}>
+            <Text style={{ 
+                fontSize: 26, 
+                fontWeight: 'bold', 
+                marginBottom: 20, 
+                color: colorScheme === 'dark' ? '#fff' : '#000'    
+            }}>
                 About The Watcher App
             </Text>
         </View>
 
 
-        <Text style={{ fontSize: 16, marginBottom: 20, textAlign: 'center' }}>
+        <Text style={{ 
+            fontSize: 16, 
+            marginBottom: 20, 
+            textAlign: 'center',
+            color: colorScheme === 'dark' ? '#e6e6e6' : '#000'
+        }}>
             The Watcher App is a simple app that allows you to keep track of the episodes of TV shows and movies you watch.
         </Text>
-        <Text style={{ fontSize: 16, marginBottom: 20, textAlign: 'center' }}>
+        <Text style={{ 
+            fontSize: 16, 
+            marginBottom: 20, 
+            textAlign: 'center',
+            color: colorScheme === 'dark' ? '#e6e6e6' : '#000'
+         }}>
             You can add your favorite shows and movies to the app and mark them as watched, which will be saved in the Series and Movies tabs.
         </Text>
 
@@ -73,7 +94,13 @@ export const About = () => {
                 style={{ width: 60, height: 43, marginBottom: 20 }}
             />
             <View style={{ width: 15 }}/>
-            <Text style={{ fontSize: 16, marginBottom: 20, fontWeight: 'bold' }}>
+            <Text style={{ 
+                fontSize: 16, 
+                marginBottom: 20, 
+                textAlign: 'center',
+                fontWeight: 'bold',
+                color: colorScheme === 'dark' ? '#e6e6e6' : '#000'
+             }}>
                 This product uses the TMDB API but is not endorsed or certified by TMDB.
             </Text>
         </View>

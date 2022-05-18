@@ -20,7 +20,7 @@ interface Props {
 
 export const EpisodeModal = ({ visible = false, setVisible, seriesId, seasonNumber, episodeNumber }: Props) => {
   
-    const { user, updateLikedComments } = useContext( AuthContext )
+    const { user, updateLikedComments, colorScheme } = useContext( AuthContext )
 
     const [isVisible, setIsVisible] = useState(visible);
     const [ writeCommentVisible, setWriteCommentVisible ] = useState(false);
@@ -192,17 +192,25 @@ export const EpisodeModal = ({ visible = false, setVisible, seriesId, seasonNumb
             visible={isVisible}
             style={{
                 position: 'relative',
-                zIndex: 1
+                zIndex: 1,
             }}
         >
             
-            <View style={{ ...styles.closeSection }}>
-                <Icon style={{ ...styles.iconClose }}name="md-close" size={30} color="#000" onPress={() => closeModal()} />
+            <View style={{ 
+                ...styles.closeSection,
+                backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff'    
+            }}>
+                <Icon style={{ ...styles.iconClose }}name="md-close" size={30} color={
+                    colorScheme === 'dark' ? '#fff' : '#000'
+                } onPress={() => closeModal()} />
             </View>
 
                 
                     <View
-                        style={ styles.modal }
+                        style={{ 
+                            ...styles.modal, 
+                            backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff'
+                        }}
                     >
                             {
                                 fullEpisode ? (
@@ -222,7 +230,10 @@ export const EpisodeModal = ({ visible = false, setVisible, seriesId, seasonNumb
                                         >
                                             <Image source={{ uri: `https://image.tmdb.org/t/p/w500${fullEpisode.still_path}` }} style={{ width: 80, height: 80, borderRadius: 10, marginRight: 10 }} />
                                             <View>
-                                                <Text style={ styles.title }>{ fullEpisode.name }</Text>
+                                                <Text style={{ 
+                                                    ...styles.title,
+                                                    color: colorScheme === 'dark' ? '#fff' : '#000'
+                                                }}>{ fullEpisode.name }</Text>
                                                 <Text style={ styles.text }>Season { seasonNumber } - Episode { episodeNumber }</Text>
                                                 <View
                                                     style={{ 
@@ -246,10 +257,15 @@ export const EpisodeModal = ({ visible = false, setVisible, seriesId, seasonNumb
                                     </View>
                                     <View>
                                         <View style={ styles.subTitleDiv }>
-                                            <Text style={ styles.subTitle }>
+                                            <Text style={{ 
+                                                ...styles.subTitle,
+                                                color: colorScheme === 'dark' ? '#fff' : '#000'
+                                            }}>
                                                 Overview
                                             </Text>
-                                            <Icon name="eye" color="#000" size={20} style={{ marginLeft: 10 }} />
+                                            <Icon name="eye" color={
+                                                colorScheme === 'dark' ? '#fff' : '#000'
+                                            } size={20} style={{ marginLeft: 10 }} />
                                         </View>
                                         <Text style={ styles.text }>{ fullEpisode.overview }</Text>
                                     </View>
@@ -261,8 +277,13 @@ export const EpisodeModal = ({ visible = false, setVisible, seriesId, seasonNumb
                                         }}
                                     >
                                         <View style={{ ...styles.subTitleDiv, marginLeft: 20, marginBottom: 20 }}>
-                                            <Text style={ styles.subTitle }>Stills</Text>
-                                            <Icon name="image" color="#000" size={20} style={{ marginLeft: 10 }} />
+                                            <Text style={{ 
+                                                ...styles.subTitle,
+                                                color: colorScheme === 'dark' ? '#fff' : '#000'
+                                            }}>Stills</Text>
+                                            <Icon name="image" color={
+                                                colorScheme === 'dark' ? '#fff' : '#000'
+                                            } size={20} style={{ marginLeft: 10 }} />
                                         </View>
                                         <Carousel
                                             data={ fullEpisode.stills }
@@ -282,10 +303,15 @@ export const EpisodeModal = ({ visible = false, setVisible, seriesId, seasonNumb
 
                                     <View>
                                         <View style={ styles.subTitleDiv }>
-                                            <Text style={ styles.subTitle }>
+                                            <Text style={{ 
+                                                ...styles.subTitle,
+                                                color: colorScheme === 'dark' ? '#fff' : '#000'
+                                            }}>
                                                 Comments
                                             </Text>
-                                            <Icon name="chatbubbles" color="#000" size={20} style={{ marginLeft: 10 }} />
+                                            <Icon name="chatbubbles" color={
+                                                colorScheme === 'dark' ? '#fff' : '#000'
+                                            } size={20} style={{ marginLeft: 10 }} />
                                         </View>
                                         <View>
                                             {

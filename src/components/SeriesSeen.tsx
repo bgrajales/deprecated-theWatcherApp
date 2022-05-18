@@ -8,7 +8,7 @@ export const SeriesSeen = () => {
 
   const navigation = useNavigation<any>()
 
-  const { user } = useContext( AuthContext )
+  const { user, colorScheme } = useContext( AuthContext )
 
   const { top } = useSafeAreaInsets()
 
@@ -23,7 +23,11 @@ export const SeriesSeen = () => {
   } else {
       
       return (
-          <View style={{ flex: 1, paddingTop: top }}>
+          <View style={{ 
+              flex: 1, 
+              paddingTop: top,
+              backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff'        
+            }}>
               <FlatList
                   data={ user.series }
                   keyExtractor={ ( item: any ) => item.id.toString() }
@@ -35,6 +39,7 @@ export const SeriesSeen = () => {
                               fontWeight: 'bold',
                               textAlign: 'center',
                               marginVertical: 20,
+                              color: colorScheme === 'dark' ? '#fff' : '#000'
                           }}>Series Watched</Text>
                       </View>
                   )}}

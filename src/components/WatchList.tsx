@@ -11,6 +11,7 @@ export const WatchList = () => {
     
     const navigation = useNavigation()
     const { top } = useSafeAreaInsets()
+    const { colorScheme } = useContext( AuthContext )
 
     return (
         <View
@@ -29,7 +30,9 @@ export const WatchList = () => {
                     zIndex: 10
                 }}
             >
-                <Icon name='menu' size={30} color='#000' style={{ marginLeft: 20 }} />
+                <Icon name='menu' size={30} color={
+                    colorScheme === 'dark' ? '#fff' : '#000'
+                } style={{ marginLeft: 20 }} />
             </TouchableOpacity>
 
             <WatchlistStack />

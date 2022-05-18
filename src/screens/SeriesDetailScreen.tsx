@@ -18,7 +18,7 @@ export const SeriesDetailScreen = ({ route }: Props) => {
     const series = route.params
     
     
-    const { user, updateWatchListContext, updateSeries } = useContext( AuthContext )
+    const { user, updateWatchListContext, updateSeries, colorScheme } = useContext( AuthContext )
     const { isLoading, serieFull } = useSeriesDetail(series.id, user?.region)
     
     const uri = `https://image.tmdb.org/t/p/w500${serieFull?.poster_path}`;
@@ -89,7 +89,12 @@ export const SeriesDetailScreen = ({ route }: Props) => {
 
     if ( isLoading ) {
         return (
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <View style={{ 
+            flex: 1, 
+            justifyContent: 'center', 
+            alignItems: 'center', 
+            backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff'  
+          }}>
             <ActivityIndicator size={ 80 }/>
           </View>
         );
@@ -164,7 +169,7 @@ export const SeriesDetailScreen = ({ route }: Props) => {
                   } ) ? (
                     <TouchableOpacity
                       style={{
-                        backgroundColor: '#fff',
+                        backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff',
                         paddingHorizontal: 5,
                         paddingVertical: 5,
                         borderRadius: 100,
@@ -186,7 +191,7 @@ export const SeriesDetailScreen = ({ route }: Props) => {
                   ) : (
                     <TouchableOpacity
                       style={{
-                        backgroundColor: '#fff',
+                        backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff',
                         paddingHorizontal: 5,
                         paddingVertical: 5,
                         borderRadius: 100,
@@ -211,7 +216,7 @@ export const SeriesDetailScreen = ({ route }: Props) => {
                   user?.series.find( (m: any) => { return parseInt(m.id) === serieFull?.id })?.episodesWatched === serieFull?.number_of_episodes ? (
                     <TouchableOpacity 
                       style={{
-                        backgroundColor: '#fff',
+                        backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff',
                         paddingHorizontal: 5,
                         paddingVertical: 5,
                         borderRadius: 100,
@@ -234,7 +239,7 @@ export const SeriesDetailScreen = ({ route }: Props) => {
                   ) : (
                     <TouchableOpacity 
                       style={{
-                        backgroundColor: '#fff',
+                        backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff',
                         paddingHorizontal: 5,
                         paddingVertical: 5,
                         borderRadius: 100,
@@ -256,110 +261,10 @@ export const SeriesDetailScreen = ({ route }: Props) => {
                     </TouchableOpacity>
                   )
                 }
-                {/* {
-                  serieWatched ? (
-                    <TouchableOpacity 
-                      style={{
-                        backgroundColor: '#fff',
-                        paddingHorizontal: 5,
-                        paddingVertical: 5,
-                        borderRadius: 100,
-                        height: 40,
-                        width: 50,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                      activeOpacity={0.7}
-                      onPress={ () => {} }
-                    >
-                      <Image 
-                        source={require('../assets/fullIcon.png')}
-                        style={{
-                            width: 37,
-                            height: 26,
-                        }}
-                      />
-                    </TouchableOpacity>
-                  ) : (
-                    <TouchableOpacity 
-                      style={{
-                        backgroundColor: '#fff',
-                        paddingHorizontal: 5,
-                        paddingVertical: 5,
-                        borderRadius: 100,
-                        height: 40,
-                        width: 50,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                      activeOpacity={0.7}
-                      onPress={ () => {} }
-                    >
-                      <Image 
-                        source={require('../assets/empty.png')}
-                        style={{
-                            width: 37,
-                            height: 26,
-                        }}
-                      />
-                    </TouchableOpacity>
-                  )
-                } */}
-                {/* {
-                  user?.movies.find( (m: any) => {
-                    return parseInt(m.id) === movieFull?.id
-                  } ) ? (
-                    <TouchableOpacity 
-                      style={{
-                        backgroundColor: '#fff',
-                        paddingHorizontal: 5,
-                        paddingVertical: 5,
-                        borderRadius: 100,
-                        height: 40,
-                        width: 50,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                      activeOpacity={0.7}
-                      onPress={ markMovieNotWatched }
-                    >
-                      <Image 
-                        source={ require('../assets/fullIcon.png') }
-                        style={{
-                            width: 37,
-                            height: 26,
-                        }}
-                      />
-                    </TouchableOpacity>
-                  ) : (
-                    <TouchableOpacity 
-                      style={{
-                        backgroundColor: '#fff',
-                        paddingHorizontal: 5,
-                        paddingVertical: 5,
-                        borderRadius: 100,
-                        height: 40,
-                        width: 50,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                      activeOpacity={0.7}
-                      onPress={ markMovieWatched }
-                    >
-                      <Image 
-                        source={ require('../assets/empty.png') }
-                        style={{
-                            width: 37,
-                            height: 26,
-                        }}
-                      />
-                    </TouchableOpacity>
-                  )
-                } */}
                 <View style={{ width: 10 }}/>
                 <View
                   style={{
-                    backgroundColor: '#fff',
+                    backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff',
                     height: 40,
                     alignItems: 'center',
                     justifyContent: 'center',

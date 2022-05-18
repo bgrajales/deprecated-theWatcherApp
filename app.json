@@ -2,9 +2,10 @@
   "expo": {
     "name": "The Watcher",
     "slug": "theWatcherApp",
-    "version": "1.3.0",
+    "version": "1.4.0",
     "orientation": "portrait",
     "icon": "./assets/icon1.png",
+    "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/splash1.png",
       "resizeMode": "contain",
@@ -22,8 +23,9 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.bgrajales.thewatcherandroid",
-      "versionCode": 6,
-      "permissions": []
+      "versionCode": 7,
+      "permissions": [],
+      "userInterfaceStyle": "automatic"
     },
     "web": {
       "favicon": "./assets/favicon.png"

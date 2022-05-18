@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -16,6 +16,7 @@ export type WatchlistStackParams = {
 const Stack = createStackNavigator<WatchlistStackParams>();
 
 export const WatchlistStack = () => {
+
     return (
         <Stack.Navigator
             screenOptions={{

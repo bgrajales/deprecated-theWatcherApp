@@ -15,7 +15,7 @@ import { styles } from '../theme/appTheme'
 
 export const HomeScreen = () => {
 
-  const { user } = useContext( AuthContext )
+  const { user, colorScheme } = useContext( AuthContext )
   const { top } = useSafeAreaInsets();
 
   const { isLoading, nowPlaying, popular, topRated } = useMovies();  
@@ -63,7 +63,12 @@ export const HomeScreen = () => {
 
   if ( isLoading ) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{ 
+        flex: 1, 
+        justifyContent: 'center', 
+        alignItems: 'center',
+        backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff'
+      }}>
         <ActivityIndicator size={ 80 }/>
       </View>
     );
@@ -71,14 +76,23 @@ export const HomeScreen = () => {
 
   return (
       <ScrollView 
-        style={{ paddingTop: top + 20, ...styles.container }}
+        style={{ 
+          paddingTop: top + 20, 
+          ...styles.container,
+          backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff'        
+        }}
         contentContainerStyle={{ paddingBottom: 75 }}
       >
 
         {/* Main Carrousel */}
         <View style={ homeStyles.categContainer }>
-          <Text style={ homeStyles.categTitle }>Now Playing</Text>
-          <Icon name="film" color="#000" size={ 30 } style={{ marginLeft: 10 }}/>
+          <Text style={{ 
+            ...homeStyles.categTitle, 
+            color: colorScheme === 'dark' ? '#fff' : '#000'
+          }}>Now Playing</Text>
+          <Icon name="film" color={ 
+            colorScheme === 'dark' ? '#fff' : '#000'
+          } size={ 30 } style={{ marginLeft: 10 }}/>
         </View>
         <Carousel
           data={ nowPlaying }

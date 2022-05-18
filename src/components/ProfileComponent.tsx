@@ -18,7 +18,7 @@ export const ProfileComponent = () => {
 
     const [pickGenresVisible, setPickGenresVisible] = useState(false)
 
-    const { user } = useContext( AuthContext )
+    const { user, colorScheme } = useContext( AuthContext )
 
     const turnMinutesMovies = () => {
 
@@ -75,7 +75,11 @@ export const ProfileComponent = () => {
     }
 
     return (
-        <View style={{ paddingTop: top + 20, ...styles.container }}>
+        <View style={{ 
+            paddingTop: top + 20, 
+            ...styles.container, 
+            backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff'    
+        }}>
 
             <TouchableOpacity
                 onPress={ () => navigation.dispatch( DrawerActions.openDrawer() ) }
@@ -86,10 +90,15 @@ export const ProfileComponent = () => {
                     zIndex: 10
                 }}
             >
-                <Icon name='menu' size={30} color='#000' style={{ marginLeft: 20 }} />
+                <Icon name='menu' size={30} color={
+                    colorScheme === 'dark' ? '#fff' : '#000'
+                } style={{ marginLeft: 20 }} />
             </TouchableOpacity>
 
-            <Text style={ styles.profileUsername }>
+            <Text style={{ 
+                ...styles.profileUsername, 
+                color: colorScheme === 'dark' ? '#fff' : '#000'
+            }}>
                 { user?.userName }
             </Text>
 
@@ -105,13 +114,25 @@ export const ProfileComponent = () => {
                         alignItems: 'center',
                     }}
                 >
-                    <View style={ styles.statsCard }>
-                        <Text style={ styles.statsTitle }>Movies Watched</Text>
+                    <View style={{ 
+                        ...styles.statsCard, 
+                        backgroundColor: colorScheme === 'dark' ? '#2f2f2f' : '#fff'
+                    }}>
+                        <Text style={{ 
+                            ...styles.statsTitle, 
+                            color: colorScheme === 'dark' ? '#e6e6e6' : '#000'
+                        }}>Movies Watched</Text>
                         <Text style={ styles.statsStat }>{ user?.movies.length }</Text>
                     </View>
 
-                    <View style={ styles.statsCard }>
-                        <Text style={ styles.statsTitle }>Time Watching Movies</Text>
+                    <View style={{ 
+                        ...styles.statsCard, 
+                        backgroundColor: colorScheme === 'dark' ? '#2f2f2f' : '#fff'
+                    }}>
+                        <Text style={{ 
+                            ...styles.statsTitle, 
+                            color: colorScheme === 'dark' ? '#e6e6e6' : '#000'
+                        }}>Time Watching Movies</Text>
                         <View style={ styles.statsTime }>{ user && turnMinutesMovies().map((m) =>{
                             return (
                             <View style={ styles.timeIndiv } key={ m.key }>
@@ -121,8 +142,14 @@ export const ProfileComponent = () => {
                         })}</View>
                     </View>
 
-                    <View style={ styles.statsCard }>
-                        <Text style={ styles.statsTitle }>Episodes Watched</Text>
+                    <View style={{ 
+                        ...styles.statsCard, 
+                        backgroundColor: colorScheme === 'dark' ? '#2f2f2f' : '#fff'
+                    }}>
+                        <Text style={{ 
+                            ...styles.statsTitle, 
+                            color: colorScheme === 'dark' ? '#e6e6e6' : '#000'
+                        }}>Episodes Watched</Text>
                         <Text style={ styles.statsStat }>{
                             user?.series.reduce((acc, curr) => {
                                 return acc + curr.episodesWatched
@@ -130,8 +157,14 @@ export const ProfileComponent = () => {
                         }</Text>
                     </View>
 
-                    <View style={ styles.statsCard }>
-                        <Text style={ styles.statsTitle }>Time Watching Episodes</Text>
+                    <View style={{ 
+                        ...styles.statsCard, 
+                        backgroundColor: colorScheme === 'dark' ? '#2f2f2f' : '#fff'
+                    }}>
+                        <Text style={{ 
+                            ...styles.statsTitle, 
+                            color: colorScheme === 'dark' ? '#e6e6e6' : '#000'
+                        }}>Time Watching Episodes</Text>
                         <View style={ styles.statsTime }>{
                             turnMinutesSeries(
                             user?.series.reduce((acc, curr) => {

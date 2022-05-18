@@ -10,7 +10,7 @@ import { moviesGenres, seriesGenres } from '../data/generesData';
 
 export const PickGenresModal = () => {
 
-    const { user } = useContext( AuthContext );
+    const { user, colorScheme } = useContext( AuthContext );
 
     const navigation = useNavigation()
 
@@ -114,11 +114,16 @@ export const PickGenresModal = () => {
                         zIndex: 10
                     }}
                 >
-                    <Icon name='menu' size={30} color='#000' style={{ marginLeft: 20 }} />
+                    <Icon name='menu' size={30} color={
+                        colorScheme === 'dark' ? '#fff' : '#000'
+                    } style={{ marginLeft: 20 }} />
                 </TouchableOpacity>
 
                 <Text
-                    style={styles.title}
+                    style={{
+                        ...styles.title,
+                        color: colorScheme === 'dark' ? '#fff' : '#000'
+                    }}
                 >
                     Pick at least 4 genres for each
                 </Text>
@@ -141,14 +146,18 @@ export const PickGenresModal = () => {
                                     <TouchableOpacity
                                         style={{
                                             ...styles.genreBtn,
-                                            backgroundColor: moviesGenresPicked.find(item => item.id === genre.id) ? '#0055FF' : '#fff'
+                                            backgroundColor: moviesGenresPicked.find(item => item.id === genre.id) 
+                                            ? '#0055FF' 
+                                            : colorScheme === 'dark' ? '#2f2f2f' : '#fff'
                                         }}
                                         key={index}
                                         onPress={() => setMoviesGenPicked(genre.id, genre.name)}
                                     >
                                         <Text
                                             style={{
-                                                color: moviesGenresPicked.find(g => g.id === genre.id) ? '#fff' : '#000'
+                                                color: moviesGenresPicked.find(g => g.id === genre.id) 
+                                                ? '#fff' 
+                                                : colorScheme === 'dark' ? '#fff' : '#000'
                                             }}
                                         >
                                             {genre.name}
@@ -170,14 +179,18 @@ export const PickGenresModal = () => {
                                     <TouchableOpacity
                                         style={{
                                             ...styles.genreBtn,
-                                            backgroundColor: seriesGenresPicked.find(g => g.id === genre.id) ? '#0055FF' : '#fff',
+                                            backgroundColor: seriesGenresPicked.find(g => g.id === genre.id) 
+                                            ? '#0055FF' 
+                                            : colorScheme === 'dark' ? '#2f2f2f' : '#fff'
                                         }}
                                         key={index}
                                         onPress={() => setSeriesGenPicked(genre.id, genre.name)}
                                     >
                                         <Text
                                             style={{
-                                                color: seriesGenresPicked.find(g => g.id === genre.id) ? '#fff' : '#000'
+                                                color: seriesGenresPicked.find(g => g.id === genre.id) 
+                                                ? '#fff' 
+                                                : colorScheme === 'dark' ? '#fff' : '#000'
                                             }}
                                         >
                                             {genre.name}

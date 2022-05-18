@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { KeyboardAvoidingView, KeyboardAvoidingViewComponent, ScrollView, Text, TextInput, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { multiDB } from '../api/movieDB'
 import { SearchCard } from '../components/SearchCard'
 import { SearchInput } from '../components/SearchInput'
+import { AuthContext } from '../context/AuthContext'
 import { SearchIndiv, SearchResponse } from '../interfaces/movieInterface'
 
 export const SearchScreen = () => {
 
   const { top } = useSafeAreaInsets()
+  const { colorScheme } = useContext(AuthContext)
 
   const [ isFetching, setIsFetching ] = useState(false)
   const [searchText, setSearchText] = useState('')
@@ -41,7 +43,12 @@ export const SearchScreen = () => {
   }
 
   return (
-    <View style={{ marginTop: top + 20, paddingHorizontal: 20, flex: 1 }}>
+    <View style={{ 
+      marginTop: top + 20, 
+      paddingHorizontal: 20, 
+      flex: 1, 
+      backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff'        
+    }}>
         
         <SearchInput 
           onDebounce={(value) => setSearchText(value)}

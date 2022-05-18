@@ -1,7 +1,8 @@
 import { useNavigation } from '@react-navigation/native'
-import React from 'react'
+import React, { useContext } from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { AuthContext } from '../context/AuthContext'
 import { SearchIndiv } from '../interfaces/movieInterface'
 
 interface Props {
@@ -12,6 +13,7 @@ interface Props {
 export const SearchCard = ({ element, type }: Props) => {
 
   const navigation = useNavigation<any>()
+  const { colorScheme } = useContext( AuthContext )
 
   return (
     <View style={styles.searchCard}>
@@ -22,7 +24,10 @@ export const SearchCard = ({ element, type }: Props) => {
 
         <View style={styles.searchCardTextDiv}>
             <View style={styles.searchCardTitleYear}>
-                <Text style={styles.elementTitle}>
+                <Text style={{
+                    ...styles.elementTitle,
+                    color: colorScheme === 'dark' ? '#fff' : '#000'
+                }}>
                     {
                         type === 'movie' ? element.title : element.name
                     }

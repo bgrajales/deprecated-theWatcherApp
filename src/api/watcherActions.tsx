@@ -372,3 +372,27 @@ export const markSeasonAsWatchedAction = async ({
     }
 
 }
+
+
+export const deleteAccountAction = async (userName: string ) => {
+
+    const headers = {
+        // authorization: token,
+        'Content-Type': 'application/json'
+    }
+
+    const resp = await watcherApi.post("/deleteAccount", { userName }, { headers });
+
+    if (resp.data.error) {
+        return {
+            result: false
+        };
+    } else {
+        return {
+            result: true,
+            action: resp.data,
+        };
+    }
+
+
+}

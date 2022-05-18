@@ -7,7 +7,7 @@ import { WatcherUser } from '../interfaces/authInterface'
 
 export const WatchListComponent = () => {
 
-    const { user } = useContext( AuthContext )
+    const { user, colorScheme } = useContext( AuthContext )
     const { top } = useSafeAreaInsets()
 
     const navigation = useNavigation<any>()
@@ -36,7 +36,7 @@ export const WatchListComponent = () => {
                 flex: 1,
                 paddingHorizontal: 20,
                 paddingTop: top + 5,
-                backgroundColor: '#fff',
+                backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff'
             }}
         >
             <Text
@@ -44,6 +44,7 @@ export const WatchListComponent = () => {
                     fontSize: 30,
                     fontWeight: 'bold',
                     marginBottom: 20,
+                    color: colorScheme === 'dark' ? '#fff' : '#000'
                 }}
             >Watch List</Text>
 
@@ -58,12 +59,13 @@ export const WatchListComponent = () => {
                                 marginBottom: 20,
                                 borderBottomColor: '#0055ff',
                                 borderBottomWidth: 2,
-                                backgroundColor: '#fff',
+                                backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff'
                             }}
                         >
                             <Text style={{
                                 fontSize: 20,
                                 fontWeight: 'bold',
+                                color: colorScheme === 'dark' ? '#e6e6e6' : '#000'
                             }}>Movies</Text>
                         </View>
                     )}}
@@ -116,12 +118,13 @@ export const WatchListComponent = () => {
                                 marginBottom: 20,
                                 borderBottomColor: '#0055ff',
                                 borderBottomWidth: 2,
-                                backgroundColor: '#fff',
+                                backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff'
                             }}
                         >
                             <Text style={{
                                 fontSize: 20,
                                 fontWeight: 'bold',
+                                color: colorScheme === 'dark' ? '#e6e6e6' : '#000'
                             }}>Series</Text>
                         </View>
                     )}}

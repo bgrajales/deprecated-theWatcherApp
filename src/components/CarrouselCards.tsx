@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { AuthContext } from '../context/AuthContext'
 import { Movie, Series } from '../interfaces/movieInterface'
 import { MovieCard } from './MovieCard'
 
@@ -13,11 +14,18 @@ interface Props {
 
 export const CarrouselCards = ({ moviePosters, seriesPosters, title, iconName }: Props) => {
 
+  const { colorScheme } = useContext( AuthContext )
+
   return (
     <>
         <View style={ homeStyles.categContainer }>
-            <Text style={ homeStyles.categTitle }>{title}</Text>
-            <Icon name={iconName} color="#000" size={ 30 } style={{ marginLeft: 10 }}/>
+            <Text style={{ 
+              ...homeStyles.categTitle,
+              color: colorScheme === 'dark' ? '#fff' : '#000' 
+            }}>{title}</Text>
+            <Icon name={iconName} color={
+              colorScheme === 'dark' ? '#fff' : '#000'
+            } size={ 30 } style={{ marginLeft: 10 }}/>
         </View>
         {
             moviePosters &&

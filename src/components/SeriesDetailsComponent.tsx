@@ -14,7 +14,7 @@ interface Props {
 
 export const SeriesDetailsComponent = ({seriesId}: Props ) => {
 
-    const { user } = useContext( AuthContext )
+    const { user, colorScheme } = useContext( AuthContext )
 
     const { serieFull, cast, providers, videos } = useSeriesDetail(seriesId, user?.region)
 
@@ -23,12 +23,26 @@ export const SeriesDetailsComponent = ({seriesId}: Props ) => {
         showsVerticalScrollIndicator={ false }
         contentContainerStyle={{
             paddingBottom: 20,
+            backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff'
         }}
     >
     {
         providers?.length > 0 ? (
         <View style={ styles.section }>
-            <Text style={ styles.title }>Watch</Text>
+            <Text style={{ 
+                ...styles.title, 
+                color: colorScheme === 'dark' ? '#fff' : '#000',
+                marginBottom: 0
+            }}>Available on
+            </Text>
+            <Text
+                style={{
+                    ...styles.subTitle,
+                    color: colorScheme === 'dark' ? '#fff' : '#000'
+                }}
+            >
+                Provided by JustWatch
+            </Text>
             <FlatList 
                 horizontal={ true }
                 data={ providers }
@@ -77,12 +91,21 @@ export const SeriesDetailsComponent = ({seriesId}: Props ) => {
         </View>
     }
         <View style={ styles.section }>
-            <Text style={ styles.title }>Overview</Text>
-            <Text style={ styles.text }>{ serieFull?.overview }</Text>
+            <Text style={{ 
+                ...styles.title, 
+                color: colorScheme === 'dark' ? '#fff' : '#000'
+            }}>Overview</Text>
+            <Text style={{ 
+                ...styles.text, 
+                color: colorScheme === 'dark' ? '#e6e6e6' : '#000'
+            }}>{ serieFull?.overview }</Text>
         </View>
         
         <View style={ styles.section }>
-            <Text style={ styles.title }>Videos</Text>
+            <Text style={{ 
+                ...styles.title, 
+                color: colorScheme === 'dark' ? '#fff' : '#000'
+            }}>Videos</Text>
             <Carousel
                 data={ videos }
                 renderItem={ ({ item }) => (
@@ -110,7 +133,10 @@ export const SeriesDetailsComponent = ({seriesId}: Props ) => {
         </View>
         
         <View style={ styles.section }>
-            <Text style={ styles.title }>Cast</Text>
+            <Text style={{ 
+                ...styles.title, 
+                color: colorScheme === 'dark' ? '#fff' : '#000'
+            }}>Cast</Text>
             <FlatList 
                 horizontal={ true }
                 data={ cast }
@@ -196,5 +222,10 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
     },
 
-
+    subTitle: {
+        fontSize: 10,
+        marginBottom: 15,
+        paddingHorizontal: 20,
+        opacity: 0.7,
+    },
 });

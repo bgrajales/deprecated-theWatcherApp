@@ -16,7 +16,7 @@ interface Props {
 
 export const EpisodesScreen = ({ seriesId }: Props) => {
 
-    const { user, token, updateWatchedSeries, updateSeries } = useContext( AuthContext )
+    const { user, token, updateWatchedSeries, updateSeries, colorScheme } = useContext( AuthContext )
 
     const [activeSection, setActiveSection] = useState({
         section: null,
@@ -43,8 +43,12 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
                 ...styles.accHeader, 
                 borderBottomRightRadius: activeSection.section === season.id ? 0 : 10,
                 borderBottomLeftRadius: activeSection.section === season.id ? 0 : 10,
+                backgroundColor: colorScheme === 'dark' ? '#353535' : '#fff'
             }}>
-                <Text style={ styles.accHeaderText}>{season.name}</Text>
+                <Text style={{ 
+                    ...styles.accHeaderText,
+                    color: colorScheme === 'dark' ? '#fff' : '#000'
+                }}>{season.name}</Text>
                 
                 {/* Season progress bar */}
 
@@ -169,11 +173,17 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
 
     const renderContent = ( season: SeriesSeason ) => {
         return (
-            <View style={ styles.accContent }>
+            <View style={{ 
+                ...styles.accContent, 
+                backgroundColor: colorScheme === 'dark' ? '#353535' : '#fff'
+            }}>
                 {
                     season.episodes.map( ( episode: Episode ) => {
                         return (
-                            <View key={ episode.id } style={ styles.accContentItem }>
+                            <View key={ episode.id } style={{
+                                ...styles.accContentItem, 
+                                backgroundColor: colorScheme === 'dark' ? '#1e1e1e' : '#fff',
+                            }}>
 
                                
                                 <TouchableOpacity
@@ -211,7 +221,10 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
                                         source={{ uri: episode.still_path ? `https://image.tmdb.org/t/p/w500${episode.still_path}` : `https://critics.io/img/movies/poster-placeholder.png` }}
                                     />
                                     <View style={ styles.accContentText}>
-                                        <Text style={ styles.accContentItemText }>{ episode.name }</Text>
+                                        <Text style={{ 
+                                            ...styles.accContentItemText,
+                                            color: colorScheme === 'dark' ? '#fff' : '#000', 
+                                        }}>{ episode.name }</Text>
                                         <Text style={ styles.accContentEpisode }>Episode {episode.episode_number}</Text>
                                     </View>
                                 </TouchableOpacity>
@@ -234,7 +247,10 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
     }
 
     return (
-        <ScrollView style={ styles.episodesBody }>
+        <ScrollView style={{ 
+            ...styles.episodesBody,
+            backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff',    
+        }}>
             <Accordion
                 activeSections={[activeSection.section as any]}
                 sections={seasons}

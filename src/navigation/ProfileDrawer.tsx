@@ -88,7 +88,7 @@ export const ProfileDrawer = () => {
                                 color: focused ? '#fff' : colorScheme === 'dark' ? '#fff' : '#000', 
                                 fontWeight: focused ? 'bold' : 'normal',
                             }}>
-                                About
+                                About / Features
                             </Text>
                         )}
                         labelStyle={{ color: '#292929' }}

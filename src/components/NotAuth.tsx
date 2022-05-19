@@ -1,9 +1,12 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { AuthContext } from '../context/AuthContext';
 import { LoginModal } from './LoginModal';
 import { RegisterModal } from './RegisterModal';
 
 export const NotAuth = () => {
+
+    const { colorScheme } = useContext(AuthContext);
 
     const [loginVisible, setLoginVisible] = useState(false)
     const [registerVisible, setRegisterVisible] = useState(false)
@@ -16,6 +19,7 @@ export const NotAuth = () => {
         height: '100%',
         alignItems: 'center',
         paddingHorizontal: 20,
+        backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff'
     }}>
 
         <LoginModal 
@@ -32,7 +36,10 @@ export const NotAuth = () => {
             source={require('../assets/fullIcon.png')}
             style={{ width: 150, height: 105, marginBottom: 20 }}
         />
-        <Text style={ styles.title }>Nothing to see here</Text>
+        <Text style={{ 
+            ...styles.title,
+            color: colorScheme === 'dark' ? '#fff' : '#000' 
+        }}>Nothing to see here</Text>
 
         <Text style={ styles.subTitle }>You need to be logged in to access this section</Text>
 

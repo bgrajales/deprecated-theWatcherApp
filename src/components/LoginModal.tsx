@@ -16,7 +16,7 @@ export const LoginModal = ({ visible = false, setLoginVisibleParent }: Props) =>
 
     const { top } = useSafeAreaInsets();
 
-    const { signIn, errorMessage, removeError } = useContext( AuthContext )
+    const { signIn, errorMessage, removeError, colorScheme } = useContext( AuthContext )
 
     const { email, password, onChange } = useForm({
         email: '',
@@ -45,35 +45,52 @@ export const LoginModal = ({ visible = false, setLoginVisibleParent }: Props) =>
             transparent={true}
             visible={isVisible}
         >
-            <View style={{ ...styles.closeSection, top: top }}>
-                <Icon name="md-close" size={30} color="#000" onPress={() => setLoginVisibleParent(false)} />
+            <View style={{ 
+                ...styles.closeSection, 
+                top: top, 
+                backgroundColor: colorScheme === 'dark' ? '#262626' : '#fff'
+            }}>
+                <Icon name="md-close" size={30} color={
+                    colorScheme === 'dark' ? '#fff' : '#000'
+                } onPress={() => setLoginVisibleParent(false)} />
             </View>
 
             <KeyboardAvoidingView 
-                style={ styles.modal }
+                style={{ 
+                    ...styles.modal, 
+                    backgroundColor: colorScheme === 'dark' ? '#262626' : '#fff'
+                }}
                 behavior="padding"
             >
                 <View style={ styles.modalContent }>
 
 
-                    <Text style={ styles.modalTitle }>Login</Text>
+                    <Text style={{ 
+                        ...styles.modalTitle, 
+                        color: colorScheme === 'dark' ? '#fff' : '#000'
+                    }}>Login</Text>
 
                     <Text style={ styles.inputLabel }>Email:</Text>
                     <TextInput 
-                        style={ styles.input }
+                        style={{ 
+                            ...styles.input, 
+                            color: colorScheme === 'dark' ? '#fff' : '#000'
+                        }}
                         placeholder="Email"
                         placeholderTextColor="#999"
                         keyboardType='email-address'
                         autoCapitalize="none"
                         autoCorrect={false}
-
                         value={email}
                         onChangeText={(value) => onChange(value, 'email')}
                     />
 
                     <Text style={ styles.inputLabel }>Password:</Text>
                     <TextInput
-                        style={ styles.input }
+                        style={{ 
+                            ...styles.input, 
+                            color: colorScheme === 'dark' ? '#fff' : '#000'
+                        }}
                         placeholder="Password"
                         placeholderTextColor="#999"
                         autoCapitalize="none"

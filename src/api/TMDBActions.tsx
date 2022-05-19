@@ -1,5 +1,5 @@
 import { multiDB, seriesDB } from '../api/movieDB';
-import { EpisodeModalResponse } from '../interfaces/movieInterface';
+import { EpisodeModalResponse, NextEpisodeResponse, SeriesFull } from '../interfaces/movieInterface';
 import { fetchComments } from './watcherActions';
 
 interface EpisodeData {
@@ -45,4 +45,32 @@ export const getGenresLists = async ({ type, genreId}: GetGenresListsProps) => {
 
     return resp.data;
 
+}
+
+interface GetSeriesNextEpisodeToAir {
+    seriesId: number[];
+}
+
+export const getSeriesNextEpisodes = async ({ seriesId }: GetSeriesNextEpisodeToAir) => {
+
+    let seriesNextEpisodes: any[] = []
+
+    for (let i = 0; i < seriesId.length; i++) {
+        const resp = await seriesDB.get<SeriesFull>(`/${seriesId[i]}`);
+
+        if (resp.data) {
+
+            if (resp.data.next_episode_to_air) {
+                const newEpisode = {
+                    ...resp.data.next_episode_to_air,
+                    serieId: seriesId[i],
+                    serieName: resp.data.name,
+                }
+                seriesNextEpisodes.push(newEpisode);
+            }
+
+        }
+    }
+    
+    return seriesNextEpisodes;
 }

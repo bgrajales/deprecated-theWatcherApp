@@ -19,7 +19,7 @@ export const RegisterModal = ({ visible = false, setRegisterVisibleParent }: Pro
 
     const { top } = useSafeAreaInsets();
 
-    const { signUp, errorMessage, removeError } = useContext( AuthContext )
+    const { signUp, errorMessage, removeError, colorScheme } = useContext( AuthContext )
 
     const { userName, email, password, repeatPassword, onChange } = useForm({
         userName: '',
@@ -58,22 +58,37 @@ export const RegisterModal = ({ visible = false, setRegisterVisibleParent }: Pro
             transparent={true}
             visible={isVisible}
         >
-            <View style={{ ...styles.closeSection, top: top }}>
-                <Icon name="md-close" size={30} color="#000" onPress={() => setRegisterVisibleParent(false)} />
+            <View style={{ 
+                ...styles.closeSection, 
+                top: top,
+                backgroundColor: colorScheme === 'dark' ? '#262626' : '#fff' 
+            }}>
+                <Icon name="md-close" size={30} color={ 
+                    colorScheme === 'dark' ? '#fff' : '#000'
+                } onPress={() => setRegisterVisibleParent(false)} />
             </View>
 
             <KeyboardAvoidingView 
-                style={ styles.modal }
+                style={{ 
+                    ...styles.modal, 
+                    backgroundColor: colorScheme === 'dark' ? '#262626' : '#fff'
+                }}
                 behavior="padding"
             >
                 <View style={ styles.modalContent }>
 
 
-                    <Text style={ styles.modalTitle }>Register</Text>
+                    <Text style={{ 
+                        ...styles.modalTitle, 
+                        color: colorScheme === 'dark' ? '#fff' : '#000'
+                    }}>Register</Text>
 
                     <Text style={ styles.inputLabel }>Username:</Text>
                     <TextInput 
-                        style={ styles.input }
+                        style={{ 
+                            ...styles.input,
+                            color: colorScheme === 'dark' ? '#fff' : '#000' 
+                        }}
                         placeholder="User Name"
                         placeholderTextColor="#999"
                         autoCapitalize="none"
@@ -85,7 +100,10 @@ export const RegisterModal = ({ visible = false, setRegisterVisibleParent }: Pro
 
                     <Text style={ styles.inputLabel }>Email:</Text>
                     <TextInput 
-                        style={ styles.input }
+                        style={{ 
+                            ...styles.input,
+                            color: colorScheme === 'dark' ? '#fff' : '#000' 
+                        }}
                         placeholder="Email"
                         placeholderTextColor="#999"
                         keyboardType='email-address'
@@ -96,9 +114,7 @@ export const RegisterModal = ({ visible = false, setRegisterVisibleParent }: Pro
                         onChangeText={(value) => onChange(value, 'email')}
                     />
 
-                    <View
-                        style={ styles.countryPicker }
-                    >
+                   
                         <CountryPicker
                             countryCode={ countryCodeState }
                             withAlphaFilter={true}
@@ -111,12 +127,31 @@ export const RegisterModal = ({ visible = false, setRegisterVisibleParent }: Pro
                             onSelect={(country) => {
                                 setCountryCode(country.cca2)  
                             }}
+                            theme={{
+                                backgroundColor: colorScheme === 'dark' ? '#262626' : '#fff',
+                                primaryColor: colorScheme === 'dark' ? '#fff' : '#000',
+                                onBackgroundTextColor: colorScheme === 'dark' ? '#fff' : '#000',
+                                filterPlaceholderTextColor: colorScheme === 'dark' ? '#fff' : '#000',
+                                primaryColorVariant: colorScheme === 'dark' ? '#fff' : '#000',
+                            }}
+                            containerButtonStyle={{
+                                backgroundColor: colorScheme === 'dark' ? '#1c1c1c' : '#fff',
+                                borderRadius: 5,
+                                borderWidth: 0,
+                                width: '100%',
+                                height: 40,
+                                marginTop: 10,
+                                marginBottom: 10,
+                                paddingLeft: 10,
+                            }}
                         />
-                    </View>
 
                     <Text style={ styles.inputLabel }>Password:</Text>
                     <TextInput
-                        style={ styles.input }
+                        style={{ 
+                            ...styles.input,
+                            color: colorScheme === 'dark' ? '#fff' : '#000' 
+                        }}
                         placeholder="Password"
                         placeholderTextColor="#999"
                         autoCapitalize="none"
@@ -129,7 +164,10 @@ export const RegisterModal = ({ visible = false, setRegisterVisibleParent }: Pro
                     
                     <Text style={ styles.inputLabel }>Repeat Password:</Text>
                     <TextInput
-                        style={ styles.input }
+                        style={{ 
+                            ...styles.input,
+                            color: colorScheme === 'dark' ? '#fff' : '#000' 
+                        }}
                         placeholder="Repeat Password"
                         placeholderTextColor="#999"
                         autoCapitalize="none"

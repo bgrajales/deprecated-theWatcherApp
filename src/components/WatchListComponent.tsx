@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native'
 import React, { useContext, useEffect, useState } from 'react'
-import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { AuthContext } from '../context/AuthContext'
 import { WatcherUser } from '../interfaces/authInterface'
@@ -31,7 +31,7 @@ export const WatchListComponent = () => {
     }, [user])
 
     return (
-        <View
+        <ScrollView
             style={{
                 flex: 1,
                 paddingHorizontal: 20,
@@ -46,10 +46,9 @@ export const WatchListComponent = () => {
                     marginBottom: 20,
                     color: colorScheme === 'dark' ? '#fff' : '#000'
                 }}
-            >Watch List</Text>
+            >Watchlist</Text>
 
-            <View style={{ flex: 1 }}>
-                <FlatList
+                {/* <FlatList
                     data={ moviesWatchList }
                     keyExtractor={ ( item: any ) => item.elementId.toString() }
                     ListHeaderComponent={ () => { 
@@ -164,8 +163,155 @@ export const WatchListComponent = () => {
                     }}
                     showsVerticalScrollIndicator={ false }
                     stickyHeaderIndices={[0]}
+                /> */}
+                
+                <View
+                    style={{
+                        flex: 1,
+                        paddingBottom: 20,
+                        flexDirection: 'row',
+                    }}
+                >
+                    <Text style={{ 
+                        fontSize: 20, 
+                        fontWeight: 'bold', 
+                        color: colorScheme === 'dark' ? '#fff' : '#000',
+                    }}>
+                            Movies
+                    </Text>
+                
+                    <Text
+                        style={{
+                            fontSize: 20,
+                            fontWeight: 'bold',
+                            paddingHorizontal: 14,
+                            color: '#0055ff',
+                        }}
+                    >
+                        { moviesWatchList.length }
+                    </Text>
+                </View>
+                <View
+                    style={{
+                        flex: 1,
+                        flexDirection: 'row',
+                        flexWrap: 'wrap',
+                        width: '100%',
+                        justifyContent: 'space-between',
+                        marginBottom: 10,
+                    }}
+                >
+                    {
+                        moviesWatchList.map( ( movie, index ) => {
+                            return (
+                                <TouchableOpacity style={{ 
+                                    width: '30%',
+                                    shadowColor: "#000",
+                                    shadowOffset: {
+                                        width: 0,
+                                        height: 2,
+                                    },
+                                    shadowOpacity: 0.25,
+                                    shadowRadius: 3.84,
+                                    elevation: 5,
+                                    marginBottom: 10,
+                                }} 
+                                    activeOpacity={0.7}
+                                    onPress={ () => { navigation.navigate('MovieDetailScreen', {
+                                        id: movie.elementId,
+                                        })
+                                    }}
+                                    key={ index.toString() }
+                                >
+                                    <Image
+                                        source={{ uri: `https://image.tmdb.org/t/p/w500${movie.posterPath}` }}
+                                        style={{ width: "100%", height: 200, borderRadius: 10 }}
+                                    />
+                                </TouchableOpacity>
+                            )
+                        })
+                    }
+                    {
+                        moviesWatchList.length % 3 !== 0 &&
+                        <View style={{ width: '30%' }}/>
+                    }
+                </View>
+               
+                <View
+                    style={{
+                        flex: 1,
+                        paddingBottom: 20,
+                        flexDirection: 'row',
+                    }}
+                >
+                    <Text style={{ 
+                        fontSize: 20, 
+                        fontWeight: 'bold', 
+                        color: colorScheme === 'dark' ? '#fff' : '#000',
+                    }}>
+                            Series
+                    </Text>
+                
+                    <Text
+                        style={{
+                            fontSize: 20,
+                            fontWeight: 'bold',
+                            paddingHorizontal: 14,
+                            color: '#0055ff',
+                        }}
+                    >
+                        { seriesWatchList.length }
+                    </Text>
+                </View>
+                <View
+                    style={{
+                        flex: 1,
+                        flexDirection: 'row',
+                        flexWrap: 'wrap',
+                        width: '100%',
+                        justifyContent: 'space-between',
+                        marginBottom: 10,
+                    }}
+                >
+                    {
+                        seriesWatchList.map( ( serie, index ) => {
+                            return (
+                                <TouchableOpacity style={{ 
+                                    width: '30%',
+                                    shadowColor: "#000",
+                                    shadowOffset: {
+                                        width: 0,
+                                        height: 2,
+                                    },
+                                    shadowOpacity: 0.25,
+                                    shadowRadius: 3.84,
+                                    elevation: 5,
+                                    marginBottom: 10,
+                                }} 
+                                    activeOpacity={0.7}
+                                    onPress={ () => { navigation.navigate('SeriesDetailScreen', {
+                                        id: serie.elementId,
+                                        })
+                                    }}
+                                    key={ index.toString() }
+                                >
+                                    <Image
+                                        source={{ uri: `https://image.tmdb.org/t/p/w500${serie.posterPath}` }}
+                                        style={{ width: "100%", height: 200, borderRadius: 10 }}
+                                    />
+                                </TouchableOpacity>
+                            )
+                        })
+                    }
+                    {
+                        seriesWatchList.length % 3 !== 0 &&
+                        <View style={{ width: '30%' }}/>
+                    }
+                </View>
+
+                <View 
+                    style={{ height: 65 }}
                 />
-            </View>
-        </View>
+        </ScrollView>
     )
 }

@@ -101,7 +101,7 @@ export const ProfileComponent = () => {
             }}>
                 { user?.userName }
             </Text>
-
+            
             <View style={ styles.statsDiv }>
                 <ScrollView
                     style={{

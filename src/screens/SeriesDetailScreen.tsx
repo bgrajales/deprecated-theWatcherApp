@@ -17,7 +17,9 @@ export const SeriesDetailScreen = ({ route }: Props) => {
 
     const series = route.params
     
-    
+    const [ watcherLoader, setWatcherLoader ] = useState(false)
+    const [ watchlistLoader, setWatchlistLoader ] = useState(false)
+
     const { user, updateWatchListContext, updateSeries, colorScheme } = useContext( AuthContext )
     const { isLoading, serieFull } = useSeriesDetail(series.id, user?.region)
     
@@ -26,7 +28,7 @@ export const SeriesDetailScreen = ({ route }: Props) => {
     const saveToWatchList = async () => {
 
       if ( user ) {
-
+        setWatchlistLoader(true)
         const elementExists = user!.watchlist.find( (movie: any) => movie.elementId.toString() === serieFull!.id.toString() )
         let resp
         let action
@@ -38,7 +40,7 @@ export const SeriesDetailScreen = ({ route }: Props) => {
           action = 'add'
           resp = await updateWatchlist({ userName: user!.userName, id: serieFull!.id, posterPath: serieFull!.poster_path!, type: 'tv', action: 'add' })
         }
-
+        setWatchlistLoader(false)
         if ( resp.result ) { 
 
           if ( action === 'remove' ) {
@@ -69,7 +71,7 @@ export const SeriesDetailScreen = ({ route }: Props) => {
     const markAllSerieWatched = async (action: string) => {
 
       if ( user ) {
-
+        setWatcherLoader(true)
         const resp = await markSerieAsWatched({ 
           userName: user!.userName, 
           id: serieFull!.id, 
@@ -78,7 +80,7 @@ export const SeriesDetailScreen = ({ route }: Props) => {
           serieTotalEpisodes: serieFull?.number_of_episodes,
           seriesSeasons: serieFull?.seasons
         })
-  
+        setWatcherLoader(false)
         if ( resp.result ) {
           updateSeries(resp.seriesUpdate)
         }
@@ -164,7 +166,25 @@ export const SeriesDetailScreen = ({ route }: Props) => {
               >
 
                 {
-                  user?.watchlist.find( (m: any) => {
+                  watchlistLoader ? (
+                    <View
+                          style={{
+                            backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff',
+                            paddingHorizontal: 5,
+                            paddingVertical: 5,
+                            borderRadius: 100,
+                            height: 40,
+                            width: 50,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                        >
+                          <ActivityIndicator
+                            size='small'
+                            color='#0055ff'
+                          />
+                        </View>
+                  ) : user?.watchlist.find( (m: any) => {
                     return parseInt(m.elementId) === serieFull?.id
                   } ) ? (
                     <TouchableOpacity
@@ -213,7 +233,25 @@ export const SeriesDetailScreen = ({ route }: Props) => {
                 }
                 <View style={{ width: 10 }}/>
                 {
-                  user?.series.find( (m: any) => { return parseInt(m.id) === serieFull?.id })?.episodesWatched === serieFull?.number_of_episodes ? (
+                  watcherLoader ? (
+                    <View
+                          style={{
+                            backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff',
+                            paddingHorizontal: 5,
+                            paddingVertical: 5,
+                            borderRadius: 100,
+                            height: 40,
+                            width: 50,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                        >
+                          <ActivityIndicator
+                            size='small'
+                            color='#0055ff'
+                          />
+                        </View>
+                  ) : user?.series.find( (m: any) => { return parseInt(m.id) === serieFull?.id })?.episodesWatched === serieFull?.number_of_episodes ? (
                     <TouchableOpacity 
                       style={{
                         backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff',

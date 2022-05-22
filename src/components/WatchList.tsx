@@ -27,12 +27,15 @@ export const WatchList = () => {
                     position: 'absolute',
                     top: top + 5,
                     right: 20,
-                    zIndex: 10
+                    zIndex: 10,
+                    backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff',
+                    borderRadius: 50,
+                    padding: 3,
                 }}
             >
                 <Icon name='menu' size={30} color={
                     colorScheme === 'dark' ? '#fff' : '#000'
-                } style={{ marginLeft: 20 }} />
+                } />
             </TouchableOpacity>
 
             <WatchlistStack />

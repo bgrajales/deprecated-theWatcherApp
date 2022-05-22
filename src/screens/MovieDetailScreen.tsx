@@ -23,8 +23,9 @@ export const MovieDetailScreen = ({ route }: Props) => {
 
     const movie = route.params
     
-    const [commentsToShow, setCommentsToShow] = useState<Comments[]>([]);
     
+    const [commentsToShow, setCommentsToShow] = useState<Comments[]>([]);
+
     const { user, token, updateWatchedMovies, updateLikedComments, updateWatchListContext, colorScheme } = useContext( AuthContext )
     const { isLoading, movieFull, cast, providers, videos, comments } = useMovieDetails( movie.id, setCommentsToShow, user?.region )
 
@@ -36,12 +37,16 @@ export const MovieDetailScreen = ({ route }: Props) => {
 
     const [ replyText, setReplyText] = useState('');
 
+    const [ watchLoader, setWatchLoader ] = useState(false);
+    const [ watchlistLoader, setWatchlistLoader ] = useState(false);
+
     const uri = `https://image.tmdb.org/t/p/w500${movieFull?.poster_path}`;
 
     const markMovieWatched = async () => {
       if ( movieFull && user && token ) {
+        setWatchLoader(true);
         const marked = await markMovieAsWatched({ user, token, movieId: movieFull.id, posterPath: movieFull.poster_path, runTime: movieFull.runtime })
-
+        setWatchLoader(false);
         if ( marked.result ) {
 
           updateWatchedMovies( marked.movies )
@@ -53,8 +58,9 @@ export const MovieDetailScreen = ({ route }: Props) => {
 
     const markMovieNotWatched = async () => {
       if ( movieFull && user && token ) {
+        setWatchLoader(true);
         const marked = await markMovieUnwatched({ user, token, movieId: movieFull.id })
-
+        setWatchLoader(false);
         if ( marked.result ) {
             updateWatchedMovies( marked.movies )
         }
@@ -181,7 +187,7 @@ export const MovieDetailScreen = ({ route }: Props) => {
     const saveToWatchList = async () => {
 
       if ( user ) {
-
+        setWatchlistLoader(true);
         const elementExists = user!.watchlist.find( (movie: any) => movie.elementId.toString() === movieFull!.id.toString() )
         let resp
         let action
@@ -193,7 +199,7 @@ export const MovieDetailScreen = ({ route }: Props) => {
           action = 'add'
           resp = await updateWatchlist({ userName: user!.userName, id: movieFull!.id, posterPath: movieFull!.poster_path, type: 'movie', action: 'add' })
         }
-
+        setWatchlistLoader(false)
         if ( resp.result ) { 
 
           if ( action === 'remove' ) {
@@ -229,7 +235,10 @@ export const MovieDetailScreen = ({ route }: Props) => {
           alignItems: 'center', 
           backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff'
         }}>
-          <ActivityIndicator size={ 80 }/>
+          <ActivityIndicator 
+            size='small'
+            color={ colorScheme === 'dark' ? '#fff' : '#000' }
+          />
         </View>
       );
     }
@@ -303,9 +312,26 @@ export const MovieDetailScreen = ({ route }: Props) => {
                         alignItems: 'center',
                     }}
                   >
-
                   {
-                      user?.watchlist.find( (m: any) => {
+                      watchlistLoader ? (
+                        <View
+                          style={{
+                            backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff',
+                            paddingHorizontal: 5,
+                            paddingVertical: 5,
+                            borderRadius: 100,
+                            height: 40,
+                            width: 50,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                        >
+                          <ActivityIndicator
+                            size='small'
+                            color='#0055ff'
+                          />
+                        </View>
+                      ) : user?.watchlist.find( (m: any) => {
                         return parseInt(m.elementId) === movieFull?.id
                       } ) ? (
                         <TouchableOpacity
@@ -353,7 +379,25 @@ export const MovieDetailScreen = ({ route }: Props) => {
                     }
                     <View style={{ width: 10 }}/>
                     {
-                      user?.movies.find( (m: any) => {
+                      watchLoader ? (
+                        <View
+                          style={{
+                            backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff',
+                            paddingHorizontal: 5,
+                            paddingVertical: 5,
+                            borderRadius: 100,
+                            height: 40,
+                            width: 50,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                        >
+                          <ActivityIndicator
+                            size='small'
+                            color='#0055ff'
+                          />
+                        </View>
+                      ) : user?.movies.find( (m: any) => {
                         return parseInt(m.id) === movieFull?.id
                       } ) ? (
                         <TouchableOpacity 

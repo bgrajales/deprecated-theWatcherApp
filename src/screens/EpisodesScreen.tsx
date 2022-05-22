@@ -25,7 +25,15 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
     })
     const [ showEpisode, setShowEpisode ] = useState(false)
 
-    const [ actionLoader, setActionLoader ] = useState(false)
+    const [ watchEpisodeLoader, setWatchEpisodeLoader ] = useState({
+        epId: 0,
+        loader: false
+    })
+
+    const [ watchSeasonLoader, setWatchSeasonLoader ] = useState({
+        seasonId: 0,
+        loader: false
+    })
 
     const [ episodeModalParameters, setEpisodeModalParameters ] = useState({
         seriesId: 0,
@@ -83,8 +91,11 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
                 </View>
 
                 {
-                    (user?.series?.find( serie => parseInt(serie.id) === seriesId )?.seasonsDetail?.find( seasonArr => parseInt(seasonArr.id) === season.id )?.episodes.length || 0 ) / season.episodes.length * 100 === 100 
+                    watchSeasonLoader.seasonId === season.id && watchSeasonLoader.loader ? (
+                        <ActivityIndicator size={25} color="#0055ff" />
+                    ) : (user?.series?.find( serie => parseInt(serie.id) === seriesId )?.seasonsDetail?.find( seasonArr => parseInt(seasonArr.id) === season.id )?.episodes.length || 0 ) / season.episodes.length * 100 === 100 
                     ?   <>
+                            
                             <TouchableOpacity
                                 onPress={() => {
                                     markSeasonAsWatched(season, 'remove')
@@ -110,6 +121,11 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
 
     const markSeasonAsWatched = async ( season: SeriesSeason, action: string ) => {
 
+        setWatchSeasonLoader({
+            seasonId: season.id,
+            loader: true
+        })
+        
         if( serieFull && user && token ) {
             const marked = await markSeasonAsWatchedAction({
                 userName: user.userName,
@@ -120,6 +136,10 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
                 posterPath: serieFull.poster_path || '',
                 serieEpisodes: serieFull.number_of_episodes,
                 action: action,
+            })
+            setWatchSeasonLoader({
+                seasonId: 0,
+                loader: false
             })
 
             if( marked.result ) {
@@ -135,7 +155,10 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
 
     const markEpisodeWatched = async (season: SeriesSeason, episode: Episode) => {
         
-        setActionLoader(true)
+        setWatchEpisodeLoader({
+            epId: episode.id,
+            loader: true
+        })
 
         if ( serieFull && user && token ) {
             const marked = await updateEpisode({ 
@@ -151,7 +174,10 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
     
             if ( marked.result ) {
     
-                setActionLoader(false)
+                setWatchEpisodeLoader({
+                    epId: 0,
+                    loader: false
+                })
                 updateWatchedSeries( marked.series )
             }
     
@@ -184,29 +210,44 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
                                 backgroundColor: colorScheme === 'dark' ? '#1e1e1e' : '#fff',
                             }}>
 
-                               
-                                <TouchableOpacity
-                                    style={ styles.accContentEyeImage }
-                                    activeOpacity={ 0.6 }
-                                    onPress={ () => markEpisodeWatched(season, episode) }
-                                >
-                                    <Image 
-                                        source={
-                                            user?.series.find(serie => serie.id.toString() === serieFull?.id.toString()) &&
-                                            user?.series.find(serie => serie.id.toString() === serieFull?.id.toString())!.
-                                                seasonsDetail.find(seasonDet => seasonDet.id.toString() === season.id.toString()) &&
-                                                user?.series.find(serie => serie.id.toString() === serieFull?.id.toString())!.
-                                                seasonsDetail.find(seasonDet => seasonDet.id.toString() === season.id.toString())!.
-                                                episodes.find(episodeDet => episodeDet.toString() === episode.episode_number.toString())
-                                                ? require('../assets/fullIcon.png') 
-                                                : require('../assets/empty.png')
-                                        }
-                                        style={{
+                                {
+                                    watchEpisodeLoader.epId === episode.id && watchEpisodeLoader.loader ? (
+                                        <View style={{ 
+                                            ...styles.accContentEyeImage, 
                                             width: 40,
-                                            height: 30,
-                                        }}
-                                    />
-                                </TouchableOpacity>
+                                            height: 40,
+                                        }} >
+                                            <ActivityIndicator
+                                                size='small'
+                                                color='#0055ff'
+                                            />
+                                        </View>
+                                    ) : (
+                                        <TouchableOpacity
+                                            style={ styles.accContentEyeImage }
+                                            activeOpacity={ 0.6 }
+                                            onPress={ () => markEpisodeWatched(season, episode) }
+                                        >
+                                            <Image 
+                                                source={
+                                                    user?.series.find(serie => serie.id.toString() === serieFull?.id.toString()) &&
+                                                    user?.series.find(serie => serie.id.toString() === serieFull?.id.toString())!.
+                                                        seasonsDetail.find(seasonDet => seasonDet.id.toString() === season.id.toString()) &&
+                                                        user?.series.find(serie => serie.id.toString() === serieFull?.id.toString())!.
+                                                        seasonsDetail.find(seasonDet => seasonDet.id.toString() === season.id.toString())!.
+                                                        episodes.find(episodeDet => episodeDet.toString() === episode.episode_number.toString())
+                                                        ? require('../assets/fullIcon.png') 
+                                                        : require('../assets/empty.png')
+                                                }
+                                                style={{
+                                                    width: 40,
+                                                    height: 30,
+                                                }}
+                                            />
+                                        </TouchableOpacity>
+                                    )
+                                }
+                                
 
                                 
 

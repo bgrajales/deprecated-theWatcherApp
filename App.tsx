@@ -13,6 +13,7 @@ const AppState = ({ children }: any) => {
 }
 
 export default function App() {
+
   return (
     <NavigationContainer>
       <AppState>

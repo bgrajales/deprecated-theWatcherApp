@@ -5,6 +5,8 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { EpisodesScreen } from '../screens/EpisodesScreen';
 import { SeriesDetailsComponent } from '../components/SeriesDetailsComponent';
 import { AuthContext } from '../context/AuthContext';
+import { english } from '../lenguages/english';
+import { spanish } from '../lenguages/spanish';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -14,7 +16,7 @@ interface Props {
 
 export const SeriesNavigator = ({ seriesId }: Props) => {
 
-    const { colorScheme } = useContext(AuthContext);
+    const { user, colorScheme } = useContext(AuthContext);
 
   return (
     <Tab.Navigator
@@ -35,12 +37,16 @@ export const SeriesNavigator = ({ seriesId }: Props) => {
         }}
 
         >
-        <Tab.Screen name="SeriesDetailsComponent" options={{ title: 'Details' }}>
+        <Tab.Screen name="SeriesDetailsComponent" options={{ 
+            title: user?.settings.leng === 'es-ES' ? spanish.seriesNavDetails : english.seriesNavDetails, 
+        }}>
             {
                 () => <SeriesDetailsComponent seriesId={seriesId} />
             }
         </Tab.Screen>
-        <Tab.Screen name="EpisodesScreen" options={{ title: 'Episodes' }}>
+        <Tab.Screen name="EpisodesScreen" options={{ 
+            title: user?.settings.leng === 'es-ES' ? spanish.seriesNavEpisodes : english.seriesNavEpisodes, 
+        }}>
             {
                 () => <EpisodesScreen seriesId={seriesId} />
             }

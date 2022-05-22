@@ -4,6 +4,8 @@ import { TextInput } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { AuthContext } from '../context/AuthContext';
 import { useDebouncedValue } from '../hooks/useDebouncedValue';
+import { english } from '../lenguages/english';
+import { spanish } from '../lenguages/spanish';
 
 interface Props {
     onDebounce: (value: string) => void;
@@ -12,7 +14,7 @@ interface Props {
 export const SearchInput = ({ onDebounce }: Props) => {
 
     const [textValue, setTextValue] = useState('')
-    const { colorScheme } = useContext(AuthContext)
+    const { user, colorScheme } = useContext(AuthContext)
     const debauncedValue = useDebouncedValue(textValue)
 
     useEffect(() => {
@@ -29,7 +31,9 @@ export const SearchInput = ({ onDebounce }: Props) => {
                 backgroundColor: colorScheme === 'dark' ? '#6c6c6c' : '#f3f1f3'
             }}>
                 <TextInput 
-                    placeholder="Search"
+                    placeholder={
+                        user?.settings.leng === 'es-ES' ? spanish.searchPlaceholder : english.searchPlaceholder
+                    }
                     style={{
                         ...styles.textInput,
                         color: colorScheme === 'dark' ? '#fff' : '#000'

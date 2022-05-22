@@ -3,6 +3,8 @@ import React, { useContext } from 'react'
 import { ActivityIndicator, Dimensions, FlatList, Image, Text, TouchableOpacity, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { AuthContext } from '../context/AuthContext'
+import { english } from '../lenguages/english'
+import { spanish } from '../lenguages/spanish'
 
 export const MoviesSeen = () => {
 
@@ -42,7 +44,11 @@ export const MoviesSeen = () => {
                                     textAlign: 'center',
                                     marginVertical: 20,
                                     color: colorScheme === 'dark' ? '#fff' : '#000'
-                                }}>Movies Watched</Text>
+                                }}>
+                                    {
+                                        user?.settings.leng === 'es-ES' ? spanish.moviesSeenTitles : english.moviesSeenTitles
+                                    }
+                                </Text>
                             </View>
                         )}}
                         renderItem={ ({ item }: any) => {
@@ -104,7 +110,9 @@ export const MoviesSeen = () => {
                         textAlign: 'center', 
                         marginBottom: 20
                     }}>
-                            Nothing to see here
+                            {
+                                user?.settings.leng === 'es-ES' ? spanish.moviesSeriesNothingToSee : english.moviesSeriesNothingToSee
+                            }
                     </Text>
                     <Text
                         style={{
@@ -115,7 +123,9 @@ export const MoviesSeen = () => {
                             textAlign: 'center'
                         }}
                     >
-                        Add movies you have seen to track them here!
+                        {
+                            user?.settings.leng === 'es-ES' ? spanish.moviesSeriesAddMovToTrack : english.moviesSeriesAddMovToTrack
+                        }
                     </Text>
                     
                 </View>

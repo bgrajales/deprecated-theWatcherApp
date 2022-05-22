@@ -9,14 +9,14 @@ import { PickGenresModal } from './PickGenresModal'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { ProfileDrawer } from '../navigation/ProfileDrawer'
 import { DrawerActions, useNavigation } from '@react-navigation/native'
+import { english } from '../lenguages/english'
+import { spanish } from '../lenguages/spanish'
 
 export const ProfileComponent = () => {
 
     const navigation = useNavigation()
 
     const { top } = useSafeAreaInsets()
-
-    const [pickGenresVisible, setPickGenresVisible] = useState(false)
 
     const { user, colorScheme } = useContext( AuthContext )
 
@@ -121,7 +121,11 @@ export const ProfileComponent = () => {
                         <Text style={{ 
                             ...styles.statsTitle, 
                             color: colorScheme === 'dark' ? '#e6e6e6' : '#000'
-                        }}>Movies Watched</Text>
+                        }}>
+                            {
+                                user?.settings.leng === 'es-ES' ? spanish.profileStatsMoviesWatched : english.profileStatsMoviesWatched
+                            }
+                        </Text>
                         <Text style={ styles.statsStat }>{ user?.movies.length }</Text>
                     </View>
 
@@ -132,7 +136,11 @@ export const ProfileComponent = () => {
                         <Text style={{ 
                             ...styles.statsTitle, 
                             color: colorScheme === 'dark' ? '#e6e6e6' : '#000'
-                        }}>Time Watching Movies</Text>
+                        }}>
+                            {
+                                user?.settings.leng === 'es-ES' ? spanish.profileStatsTimeWatchMovies : english.profileStatsTimeWatchMovies
+                            }
+                        </Text>
                         <View style={ styles.statsTime }>{ user && turnMinutesMovies().map((m) =>{
                             return (
                             <View style={ styles.timeIndiv } key={ m.key }>
@@ -149,7 +157,11 @@ export const ProfileComponent = () => {
                         <Text style={{ 
                             ...styles.statsTitle, 
                             color: colorScheme === 'dark' ? '#e6e6e6' : '#000'
-                        }}>Episodes Watched</Text>
+                        }}>
+                            {
+                                user?.settings.leng === 'es-ES' ? spanish.profileStatsEpisodesWatched : english.profileStatsEpisodesWatched
+                            }
+                        </Text>
                         <Text style={ styles.statsStat }>{
                             user?.series.reduce((acc, curr) => {
                                 return acc + curr.episodesWatched
@@ -164,7 +176,11 @@ export const ProfileComponent = () => {
                         <Text style={{ 
                             ...styles.statsTitle, 
                             color: colorScheme === 'dark' ? '#e6e6e6' : '#000'
-                        }}>Time Watching Episodes</Text>
+                        }}>
+                            {
+                                user?.settings.leng === 'es-ES' ? spanish.profileStatsTimeWatchEpisodes : english.profileStatsTimeWatchEpisodes
+                            }
+                        </Text>
                         <View style={ styles.statsTime }>{
                             turnMinutesSeries(
                             user?.series.reduce((acc, curr) => {

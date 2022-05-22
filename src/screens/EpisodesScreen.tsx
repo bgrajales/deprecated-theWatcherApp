@@ -9,6 +9,8 @@ import { AuthContext } from '../context/AuthContext';
 
 import { useSeriesDetail } from '../hooks/useSeriesDetail';
 import { Episode, SeriesSeason } from '../interfaces/movieInterface';
+import { english } from '../lenguages/english';
+import { spanish } from '../lenguages/spanish';
 
 interface Props {
     seriesId: number;
@@ -108,8 +110,6 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
 
     const markSeasonAsWatched = async ( season: SeriesSeason, action: string ) => {
 
-        console.log(seriesId, season.id, season.season_number, season.episodes.length, serieFull?.poster_path, serieFull?.number_of_episodes)
-
         if( serieFull && user && token ) {
             const marked = await markSeasonAsWatchedAction({
                 userName: user.userName,
@@ -124,7 +124,6 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
 
             if( marked.result ) {
                 // updateWatchedSeries(marked.data)
-                console.log('marked')
                 updateSeries(marked.seriesUpdate)
             } else {
                 console.log('error')
@@ -225,7 +224,9 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
                                             ...styles.accContentItemText,
                                             color: colorScheme === 'dark' ? '#fff' : '#000', 
                                         }}>{ episode.name }</Text>
-                                        <Text style={ styles.accContentEpisode }>Episode {episode.episode_number}</Text>
+                                        <Text style={ styles.accContentEpisode }>{
+                                            user?.settings.leng === 'es-ES' ? spanish.episodeModalEpisode : english.episodeModalEpisode
+                                        } {episode.episode_number}</Text>
                                     </View>
                                 </TouchableOpacity>
 

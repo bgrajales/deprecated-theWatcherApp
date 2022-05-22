@@ -4,13 +4,15 @@ import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { AuthContext } from '../context/AuthContext'
+import { english } from '../lenguages/english'
+import { spanish } from '../lenguages/spanish'
 
 export const About = () => {
     
     const navigation = useNavigation()
     const { top } = useSafeAreaInsets()
 
-    const { colorScheme } = useContext( AuthContext )
+    const { user, colorScheme } = useContext( AuthContext )
 
 
   return (
@@ -61,7 +63,9 @@ export const About = () => {
                     marginBottom: 20, 
                     color: colorScheme === 'dark' ? '#fff' : '#000'    
                 }}>
-                    About The Watcher App
+                    {
+                        user?.settings.leng === 'es-ES' ? spanish.aboutTitle : english.aboutTitle 
+                    }
                 </Text>
             </View>
 
@@ -72,7 +76,9 @@ export const About = () => {
                 textAlign: 'center',
                 color: colorScheme === 'dark' ? '#e6e6e6' : '#000'
             }}>
-                The Watcher App is a simple app that allows you to keep track of the episodes of TV shows and movies you watch.
+                {
+                    user?.settings.leng === 'es-ES' ? spanish.aboutIntroOne : english.aboutIntroOne
+                }
             </Text>
             <Text style={{ 
                 fontSize: 16, 
@@ -80,7 +86,9 @@ export const About = () => {
                 textAlign: 'center',
                 color: colorScheme === 'dark' ? '#e6e6e6' : '#000'
             }}>
-                You can add your favorite shows and movies to the app and mark them as watched, which will be saved in the Series and Movies tabs.
+                {
+                    user?.settings.leng === 'es-ES' ? spanish.aboutIntroTwo : english.aboutIntroTwo
+                }
             </Text>
 
             <View
@@ -104,7 +112,9 @@ export const About = () => {
                     fontWeight: 'bold',
                     color: colorScheme === 'dark' ? '#e6e6e6' : '#000'
                 }}>
-                    This product uses the TMDB API but is not endorsed or certified by TMDB.
+                    {
+                        user?.settings.leng === 'es-ES' ? spanish.aboutTmdbText : english.aboutTmdbText
+                    }
                 </Text>
             </View>
 
@@ -124,7 +134,9 @@ export const About = () => {
                 color: colorScheme === 'dark' ? '#fff' : '#000',
                 textAlign: 'center'
             }}>
-                Features
+                {
+                    user?.settings.leng === 'es-ES' ? spanish.aboutFeaturesTitle : english.aboutFeaturesTitle
+                }
             </Text>
 
             <View
@@ -143,7 +155,9 @@ export const About = () => {
                     textAlign: 'center',
                     color: colorScheme === 'dark' ? '#e6e6e6' : '#000'
                 }}>
-                    Use the 'bookmark' icon on shows and movies to add them to your watchlist
+                    {
+                        user?.settings.leng === 'es-ES' ? spanish.aboutFeatureOne : english.aboutFeatureOne
+                    }
                 </Text>
             </View>
             <View
@@ -162,7 +176,9 @@ export const About = () => {
                     color: colorScheme === 'dark' ? '#e6e6e6' : '#000',
                     paddingRight: 20,
                 }}>
-                    Use the watcher eye on shows and movies to mark them as watched, you can mark entire shows, season or individual episodes
+                    {
+                        user?.settings.leng === 'es-ES' ? spanish.aboutFeatureTwo : english.aboutFeatureTwo
+                    }
                 </Text>
                 <Image 
                     source={require('../assets/fullIcon.png')}
@@ -185,7 +201,9 @@ export const About = () => {
                     textAlign: 'center',
                     color: colorScheme === 'dark' ? '#e6e6e6' : '#000',
                 }}>
-                    Use the search screen to find shows and movies
+                    {
+                        user?.settings.leng === 'es-ES' ? spanish.aboutFeatureThree : english.aboutFeatureThree
+                    }
                 </Text>
             </View>
             <View
@@ -204,7 +222,9 @@ export const About = () => {
                     color: colorScheme === 'dark' ? '#e6e6e6' : '#000',
                     paddingRight: 20,
                 }}>
-                    Keep track of watched movies and shows in the Series and Movies tabs
+                    {
+                        user?.settings.leng === 'es-ES' ? spanish.aboutFeatureFour : english.aboutFeatureFour
+                    }
                 </Text>
                 <Icon name='tv' size={30} color='#0055ff' style={{ marginRight: 10 }} />
             </View>
@@ -224,7 +244,9 @@ export const About = () => {
                     textAlign: 'center',
                     color: colorScheme === 'dark' ? '#e6e6e6' : '#000',
                 }}>
-                    Comment on your favourite shows and movies and see what others think
+                    {
+                        user?.settings.leng === 'es-ES' ? spanish.aboutFeatureFive : english.aboutFeatureFive
+                    }
                 </Text>
             </View>
         </ScrollView>

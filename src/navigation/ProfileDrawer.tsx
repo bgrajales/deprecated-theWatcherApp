@@ -9,12 +9,14 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { About } from '../components/About';
 import { WatchList } from '../components/WatchList';
 import { Settings } from '../components/Settings';
+import { english } from '../lenguages/english';
+import { spanish } from '../lenguages/spanish';
 
 const Drawer = createDrawerNavigator();
 
 export const ProfileDrawer = () => {
 
-    const { logOut, colorScheme} = useContext( AuthContext )
+    const { user, logOut, colorScheme} = useContext( AuthContext )
 
     return (
         <Drawer.Navigator
@@ -39,7 +41,9 @@ export const ProfileDrawer = () => {
                                 color: focused ? '#fff' : colorScheme === 'dark' ? '#fff' : '#000', 
                                 fontWeight: focused ? 'bold' : 'normal',
                             }}>
-                                Profile
+                                {
+                                    user?.settings.leng === 'es-ES' ? spanish.profileDrawerProfile : english.profileDrawerProfile
+                                }
                             </Text>
                         )}
                         onPress={() => props.navigation.navigate('Profile')}
@@ -54,7 +58,9 @@ export const ProfileDrawer = () => {
                                 color: focused ? '#fff' : colorScheme === 'dark' ? '#fff' : '#000', 
                                 fontWeight: focused ? 'bold' : 'normal',
                             }}>
-                                Genres
+                                {
+                                    user?.settings.leng === 'es-ES' ? spanish.profileDrawerGenres : english.profileDrawerGenres
+                                }
                             </Text>
                         )}
                         labelStyle={{ color: '#292929' }}
@@ -71,7 +77,9 @@ export const ProfileDrawer = () => {
                                 color: focused ? '#fff' : colorScheme === 'dark' ? '#fff' : '#000', 
                                 fontWeight: focused ? 'bold' : 'normal',
                             }}>
-                                Watchlist
+                                {
+                                    user?.settings.leng === 'es-ES' ? spanish.profileDrawerWatchlist : english.profileDrawerWatchlist
+                                }
                             </Text>
                         )}
                         labelStyle={{ color: '#292929' }}
@@ -88,7 +96,9 @@ export const ProfileDrawer = () => {
                                 color: focused ? '#fff' : colorScheme === 'dark' ? '#fff' : '#000', 
                                 fontWeight: focused ? 'bold' : 'normal',
                             }}>
-                                About / Features
+                                {
+                                    user?.settings.leng === 'es-ES' ? spanish.profileDrawerAbout : english.profileDrawerAbout
+                                }
                             </Text>
                         )}
                         labelStyle={{ color: '#292929' }}
@@ -105,7 +115,9 @@ export const ProfileDrawer = () => {
                                 color: focused ? '#fff' : colorScheme === 'dark' ? '#fff' : '#000', 
                                 fontWeight: focused ? 'bold' : 'normal',
                             }}>
-                                Settings
+                                {
+                                    user?.settings.leng === 'es-ES' ? spanish.profileDrawerSettings : english.profileDrawerSettings
+                                }
                             </Text>
                         )}
                         labelStyle={{ color: '#292929' }}

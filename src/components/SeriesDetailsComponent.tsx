@@ -7,6 +7,8 @@ import YoutubePlayer from 'react-native-youtube-iframe';
 
 import { useSeriesDetail } from '../hooks/useSeriesDetail'
 import { AuthContext } from '../context/AuthContext';
+import { english } from '../lenguages/english';
+import { spanish } from '../lenguages/spanish';
 
 interface Props {
     seriesId: number;
@@ -33,7 +35,10 @@ export const SeriesDetailsComponent = ({seriesId}: Props ) => {
                 ...styles.title, 
                 color: colorScheme === 'dark' ? '#fff' : '#000',
                 marginBottom: 0
-            }}>Available on
+            }}>
+                {
+                    user?.settings.leng === 'es-ES' ? spanish.seriesDetailSAvailable : english.seriesDetailSAvailable
+                }
             </Text>
             <Text
                 style={{
@@ -41,7 +46,9 @@ export const SeriesDetailsComponent = ({seriesId}: Props ) => {
                     color: colorScheme === 'dark' ? '#fff' : '#000'
                 }}
             >
-                Provided by JustWatch
+                {
+                    user?.settings.leng === 'es-ES' ? spanish.seriesDetailJustWatched : english.seriesDetailJustWatched
+                }
             </Text>
             <FlatList 
                 horizontal={ true }
@@ -87,14 +94,23 @@ export const SeriesDetailsComponent = ({seriesId}: Props ) => {
             color: '#fff',
             fontSize: 14,
             fontWeight: 'bold',
-            }}>Not available on any platform</Text>
+            }}>
+                {
+                    user?.settings.leng === 'es-ES' ? spanish.seriesDetailNotAvailable : english.seriesDetailNotAvailable
+                }
+            </Text>
         </View>
     }
         <View style={ styles.section }>
             <Text style={{ 
                 ...styles.title, 
                 color: colorScheme === 'dark' ? '#fff' : '#000'
-            }}>Overview</Text>
+            }}>
+                {/* {english.lengOverview} */}
+                {
+                    user?.settings.leng === 'es-ES' ? spanish.lengOverview : english.lengOverview
+                }
+            </Text>
             <Text style={{ 
                 ...styles.text, 
                 color: colorScheme === 'dark' ? '#e6e6e6' : '#000'

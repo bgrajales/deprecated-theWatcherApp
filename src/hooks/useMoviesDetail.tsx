@@ -16,9 +16,8 @@ interface MovieDetails {
 
 export const useMovieDetails = ( movieId: number, setCommentsToShow: (arg0: Comments[]) => void, userRegion: string | undefined) => {
 
-    // const { user } = useContext( AuthContext )
+    const { user } = useContext( AuthContext )
 
-    console.log(userRegion)
     const [state, setState] = useState<MovieDetails>({
         isLoading: true,
         movieFull: undefined,
@@ -30,7 +29,11 @@ export const useMovieDetails = ( movieId: number, setCommentsToShow: (arg0: Comm
 
     const getMovieDetails = async () => {
 
-        const movieDetailsPromise = movieDB.get<MovieFull>(`/${movieId}`);
+        const lenguageParam = {
+            language: user?.settings.leng || 'en-US',
+        }
+
+        const movieDetailsPromise = movieDB.get<MovieFull>(`/${movieId}`, { params: lenguageParam })
         const castPromise = movieDB.get<MovieCreditsResponse>(`/${movieId}/credits`);
         const providersPromise = movieDB.get(`/${movieId}/watch/providers`);
         const videosPromise = movieDB.get<VideosResponse>(`/${movieId}/videos`);
@@ -48,12 +51,11 @@ export const useMovieDetails = ( movieId: number, setCommentsToShow: (arg0: Comm
         } else {
             userRegionProviders = providersResponse.data.results.US;
         }
-        
         setState({
             isLoading: false,
             movieFull: movieDetailsResponse.data,
             cast: castResponse.data.cast,
-            providers: userRegionProviders.flatrate ? userRegionProviders.flatrate : [],
+            providers: userRegionProviders?.flatrate ? userRegionProviders.flatrate : [],
             videos: videosResponse.data.results || [],
             comments: comments.result ? comments.comments : [],
         });

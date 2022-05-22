@@ -6,6 +6,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { setGenres } from '../api/watcherActions';
 import { AuthContext } from '../context/AuthContext';
 import { moviesGenres, seriesGenres } from '../data/generesData';
+import { english } from '../lenguages/english';
+import { spanish } from '../lenguages/spanish';
 
 
 export const PickGenresModal = () => {
@@ -122,10 +124,14 @@ export const PickGenresModal = () => {
                 <Text
                     style={{
                         ...styles.title,
-                        color: colorScheme === 'dark' ? '#fff' : '#000'
+                        color: colorScheme === 'dark' ? '#fff' : '#000',
+                        paddingRight: 50,
+                        paddingLeft: 50
                     }}
                 >
-                    Pick at least 4 genres for each
+                    {
+                        user?.settings.leng === 'es-ES' ? spanish.genresTitles : english.genresTitles
+                    }
                 </Text>
 
                 <ScrollView
@@ -134,7 +140,9 @@ export const PickGenresModal = () => {
                     }}
                 >
                     <Text style={styles.modalTitle}>
-                        Movies
+                        {
+                            user?.settings.leng === 'es-ES' ? spanish.genresSubTitleOne : english.genresSubTitleOne
+                        }
                     </Text>
 
                     <View

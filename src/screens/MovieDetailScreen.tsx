@@ -14,6 +14,8 @@ import { AuthContext } from '../context/AuthContext';
 import { BlurView } from 'expo-blur';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Comments } from '../interfaces/movieInterface';
+import { english } from '../lenguages/english';
+import { spanish } from '../lenguages/spanish';
 
 interface Props extends StackScreenProps<DetailStackParams, 'MovieDetailScreen'>{}
 
@@ -430,7 +432,22 @@ export const MovieDetailScreen = ({ route }: Props) => {
                     <Text style={{ 
                       ...styles.title, 
                       color: colorScheme === 'dark' ? '#fff' : '#000',
-                    }}>Available on</Text>
+                      marginBottom:0,
+                    }}>
+                      {
+                        user?.settings.leng === 'es-ES' ? spanish.seriesDetailSAvailable : english.seriesDetailSAvailable
+                      }  
+                    </Text>
+                    <Text
+                        style={{
+                            ...styles.subTitletwo,
+                            color: colorScheme === 'dark' ? '#fff' : '#000'
+                        }}
+                    >
+                        {
+                          user?.settings.leng === 'es-ES' ? spanish.seriesDetailJustWatched : english.seriesDetailJustWatched
+                        }
+                    </Text>
                     <FlatList 
                         horizontal={ true }
                         data={ providers }
@@ -474,7 +491,11 @@ export const MovieDetailScreen = ({ route }: Props) => {
                     color: '#fff',
                     fontSize: 14,
                     fontWeight: 'bold',
-                 }}>Not available on any platform</Text>
+                 }}>
+                   {
+                      user?.settings.leng === 'es-ES' ? spanish.seriesDetailNotAvailable : english.seriesDetailNotAvailable
+                   }
+                  </Text>
               </View>
 
 
@@ -484,7 +505,11 @@ export const MovieDetailScreen = ({ route }: Props) => {
                 <Text style={{ 
                   ...styles.title, 
                   color: colorScheme === 'dark' ? '#fff' : '#000',
-                }}>Overview</Text>
+                }}>
+                  {
+                    user?.settings.leng === 'es-ES' ? spanish.lengOverview : english.lengOverview
+                  }
+                </Text>
                 <Text style={{ 
                   ...styles.text, 
                   color: colorScheme === 'dark' ? '#e6e6e6' : '#000',
@@ -567,7 +592,9 @@ export const MovieDetailScreen = ({ route }: Props) => {
                     ...styles.subTitle, 
                     color: colorScheme === 'dark' ? '#fff' : '#000',
                   }}>
-                      Comments
+                      {
+                        user?.settings.leng === 'es-ES' ? spanish.episodeModalComments : english.episodeModalComments
+                      }
                   </Text>
                   <Icon name="chatbubbles" color={
                     colorScheme === 'dark' ? '#fff' : '#000'
@@ -588,7 +615,11 @@ export const MovieDetailScreen = ({ route }: Props) => {
                           }}
                           onPress={() => setWriteCommentVisible(true)}
                       >
-                          <Text style={{ color: '#fff', fontWeight: 'bold' }}>Write a new comment</Text>
+                          <Text style={{ color: '#fff', fontWeight: 'bold' }}>
+                            {
+                              user?.settings.leng === 'es-ES' ? spanish.episodeModalNewComment : english.episodeModalNewComment
+                            }
+                          </Text>
                       </TouchableOpacity>
                       ) : (
                           null
@@ -615,11 +646,17 @@ export const MovieDetailScreen = ({ route }: Props) => {
                               padding: 10, 
                           }}>
                               <View style={{ ...styles.subTitleDiv, width: '100%', justifyContent: 'space-between', marginTop: 0}}>
-                                  <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Write a new comment</Text>
+                                  <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
+                                    {
+                                      user?.settings.leng === 'es-ES' ? spanish.episodeModalNewComment : english.episodeModalNewComment
+                                    }
+                                  </Text>
                                   <Icon name="md-close" size={30} color="#000" onPress={() => setWriteCommentVisible(false)} />
                               </View>
                               <TextInput
-                                  placeholder="Write your comment here"
+                                  placeholder={
+                                    user?.settings.leng === 'es-ES' ? spanish.episodeModalNewCommentInput : english.episodeModalNewCommentInput
+                                  }
                                   style={{ 
                                       width: '100%', 
                                       padding: 10, 
@@ -649,7 +686,11 @@ export const MovieDetailScreen = ({ route }: Props) => {
                                       postCommentBtnAction()
                                   }
                               >
-                                  <Text style={{ color: '#fff', fontWeight: 'bold' }}>Post</Text>
+                                  <Text style={{ color: '#fff', fontWeight: 'bold' }}>
+                                    {
+                                      user?.settings.leng === 'es-ES' ? spanish.episodeModalPost : english.episodeModalPost
+                                    }
+                                  </Text>
                               </TouchableOpacity>
                           </View>
                       </BlurView>
@@ -964,4 +1005,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
+
+    subTitletwo: {
+      fontSize: 10,
+      marginBottom: 15,
+      paddingHorizontal: 20,
+      opacity: 0.7,
+  },
 });

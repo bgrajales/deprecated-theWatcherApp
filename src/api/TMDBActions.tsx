@@ -1,4 +1,6 @@
+import { useContext } from 'react';
 import { multiDB, seriesDB } from '../api/movieDB';
+import { AuthContext } from '../context/AuthContext';
 import { EpisodeModalResponse, NextEpisodeResponse, SeriesFull } from '../interfaces/movieInterface';
 import { fetchComments } from './watcherActions';
 
@@ -8,9 +10,13 @@ interface EpisodeData {
     episodeNumber: number;
 }
 
-export const getEpisodeData = async (episodeData: EpisodeData) => {
+export const getEpisodeData = async (episodeData: EpisodeData, lenguageUser: string) => {
 
-    const resp = await seriesDB.get<EpisodeModalResponse>(`/${episodeData.serieId}/season/${episodeData.seasonNumber}/episode/${episodeData.episodeNumber}`);
+    const lenguageParams = {
+        language: lenguageUser || 'en-US',
+    }
+
+    const resp = await seriesDB.get<EpisodeModalResponse>(`/${episodeData.serieId}/season/${episodeData.seasonNumber}/episode/${episodeData.episodeNumber}`, { params: lenguageParams });
     const images = await seriesDB.get(`/${episodeData.serieId}/season/${episodeData.seasonNumber}/episode/${episodeData.episodeNumber}/images`);
 
     const comments = await fetchComments({ elementId: resp.data.id });

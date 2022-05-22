@@ -8,6 +8,8 @@ import { Comments, EpisodeModalResponse } from '../interfaces/movieInterface';
 import { BlurView } from 'expo-blur';
 import { likeComment, postComment, postReply } from '../api/watcherActions';
 import { AuthContext } from '../context/AuthContext';
+import { english } from '../lenguages/english';
+import { spanish } from '../lenguages/spanish';
 
 
 interface Props {
@@ -50,7 +52,7 @@ export const EpisodeModal = ({ visible = false, setVisible, seriesId, seasonNumb
 
     const modalStart = async () => {
         
-        const resp = await getEpisodeData({ serieId: seriesId, seasonNumber, episodeNumber })
+        const resp = await getEpisodeData({ serieId: seriesId, seasonNumber, episodeNumber }, user?.settings.leng || 'en-US');
         
         if ( resp ) {
             setFullEpisode(resp);
@@ -234,7 +236,14 @@ export const EpisodeModal = ({ visible = false, setVisible, seriesId, seasonNumb
                                                     ...styles.title,
                                                     color: colorScheme === 'dark' ? '#fff' : '#000'
                                                 }}>{ fullEpisode.name }</Text>
-                                                <Text style={ styles.text }>Season { seasonNumber } - Episode { episodeNumber }</Text>
+                                                <Text style={ styles.text }>
+                                                    {/* {english.episodeModalSeason} { seasonNumber } - {english.episodeModalEpisode} { episodeNumber } */}
+                                                    {
+                                                        user?.settings.leng === 'es-ES' ? spanish.episodeModalSeason : english.episodeModalSeason
+                                                    } { seasonNumber } - {
+                                                        user?.settings.leng === 'es-ES' ? spanish.episodeModalEpisode : english.episodeModalEpisode
+                                                    } { episodeNumber }
+                                                </Text>
                                                 <View
                                                     style={{ 
                                                         flexDirection: 'row',
@@ -261,7 +270,9 @@ export const EpisodeModal = ({ visible = false, setVisible, seriesId, seasonNumb
                                                 ...styles.subTitle,
                                                 color: colorScheme === 'dark' ? '#fff' : '#000'
                                             }}>
-                                                Overview
+                                                {
+                                                    user?.settings.leng === 'es-ES' ? spanish.lengOverview : english.lengOverview
+                                                } 
                                             </Text>
                                             <Icon name="eye" color={
                                                 colorScheme === 'dark' ? '#fff' : '#000'
@@ -280,7 +291,11 @@ export const EpisodeModal = ({ visible = false, setVisible, seriesId, seasonNumb
                                             <Text style={{ 
                                                 ...styles.subTitle,
                                                 color: colorScheme === 'dark' ? '#fff' : '#000'
-                                            }}>Stills</Text>
+                                            }}>
+                                                {
+                                                    user?.settings.leng === 'es-ES' ? spanish.episodeModalStills : english.episodeModalStills
+                                                }
+                                            </Text>
                                             <Icon name="image" color={
                                                 colorScheme === 'dark' ? '#fff' : '#000'
                                             } size={20} style={{ marginLeft: 10 }} />
@@ -307,7 +322,9 @@ export const EpisodeModal = ({ visible = false, setVisible, seriesId, seasonNumb
                                                 ...styles.subTitle,
                                                 color: colorScheme === 'dark' ? '#fff' : '#000'
                                             }}>
-                                                Comments
+                                                {
+                                                    user?.settings.leng === 'es-ES' ? spanish.episodeModalComments : english.episodeModalComments
+                                                }
                                             </Text>
                                             <Icon name="chatbubbles" color={
                                                 colorScheme === 'dark' ? '#fff' : '#000'
@@ -328,7 +345,11 @@ export const EpisodeModal = ({ visible = false, setVisible, seriesId, seasonNumb
                                                     }}
                                                     onPress={() => setWriteCommentVisible(true)}
                                                 >
-                                                    <Text style={{ color: '#fff', fontWeight: 'bold' }}>Write a new comment</Text>
+                                                    <Text style={{ color: '#fff', fontWeight: 'bold' }}>
+                                                        {
+                                                            user?.settings.leng === 'es-ES' ? spanish.episodeModalNewComment : english.episodeModalNewComment
+                                                        }
+                                                    </Text>
                                                 </TouchableOpacity>
                                                 ) : (
                                                     null
@@ -355,11 +376,17 @@ export const EpisodeModal = ({ visible = false, setVisible, seriesId, seasonNumb
                                                         padding: 10, 
                                                     }}>
                                                         <View style={{ ...styles.subTitleDiv, width: '100%', justifyContent: 'space-between', marginTop: 0}}>
-                                                            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Write a new comment</Text>
+                                                            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
+                                                                {
+                                                                    user?.settings.leng === 'es-ES' ? spanish.episodeModalNewComment : english.episodeModalNewComment
+                                                                }
+                                                            </Text>
                                                             <Icon name="md-close" size={30} color="#000" onPress={() => setWriteCommentVisible(false)} />
                                                         </View>
                                                         <TextInput 
-                                                            placeholder="Write your comment here"
+                                                            placeholder={
+                                                                user?.settings.leng === 'es-ES' ? spanish.episodeModalNewCommentInput : english.episodeModalNewCommentInput
+                                                            }
                                                             style={{ 
                                                                 width: '100%', 
                                                                 padding: 10, 
@@ -389,7 +416,11 @@ export const EpisodeModal = ({ visible = false, setVisible, seriesId, seasonNumb
                                                                 postCommentBtnAction()
                                                             }
                                                         >
-                                                            <Text style={{ color: '#fff', fontWeight: 'bold' }}>Post</Text>
+                                                            <Text style={{ color: '#fff', fontWeight: 'bold' }}>
+                                                                {
+                                                                    user?.settings.leng === 'es-ES' ? spanish.episodeModalPost : english.episodeModalPost
+                                                                }
+                                                            </Text>
                                                         </TouchableOpacity>
                                                     </View>
                                                 </BlurView>

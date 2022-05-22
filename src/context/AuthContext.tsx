@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useReducer } from "react";
+import React, { createContext, useEffect, useReducer, useState } from "react";
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -26,6 +26,8 @@ type AuthContextProps = {
     updateWatchListContext: ( watchlist: { elementId: string; posterPath: string; type: string; }[] ) => void;
     updateSeries: ( series: UserSeries[] ) => void;
     colorScheme: string | null | undefined;
+    isLoadingUser: boolean;
+    updateSettings: ( settings: { leng: string; } ) => void;
 }
 
 const authInitialState: AuthState = {
@@ -41,23 +43,30 @@ export const AuthContext = createContext({} as AuthContextProps);
 export const AuthProvider = ({ children }: any) => {
 
     const [ state, dispatch ] = useReducer(AuthReducer, authInitialState)
+    const [ isLoadingUser, setIsLoadingUser ] = useState(true)
     const colorScheme = Appearance.getColorScheme();
 
     useEffect(() => {
-
         checkToken()
-      
     }, [])
 
     const checkToken = async () => {
 
+        setIsLoadingUser(true)
+
         const refreshToken = await AsyncStorage.getItem('refreshToken')
 
-        if ( !refreshToken ) return dispatch({ type: 'notAuthenticated' });
+        if ( !refreshToken ) {
+            setIsLoadingUser(false)
+            return dispatch({ type: 'notAuthenticated' });
+        }
 
         const resp = await watcherApi.post('/refreshToken', { refreshToken })
 
-        if ( resp.data.error ) return dispatch({ type: 'notAuthenticated' });
+        if ( resp.data.error ) {
+            setIsLoadingUser(false)
+            return dispatch({ type: 'notAuthenticated' });
+        }
 
         await AsyncStorage.setItem('token', resp.data.token)
         await AsyncStorage.setItem('refreshToken', resp.data.refreshToken)
@@ -71,6 +80,7 @@ export const AuthProvider = ({ children }: any) => {
             }
         })
         
+        setIsLoadingUser(false)
     }    
 
     const signIn = async ( { email, password }: LoginData ) => {
@@ -197,6 +207,17 @@ export const AuthProvider = ({ children }: any) => {
 
     }
 
+    const updateSettings = async ( settings: WatcherUser['settings']) => {
+
+        dispatch({
+            type: 'updateSettings',
+            payload: {
+                settings
+            }
+        })
+    
+    }
+
     return (
         <AuthContext.Provider value={{
             ...state,
@@ -209,7 +230,9 @@ export const AuthProvider = ({ children }: any) => {
             updateLikedComments,
             updateWatchListContext,
             updateSeries,
-            colorScheme
+            colorScheme,
+            isLoadingUser,
+            updateSettings
         }}>
             {children}
         </AuthContext.Provider>

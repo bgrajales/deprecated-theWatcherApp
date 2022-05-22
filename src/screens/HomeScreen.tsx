@@ -11,6 +11,8 @@ import { AuthContext } from '../context/AuthContext'
 
 import { useMovies } from '../hooks/useMovies'
 import { useSeries } from '../hooks/useSeries'
+import { english } from '../lenguages/english'
+import { spanish } from '../lenguages/spanish'
 import { styles } from '../theme/appTheme'
 
 export const HomeScreen = () => {
@@ -89,7 +91,11 @@ export const HomeScreen = () => {
           <Text style={{ 
             ...homeStyles.categTitle, 
             color: colorScheme === 'dark' ? '#fff' : '#000'
-          }}>Now Playing</Text>
+          }}>
+            {
+              user?.settings.leng === 'es-ES' ? spanish.homeNowPlaying : english.homeNowPlaying
+            }
+          </Text>
           <Icon name="film" color={ 
             colorScheme === 'dark' ? '#fff' : '#000'
           } size={ 30 } style={{ marginLeft: 10 }}/>

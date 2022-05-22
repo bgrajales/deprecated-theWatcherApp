@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { seriesDB } from '../api/movieDB';
+import { AuthContext } from '../context/AuthContext';
 import { Providers, SeriesCast, SeriesCredits, SeriesFull, SeriesSeason, Video, VideosResponse } from '../interfaces/movieInterface';
 
 interface SeriesDetails {
@@ -23,9 +24,15 @@ export const useSeriesDetail = ( serieId: number, userRegion: string | undefined
         seasons: [],
     });
 
+    const { user } = useContext( AuthContext )
+
     const getSeriesDetail = async () => {
 
-        const serieDetailsPromise = seriesDB.get<SeriesFull>(`/${serieId}`);
+        const lenguageParams = {
+            language: user?.settings.leng || 'en-US',
+        }
+
+        const serieDetailsPromise = seriesDB.get<SeriesFull>(`/${serieId}`, { params: lenguageParams });
         const castPromise = seriesDB.get<SeriesCredits>(`/${serieId}/credits`);
         const providersPromise = seriesDB.get(`/${serieId}/watch/providers`);
         const videosPromise = seriesDB.get<VideosResponse>(`/${serieId}/videos`);
@@ -60,7 +67,7 @@ export const useSeriesDetail = ( serieId: number, userRegion: string | undefined
             isLoading: false,
             serieFull: serieDetailsResponse.data,
             cast: castResponse.data.cast,
-            providers: userRegionProviders.flatrate ? userRegionProviders.flatrate : [],
+            providers: userRegionProviders?.flatrate ? userRegionProviders.flatrate : [],
             videos: videosResponse.data.results || [],
             seasons: seasonsArray,
         });

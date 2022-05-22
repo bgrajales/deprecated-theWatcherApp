@@ -30,4 +30,7 @@ export interface WatcherUser {
     moviesGenres: { genreId: number; genre: string; }[],
     seriesGenres: { genreId: number; genre: string; }[],
     watchlist: { elementId: string; posterPath: string; type: string; }[],
+    settings: {
+        leng: string;
+    }
 }

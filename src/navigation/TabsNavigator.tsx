@@ -10,12 +10,19 @@ import { SearchDetailStack } from './SearchStack';
 import { AuthContext } from '../context/AuthContext';
 import { MovieSeenStack } from './MovieSeenStack';
 import { SerieSeenStack } from './SerieSeenStack';
+import AppLoading from 'expo-app-loading';
+import { english } from '../lenguages/english';
+import { spanish } from '../lenguages/spanish';
 
 const Tab = createBottomTabNavigator();
 
 export const TabsNavigator = () => {
 
-  const { status, colorScheme } = useContext(AuthContext);
+  const { user, colorScheme, isLoadingUser } = useContext(AuthContext);
+
+  if ( isLoadingUser ) {
+    return <AppLoading />
+  }
 
   return (
     <Tab.Navigator
@@ -59,7 +66,7 @@ export const TabsNavigator = () => {
           name="MovieSeenStack" 
           component={MovieSeenStack}
           options={{
-            tabBarLabel: 'Movies',
+            tabBarLabel: user?.settings.leng === 'es-ES' ? spanish.navBarMovies : english.navBarMovies,
             tabBarIcon: ({ color, size }) => (
               <Icon name="film" color={color} size={size} />
             )
@@ -69,7 +76,7 @@ export const TabsNavigator = () => {
           name="DetailStack" 
           component={DetailStack}
           options={{
-            tabBarLabel: 'Home',
+            tabBarLabel: user?.settings.leng === 'es-ES' ? spanish.navBarHome : english.navBarHome,
             tabBarIcon: ({ color, size }) => (
               <Icon name="home" color={color} size={size} />
             )
@@ -79,7 +86,7 @@ export const TabsNavigator = () => {
           name="SearchDetailStack" 
           component={SearchDetailStack}
           options={{
-            tabBarLabel: 'Search',
+            tabBarLabel: user?.settings.leng === 'es-ES' ? spanish.navBarSearch : english.navBarSearch,
             tabBarIcon: ({ color, size }) => (
               <Icon name="search" color={color} size={size} />
             )
@@ -89,7 +96,7 @@ export const TabsNavigator = () => {
           name="ProfileScreen" 
           component={ProfileScreen}
           options={{
-            tabBarLabel: 'Profile',
+            tabBarLabel: user?.settings.leng === 'es-ES' ? spanish.navBarProfile : english.navBarProfile,
             tabBarIcon: ({ color, size }) => (
               <Icon name="person" color={color} size={size} />
             )

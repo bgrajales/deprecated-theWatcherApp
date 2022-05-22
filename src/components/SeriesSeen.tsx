@@ -6,6 +6,8 @@ import Carousel from 'react-native-snap-carousel'
 import { getSeriesNextEpisodes } from '../api/TMDBActions'
 import { AuthContext } from '../context/AuthContext'
 import { NextEpisodeResponse } from '../interfaces/movieInterface'
+import { english } from '../lenguages/english'
+import { spanish } from '../lenguages/spanish'
 
 export const SeriesSeen = () => {
 
@@ -93,7 +95,9 @@ export const SeriesSeen = () => {
                             textAlign: 'center', 
                             marginBottom: 20
                         }}>
-                                Nothing to see here
+                                {
+                                    user?.settings.leng === 'es-ES' ? spanish.moviesSeriesNothingToSee : english.moviesSeriesNothingToSee
+                                }
                         </Text>
                         <Text
                             style={{
@@ -104,7 +108,9 @@ export const SeriesSeen = () => {
                                 textAlign: 'center'
                             }}
                         >
-                            Add a show to track it from here in the home screen or explore your watchlist!
+                            {
+                                user?.settings.leng === 'es-ES' ? spanish.moviesSeriesAddMovToTrack : english.moviesSeriesAddMovToTrack
+                            }
                         </Text>
                     </View>
                 }
@@ -126,7 +132,9 @@ export const SeriesSeen = () => {
                             color: colorScheme === 'dark' ? '#fff' : '#000',
                             textAlign: 'center'
                         }}>
-                                Upcoming episodes
+                                {
+                                    user?.settings.leng === 'es-ES' ? spanish.seriesScreenUpcEpisodes : english.seriesScreenUpcEpisodes
+                                }
                         </Text>
                         
                         <Carousel 
@@ -233,7 +241,9 @@ export const SeriesSeen = () => {
                                 paddingHorizontal: 14,
                                 color: colorScheme === 'dark' ? '#fff' : '#000',
                             }}>
-                                    Currently Watching
+                                    {
+                                        user?.settings.leng === 'es-ES' ? spanish.seriesScreenCurrentlyWatching : english.seriesScreenCurrentlyWatching
+                                    }
                             </Text>
                             <Text
                                 style={{
@@ -329,7 +339,9 @@ export const SeriesSeen = () => {
                                 paddingHorizontal: 14,
                                 color: colorScheme === 'dark' ? '#fff' : '#000',
                             }}>
-                                    Completed Series
+                                    {
+                                        user?.settings.leng === 'es-ES' ? spanish.seriesScreenCompletedSeries : english.seriesScreenCompletedSeries
+                                    }
                             </Text>
                             <Text
                                 style={{

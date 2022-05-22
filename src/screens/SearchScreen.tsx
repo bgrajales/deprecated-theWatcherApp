@@ -7,11 +7,13 @@ import { SearchCard } from '../components/SearchCard'
 import { SearchInput } from '../components/SearchInput'
 import { AuthContext } from '../context/AuthContext'
 import { SearchIndiv, SearchResponse } from '../interfaces/movieInterface'
+import { english } from '../lenguages/english'
+import { spanish } from '../lenguages/spanish'
 
 export const SearchScreen = () => {
 
   const { top } = useSafeAreaInsets()
-  const { colorScheme } = useContext(AuthContext)
+  const { user, colorScheme } = useContext(AuthContext)
 
   const [ isFetching, setIsFetching ] = useState(false)
   const [searchText, setSearchText] = useState('')
@@ -74,7 +76,9 @@ export const SearchScreen = () => {
               textAlign: 'center',
               marginBottom: 20
             }}>
-              Type the title of the movie or TV show you want to search for
+              {
+                user?.settings.leng === 'es-ES' ? spanish.searchPlaceHolderText : english.searchPlaceHolderText
+              }
             </Text>
             <Icon name="search" size={50} color='#0055ff' />
           </View>

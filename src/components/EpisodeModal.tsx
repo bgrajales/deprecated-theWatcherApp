@@ -56,6 +56,8 @@ export const EpisodeModal = ({ visible = false, setVisible, seriesId, seasonNumb
         
         if ( resp ) {
             setFullEpisode(resp);
+            console.log(resp)
+            console.log(resp.air_date > new Date().toISOString().split('T')[0])
         } else {
             setFullEpisode(undefined);
         }
@@ -187,6 +189,7 @@ export const EpisodeModal = ({ visible = false, setVisible, seriesId, seasonNumb
 
     }
 
+
     return (
         <Modal
             animationType="slide"
@@ -208,62 +211,116 @@ export const EpisodeModal = ({ visible = false, setVisible, seriesId, seasonNumb
             </View>
 
                 
-                    <View
-                        style={{ 
-                            ...styles.modal, 
-                            backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff'
-                        }}
-                    >
-                            {
-                                fullEpisode ? (
-                                    <ScrollView
-                                        contentContainerStyle={{
-                                            overflow: 'visible',
-                                            paddingHorizontal: 20,
-                                        }}
-                                        showsVerticalScrollIndicator={false}
-                                    >
-                                    <View style={{ paddingTop: 20 }}>
+            <View
+                style={{ 
+                    ...styles.modal, 
+                    backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff'
+                }}
+            >
+                    {
+                        fullEpisode ? (
+                                
+                            <ScrollView
+                                contentContainerStyle={{
+                                    overflow: 'visible',
+                                    paddingHorizontal: 20,
+                                }}
+                                showsVerticalScrollIndicator={false}
+                            >
+                            <View style={{ paddingTop: 20 }}>
+                                <View
+                                    style={{
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
+                                    }}
+                                >
+                                    <Image source={{ uri: `https://image.tmdb.org/t/p/w500${fullEpisode.still_path}` }} style={{ width: 80, height: 80, borderRadius: 10, marginRight: 10 }} />
+                                    <View>
+                                        <Text style={{ 
+                                            ...styles.title,
+                                            color: colorScheme === 'dark' ? '#fff' : '#000'
+                                        }}>{ fullEpisode.name }</Text>
+                                        <Text style={ styles.text }>
+                                            {/* {english.episodeModalSeason} { seasonNumber } - {english.episodeModalEpisode} { episodeNumber } */}
+                                            {
+                                                user?.settings.leng === 'es-ES' ? spanish.episodeModalSeason : english.episodeModalSeason
+                                            } { seasonNumber } - {
+                                                user?.settings.leng === 'es-ES' ? spanish.episodeModalEpisode : english.episodeModalEpisode
+                                            } { episodeNumber }
+                                        </Text>
                                         <View
-                                            style={{
+                                            style={{ 
                                                 flexDirection: 'row',
+                                                justifyContent: 'space-between',
                                                 alignItems: 'center',
+                                                marginTop: 2,
                                             }}
                                         >
-                                            <Image source={{ uri: `https://image.tmdb.org/t/p/w500${fullEpisode.still_path}` }} style={{ width: 80, height: 80, borderRadius: 10, marginRight: 10 }} />
-                                            <View>
-                                                <Text style={{ 
-                                                    ...styles.title,
-                                                    color: colorScheme === 'dark' ? '#fff' : '#000'
-                                                }}>{ fullEpisode.name }</Text>
-                                                <Text style={ styles.text }>
-                                                    {/* {english.episodeModalSeason} { seasonNumber } - {english.episodeModalEpisode} { episodeNumber } */}
-                                                    {
-                                                        user?.settings.leng === 'es-ES' ? spanish.episodeModalSeason : english.episodeModalSeason
-                                                    } { seasonNumber } - {
-                                                        user?.settings.leng === 'es-ES' ? spanish.episodeModalEpisode : english.episodeModalEpisode
-                                                    } { episodeNumber }
-                                                </Text>
-                                                <View
-                                                    style={{ 
-                                                        flexDirection: 'row',
-                                                        justifyContent: 'space-between',
-                                                        alignItems: 'center',
-                                                        marginTop: 2,
-                                                    }}
-                                                >
-                                                    <StarRating
-                                                        disabled={ true }
-                                                        maxStars={ 5 }
-                                                        rating={ fullEpisode.vote_average / 2 }
-                                                        starSize={ 20 }
-                                                        fullStarColor={ '#FFD700' }
-                                                        emptyStarColor={ '#FFD700' }
-                                                    />
-                                                </View>
-                                            </View>
+                                            <StarRating
+                                                disabled={ true }
+                                                maxStars={ 5 }
+                                                rating={ fullEpisode.vote_average / 2 }
+                                                starSize={ 20 }
+                                                fullStarColor={ '#FFD700' }
+                                                emptyStarColor={ '#FFD700' }
+                                            />
                                         </View>
                                     </View>
+                                </View>
+                            </View>
+                            {
+                                fullEpisode.air_date && fullEpisode.air_date > new Date().toISOString().split('T')[0] ? (
+                                    <View style={{ 
+                                        backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                    }}>
+                                        <Image 
+                                            source={ require('../assets/empty.png') }
+                                            style={{
+                                                marginTop: 30,
+                                            }}
+                                        />
+                                        <Text style={{ 
+                                            color: colorScheme === 'dark' ? '#fff' : '#000', 
+                                            fontSize: 18,
+                                            fontWeight: 'bold',
+                                            marginTop: 20,
+                                        }}>
+                                            {
+                                                user?.settings.leng === 'es-ES' ? spanish.episodeModalNotAired : english.episodeModalNotAired
+                                            }
+                                        </Text>
+                                        <Text
+                                            style={{
+                                                color: colorScheme === 'dark' ? '#fff' : '#000',
+                                                fontSize: 16,
+                                                marginTop: 10,
+                                            }}
+                                        >
+                                            {
+                                                user?.settings.leng === 'es-ES' ? spanish.episodeModalNotAired2 : english.episodeModalNotAired2
+                                            }
+                                        </Text>
+                                        <Text
+                                            style={{
+                                                color: colorScheme === 'dark' ? '#fff' : '#000',
+                                                fontSize: 18,
+                                                marginTop: 10,
+                                                fontWeight: 'bold',
+                                            }}
+                                        >
+                                            {
+                                                fullEpisode.air_date.split('-')[2]
+                                            }/{
+                                                fullEpisode.air_date.split('-')[1]
+                                            }/{
+                                                fullEpisode.air_date.split('-')[0]
+                                            }
+                                        </Text>
+                                    </View>
+                                ) : (
+                                <>
                                     <View>
                                         <View style={ styles.subTitleDiv }>
                                             <Text style={{ 
@@ -496,177 +553,181 @@ export const EpisodeModal = ({ visible = false, setVisible, seriesId, seasonNumb
                                         </View>
                                     </View>
                                     <View  style={{ height: 30 }}/>
-                                    </ScrollView>
-                                ) : (
-                                    <View
-                                        style={{
-                                            flex: 1,
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                            position: 'absolute',
-                                            top: 0,
-                                            left: 0,
-                                            right: 0,
-                                            bottom: 0,
-
-                                        }}
-                                    >
-                                        <ActivityIndicator 
-                                            size="small"
-                                            color="#0055FF"
-                                        />
-                                    </View>
+                                </>
                                 )
                             }
-                        <Modal
-                            animationType="slide"
-                            transparent={true}
-                            visible={ showReplies }
-                        >
-                            <BlurView
-                                style={{ flex: 1, padding: 20, alignItems: 'center', justifyContent: 'center' }}
-                                tint="dark"
-                                intensity={20}
+                            </ScrollView>
+                        
+                        ) : (
+                            <View
+                                style={{
+                                    flex: 1,
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    position: 'absolute',
+                                    top: 0,
+                                    left: 0,
+                                    right: 0,
+                                    bottom: 0,
+
+                                }}
                             >
+                                <ActivityIndicator 
+                                    size="small"
+                                    color="#0055FF"
+                                />
+                            </View>
+                        )
+                    }
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={ showReplies }
+                >
+                    <BlurView
+                        style={{ flex: 1, padding: 20, alignItems: 'center', justifyContent: 'center' }}
+                        tint="dark"
+                        intensity={20}
+                    >
+                        <View
+                            style={{
+                                width: '95%',
+                                maxHeight: '90%',
+                                backgroundColor: '#fff',
+                                borderRadius: 10,
+                                padding: 10,
+                                marginTop: 10,
+                            }}
+                        >
+                        <ScrollView>
+                            {
+                            commentToShow.id ? (
+                                <>
+                                <View style={{ ...styles.subTitleDiv, width: '100%', justifyContent: 'space-between', marginTop: 0}}>
+                                    <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{commentToShow.userName}</Text>
+                                    <Icon name="md-close" size={30} color="#000" onPress={() => setShowReplies(false)} />
+                                </View>
+                                <Text style={{
+                                    marginTop: 10,
+                                    fontSize: 16,
+                                }}>{ commentToShow.comment }</Text>
                                 <View
                                     style={{
-                                        width: '95%',
-                                        maxHeight: '90%',
-                                        backgroundColor: '#fff',
-                                        borderRadius: 10,
-                                        padding: 10,
+                                        width: '100%',
+                                        flexDirection: 'row',
+                                        justifyContent: 'space-evenly',
+                                        alignItems: 'center',
                                         marginTop: 10,
+                                        backgroundColor: '#e8e8e8',
+                                        padding: 10,
+                                        borderRadius: 10,
                                     }}
                                 >
-                                <ScrollView>
+                                    <TouchableOpacity
+                                        style={ styles.likesAndComment }
+                                        onPress={() => likeCommentAction(commentToShow.id, commentToShow.userName)}
+                                    >
+                                        <Icon name={
+                                            user?.likedComments.includes(commentToShow.id) ? 'heart' : 'heart-outline'
+                                        } size={20} color="#0055FF" style={{ marginLeft: 10 }} />
+                                        <Text style={{ fontSize: 12, color: '#999', marginLeft: 10 }}>{ commentToShow.likes } {
+                                            commentToShow.likes === 1 ? 'like' : 'likes'
+                                        }</Text>
+                                    </TouchableOpacity>
+                                    </View>
+
+                                    {/* Write a reply */}
+
                                     {
-                                    commentToShow.id ? (
-                                        <>
-                                        <View style={{ ...styles.subTitleDiv, width: '100%', justifyContent: 'space-between', marginTop: 0}}>
-                                            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{commentToShow.userName}</Text>
-                                            <Icon name="md-close" size={30} color="#000" onPress={() => setShowReplies(false)} />
-                                        </View>
-                                        <Text style={{
-                                            marginTop: 10,
-                                            fontSize: 16,
-                                        }}>{ commentToShow.comment }</Text>
-                                        <View
-                                            style={{
-                                                width: '100%',
-                                                flexDirection: 'row',
-                                                justifyContent: 'space-evenly',
-                                                alignItems: 'center',
-                                                marginTop: 10,
-                                                backgroundColor: '#e8e8e8',
-                                                padding: 10,
-                                                borderRadius: 10,
-                                            }}
-                                        >
-                                            <TouchableOpacity
-                                                style={ styles.likesAndComment }
-                                                onPress={() => likeCommentAction(commentToShow.id, commentToShow.userName)}
-                                            >
-                                                <Icon name={
-                                                    user?.likedComments.includes(commentToShow.id) ? 'heart' : 'heart-outline'
-                                                } size={20} color="#0055FF" style={{ marginLeft: 10 }} />
-                                                <Text style={{ fontSize: 12, color: '#999', marginLeft: 10 }}>{ commentToShow.likes } {
-                                                    commentToShow.likes === 1 ? 'like' : 'likes'
-                                                }</Text>
-                                            </TouchableOpacity>
-                                            </View>
-
-                                            {/* Write a reply */}
-
-                                            {
-                                                user ? (
-                                                    <View
-                                                        style={{
-                                                            width: '100%',
-                                                            flexDirection: 'row',
-                                                            justifyContent: 'space-evenly',
-                                                            alignItems: 'center',
-                                                            marginTop: 10,
-                                                            padding: 10,
-                                                            borderRadius: 10,
-                                                        }}
-                                                    >
-                                                        <TextInput
-                                                            style={{
-                                                                height: 40,
-                                                                borderColor: '#0055FF',
-                                                                borderWidth: 2,
-                                                                padding: 10,
-                                                                flex: 1,
-                                                                borderTopStartRadius: 10,
-                                                                borderBottomStartRadius: 10,
-                                                            }}
-                                                            placeholder="Write a reply"
-                                                            onChangeText={(text) => setReplyText(text)}
-                                                        />
-                                                        <TouchableOpacity
-                                                            style={{
-                                                                width: '20%',
-                                                                height: 40,
-                                                                backgroundColor: '#0055FF',
-                                                                justifyContent: 'center',
-                                                                alignItems: 'center',
-                                                                borderBottomEndRadius: 10,
-                                                                borderTopEndRadius: 10,
-                                                            }}
-                                                            onPress={() => {
-                                                                if (replyText.length > 0) {
-                                                                    replyCommentAction(commentToShow.id);
-                                                                    setReplyText('');
-                                                                }
-                                                            }}
-                                                        >
-                                                            <Text style={{ color: '#fff', fontSize: 16 }}>Reply</Text>
-                                                        </TouchableOpacity>
-                                                    </View>
-                                                
-                                                ) : (
-                                                    null
-                                                )
-                                            }
+                                        user ? (
                                             <View
                                                 style={{
                                                     width: '100%',
+                                                    flexDirection: 'row',
+                                                    justifyContent: 'space-evenly',
                                                     alignItems: 'center',
+                                                    marginTop: 10,
+                                                    padding: 10,
+                                                    borderRadius: 10,
                                                 }}
                                             >
-                                            {
-                                                commentToShow.replies.map((item: any, index: number) => (
-                                                <View
-                                                    style={ styles.commentCard }
-                                                    key={index}
+                                                <TextInput
+                                                    style={{
+                                                        height: 40,
+                                                        borderColor: '#0055FF',
+                                                        borderWidth: 2,
+                                                        padding: 10,
+                                                        flex: 1,
+                                                        borderTopStartRadius: 10,
+                                                        borderBottomStartRadius: 10,
+                                                    }}
+                                                    placeholder="Write a reply"
+                                                    onChangeText={(text) => setReplyText(text)}
+                                                />
+                                                <TouchableOpacity
+                                                    style={{
+                                                        width: '20%',
+                                                        height: 40,
+                                                        backgroundColor: '#0055FF',
+                                                        justifyContent: 'center',
+                                                        alignItems: 'center',
+                                                        borderBottomEndRadius: 10,
+                                                        borderTopEndRadius: 10,
+                                                    }}
+                                                    onPress={() => {
+                                                        if (replyText.length > 0) {
+                                                            replyCommentAction(commentToShow.id);
+                                                            setReplyText('');
+                                                        }
+                                                    }}
                                                 >
-                                                    <View style={{ width: '100%', marginTop: 0, flexDirection: 'row', borderBottomColor: '#0055FF', borderBottomWidth: 1, paddingBottom: 5, alignItems: 'center'}}>
-                                                        <Text style={{
-                                                            fontSize: 14,
-                                                            fontWeight: 'bold',
-                                                            marginRight: 5,
-                                                        }}>{ item.userName }</Text>
-                                                        <Text style={{ fontSize: 12, color: '#999'}}>Author</Text>
-                                                        <Text style={{ fontSize: 12, color: '#999', marginLeft: 10 }}>{
-                                                            item.date
-                                                        }</Text>
-                                                    </View>
-                                                    <Text style={{
-                                                        marginTop: 10,
-                                                        fontSize: 16,
-                                                    }}>{ item.comment }</Text>                                          
-                                                </View>
-                                                ))
-                                            }
+                                                    <Text style={{ color: '#fff', fontSize: 16 }}>Reply</Text>
+                                                </TouchableOpacity>
                                             </View>
-                                        </>
-                                    ) : null
+                                        
+                                        ) : (
+                                            null
+                                        )
                                     }
-                                </ScrollView>
-                                </View>
-                            </BlurView>
-                        </Modal>
-                    </View>
+                                    <View
+                                        style={{
+                                            width: '100%',
+                                            alignItems: 'center',
+                                        }}
+                                    >
+                                    {
+                                        commentToShow.replies.map((item: any, index: number) => (
+                                        <View
+                                            style={ styles.commentCard }
+                                            key={index}
+                                        >
+                                            <View style={{ width: '100%', marginTop: 0, flexDirection: 'row', borderBottomColor: '#0055FF', borderBottomWidth: 1, paddingBottom: 5, alignItems: 'center'}}>
+                                                <Text style={{
+                                                    fontSize: 14,
+                                                    fontWeight: 'bold',
+                                                    marginRight: 5,
+                                                }}>{ item.userName }</Text>
+                                                <Text style={{ fontSize: 12, color: '#999'}}>Author</Text>
+                                                <Text style={{ fontSize: 12, color: '#999', marginLeft: 10 }}>{
+                                                    item.date
+                                                }</Text>
+                                            </View>
+                                            <Text style={{
+                                                marginTop: 10,
+                                                fontSize: 16,
+                                            }}>{ item.comment }</Text>                                          
+                                        </View>
+                                        ))
+                                    }
+                                    </View>
+                                </>
+                            ) : null
+                            }
+                        </ScrollView>
+                        </View>
+                    </BlurView>
+                </Modal>
+            </View>
         </Modal>
     )
 }

@@ -48,7 +48,8 @@ export const TabsNavigator = () => {
               marginTop: 5,
               marginBottom: ( Platform.OS === 'android' ? 6 : 0 ),
               marginHorizontal: 10,
-            }
+            },
+            tabBarHideOnKeyboard: true,
         }}
         sceneContainerStyle={ { backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff' } }
     >

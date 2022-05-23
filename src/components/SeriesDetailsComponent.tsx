@@ -1,5 +1,5 @@
-import React, { useContext } from 'react'
-import { Dimensions, FlatList, Image, ScrollView, StyleSheet, Text, View } from 'react-native'
+import React, { useContext, useState } from 'react'
+import { Dimensions, FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
 import Carousel from 'react-native-snap-carousel'
 import { LinearGradient } from "expo-linear-gradient";
@@ -9,6 +9,7 @@ import { useSeriesDetail } from '../hooks/useSeriesDetail'
 import { AuthContext } from '../context/AuthContext';
 import { english } from '../lenguages/english';
 import { spanish } from '../lenguages/spanish';
+import { ActorModal } from './ActorModal';
 
 interface Props {
     seriesId: number;
@@ -19,6 +20,12 @@ export const SeriesDetailsComponent = ({seriesId}: Props ) => {
     const { user, colorScheme } = useContext( AuthContext )
 
     const { serieFull, cast, providers, videos } = useSeriesDetail(seriesId, user?.region)
+
+    const [actorModalVisible, setActorModalVisible] = useState({
+        visible: false,
+        actor: {} as any
+    });
+
 
     return (
     <ScrollView
@@ -158,7 +165,13 @@ export const SeriesDetailsComponent = ({seriesId}: Props ) => {
                 data={ cast }
                 keyExtractor={ ( cast ) => cast.id.toString() }
                 renderItem={ ({ item }) => (
-                    <View style={ styles.castDiv }>
+                    <TouchableOpacity 
+                        style={ styles.castDiv }
+                        onPress={ () => setActorModalVisible({
+                            visible: true,
+                            actor: item
+                        }) }
+                    >
                     <Image
                         source={ { uri: item.profile_path ? `https://image.tmdb.org/t/p/w500${item.profile_path}` : `https://critics.io/img/movies/poster-placeholder.png` } }
                         style={{
@@ -175,7 +188,7 @@ export const SeriesDetailsComponent = ({seriesId}: Props ) => {
                         <Text style={ styles.castName }>{ item.name }</Text>
                         <Text style={ styles.castChar }>{ item.character }</Text>
                     </LinearGradient>
-                    </View>
+                    </TouchableOpacity>
                 )}
                 style={{
                     paddingHorizontal: 20,
@@ -184,6 +197,8 @@ export const SeriesDetailsComponent = ({seriesId}: Props ) => {
                 contentContainerStyle={{ paddingRight: 20 }}
             />
         </View>
+
+        <ActorModal modalVisible={actorModalVisible} setActorModalVisible={setActorModalVisible} />
     </ScrollView>
   )
 }

@@ -80,3 +80,37 @@ export const getSeriesNextEpisodes = async ({ seriesId }: GetSeriesNextEpisodeTo
     
     return seriesNextEpisodes;
 }
+
+export const getActorAction = async (actorId: number, setActorProps: any, setActorTitles: any, leng: string) => {
+
+    const lenguageParam = {
+        language: leng || 'en-US',
+    }
+
+    const resp = await multiDB.get(`/person/${actorId}`, { params: lenguageParam });
+    const titles = await multiDB.get(`/person/${actorId}/combined_credits`, { params: lenguageParam });
+
+    const titlesArray = titles.data.cast.sort(
+        (a: any, b: any) => {
+        if (a.vote_average < b.vote_average) {
+            return 1;
+        }
+        if (a.vote_average > b.vote_average) {
+            return -1;
+        }
+        return 0;
+    }).filter((a: { tilte: string; }) => a.tilte !== '')
+
+    let titlesDuplicated = titlesArray.sort().filter((a: { id: number; }, i: number, arr: { id: number; }[]) => {
+        return i === 0 || a.id !== arr[i - 1].id;
+    });
+
+    titlesDuplicated = titlesDuplicated.filter((a: { poster_path: string;}) => a.poster_path !== null);
+
+    if (resp.data) {
+        setActorProps(resp.data);
+        setActorTitles(titlesDuplicated)
+    }
+    console.log(resp.data)
+
+}

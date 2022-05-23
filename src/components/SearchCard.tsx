@@ -45,6 +45,7 @@ export const SearchCard = ({ element, type }: Props) => {
                 </Text>
                     
             </View>
+            
             <Text style={styles.elementOverview}>
                 { element.overview?.substring(0, 100) + '...' }
             </Text>
@@ -58,8 +59,20 @@ export const SearchCard = ({ element, type }: Props) => {
                     navigation.navigate('SeriesDetailScreen', element)
                 }
             }}
+            style={{
+                width: 30,
+                height: 30,
+                borderRadius: 10,
+                backgroundColor: '#0055ff',
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}
         >
-            <Icon name="chevron-forward" size={30} />
+            <Icon 
+                name="chevron-forward" 
+                size={25} 
+                color='#fff'
+            />
         </TouchableOpacity>
     </View>
   )
@@ -99,7 +112,7 @@ const styles = StyleSheet.create({
     elementOverview: {
         fontSize: 14,
         color: '#666',
-        textAlign: 'justify',
+        textAlign: 'left',
     },
 
 });

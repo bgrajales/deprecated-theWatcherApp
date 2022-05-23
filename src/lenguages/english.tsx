@@ -21,6 +21,8 @@ export const english = {
     episodeModalNewComment: "Write a new comment",
     episodeModalNewCommentInput: "Write a your comment here",
     episodeModalPost: "Post",
+    episodeModalNotAired: "This episode has not aired yet",
+    episodeModalNotAired2: "Release date",
 
     moviesSeriesNothingToSee: "Nothing to see here",
     moviesSeriesAddMovToTrack: "Add movies you have seen to track them here!",

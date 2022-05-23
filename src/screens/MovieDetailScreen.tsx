@@ -16,14 +16,15 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { Comments } from '../interfaces/movieInterface';
 import { english } from '../lenguages/english';
 import { spanish } from '../lenguages/spanish';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { ActorModal } from '../components/ActorModal';
 
 interface Props extends StackScreenProps<DetailStackParams, 'MovieDetailScreen'>{}
 
 export const MovieDetailScreen = ({ route }: Props) => {
 
     const movie = route.params
-    
-    
+    const { top } = useSafeAreaInsets()
     const [commentsToShow, setCommentsToShow] = useState<Comments[]>([]);
 
     const { user, token, updateWatchedMovies, updateLikedComments, updateWatchListContext, colorScheme } = useContext( AuthContext )
@@ -39,6 +40,11 @@ export const MovieDetailScreen = ({ route }: Props) => {
 
     const [ watchLoader, setWatchLoader ] = useState(false);
     const [ watchlistLoader, setWatchlistLoader ] = useState(false);
+
+    const [actorModalVisible, setActorModalVisible] = useState({
+        visible: false,
+        actor: {} as any
+    });
 
     const uri = `https://image.tmdb.org/t/p/w500${movieFull?.poster_path}`;
 
@@ -511,10 +517,11 @@ export const MovieDetailScreen = ({ route }: Props) => {
                           paddingHorizontal: 20,
                         }}
                         contentContainerStyle={{ paddingRight: 20 }}
+                        showsHorizontalScrollIndicator={ false }
                     />
                 </View>
               ) : <View style={{
-                    width: 270,
+                    width: '90%',
                     marginTop: 20,
                     paddingHorizontal: 20,
                     paddingVertical: 10,
@@ -601,7 +608,14 @@ export const MovieDetailScreen = ({ route }: Props) => {
                     data={ cast }
                     keyExtractor={ ( cast ) => cast.id.toString() }
                     renderItem={ ({ item }) => (
-                      <View style={ styles.castDiv }>
+                      <TouchableOpacity 
+                        style={ styles.castDiv }
+                        activeOpacity={ 0.7 }
+                        onPress={ () => setActorModalVisible({
+                          visible: true,
+                          actor: item,
+                        }) }
+                      >
                         <Image
                           source={ { uri: item.profile_path ? `https://image.tmdb.org/t/p/w500${item.profile_path}` : `https://critics.io/img/movies/poster-placeholder.png` } }
                           style={{
@@ -618,7 +632,7 @@ export const MovieDetailScreen = ({ route }: Props) => {
                           <Text style={ styles.castName }>{ item.name }</Text>
                           <Text style={ styles.castChar }>{ item.character }</Text>
                         </LinearGradient>
-                      </View>
+                      </TouchableOpacity>
                     )}
                     style={{
                       paddingHorizontal: 20,
@@ -960,6 +974,9 @@ export const MovieDetailScreen = ({ route }: Props) => {
               </View>
           </View>
           <View  style={{ height: 30 }}/>
+
+          <ActorModal modalVisible={actorModalVisible} setActorModalVisible={setActorModalVisible} />
+
         </ScrollView>
     )
 }

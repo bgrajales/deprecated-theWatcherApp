@@ -111,6 +111,5 @@ export const getActorAction = async (actorId: number, setActorProps: any, setAct
         setActorProps(resp.data);
         setActorTitles(titlesDuplicated)
     }
-    console.log(resp.data)
 
 }

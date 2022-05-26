@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Alert, Keyboard, KeyboardAvoidingView, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Alert, Keyboard, KeyboardAvoidingView, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { AuthContext } from '../context/AuthContext';
@@ -16,6 +16,8 @@ export const RegisterModal = ({ visible = false, setRegisterVisibleParent }: Pro
 
     const [isVisible, setIsVisible] = useState(visible);
     const [ countryCodeState, setCountryCode ] = useState<CountryCode>('US');
+
+    const [ loadingRegister, setLoadingRegister ] = useState(false);
 
     const { top } = useSafeAreaInsets();
 
@@ -39,16 +41,17 @@ export const RegisterModal = ({ visible = false, setRegisterVisibleParent }: Pro
         setIsVisible(visible);
     }, [visible])
 
-    const onSubmit = () => {
+    const onSubmit = async () => {
 
-        signUp({
+        setLoadingRegister(true);
+        await signUp({
             userName,
             email,
             password,
             repeatPassword,
-            region: countryCodeState
+            region: countryCodeState,
+            setLoadingRegister
         })
-
         Keyboard.dismiss();
     }    
     
@@ -183,8 +186,14 @@ export const RegisterModal = ({ visible = false, setRegisterVisibleParent }: Pro
                             style={ styles.btn }
                             onPress={() => onSubmit()}
                             activeOpacity={0.8}
+                            disabled={loadingRegister}
                         >
-                            <Text style={ styles.btnText }>Create account</Text>
+                            {
+                                loadingRegister ?
+                                <ActivityIndicator size="small" color="#fff" />
+                                :
+                                <Text style={ styles.btnText }>Create account</Text>
+                            }
                         </TouchableOpacity>
                     </View>
                 </View>

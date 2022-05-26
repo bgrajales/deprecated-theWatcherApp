@@ -1,8 +1,10 @@
+import { Dispatch, SetStateAction } from "react";
 import { UserMovies, UserSeries } from "./movieInterface";
 
 export interface LoginData {
     email: string;
     password: string;
+    setLoginLoader: Dispatch<SetStateAction<boolean>>;
 }
 
 export interface RegisterData {
@@ -11,6 +13,7 @@ export interface RegisterData {
     password: string;
     repeatPassword: string;
     region: string;
+    setLoadingRegister: Dispatch<SetStateAction<boolean>>;
 }
 
 export interface LoginResponse {

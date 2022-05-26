@@ -18,10 +18,13 @@ import { english } from '../lenguages/english';
 import { spanish } from '../lenguages/spanish';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ActorModal } from '../components/ActorModal';
+import { useNavigation } from '@react-navigation/native';
 
 interface Props extends StackScreenProps<DetailStackParams, 'MovieDetailScreen'>{}
 
 export const MovieDetailScreen = ({ route }: Props) => {
+
+    const navigation = useNavigation()
 
     const movie = route.params
     const { top } = useSafeAreaInsets()
@@ -270,6 +273,25 @@ export const MovieDetailScreen = ({ route }: Props) => {
                     height: 280,
                 }}
               />
+
+              <TouchableOpacity
+                style={{
+                    position: 'absolute',
+                    top: top + 5,
+                    left: 5,
+                    width: 40,
+                    height: 40,
+                    backgroundColor: '#0055ff',
+                    zIndex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: 100,
+                }}
+                onPress={ () => navigation.goBack() }
+              >
+                <Icon name="chevron-back" size={30} color='#fff' />
+              </TouchableOpacity>
+
               <View
                 style={{
                     position: 'absolute',

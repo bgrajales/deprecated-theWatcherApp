@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Alert, Keyboard, KeyboardAvoidingView, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Alert, Keyboard, KeyboardAvoidingView, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { AuthContext } from '../context/AuthContext';
@@ -13,6 +13,7 @@ interface Props {
 export const LoginModal = ({ visible = false, setLoginVisibleParent }: Props) => {
 
     const [isVisible, setIsVisible] = useState(visible);
+    const [ loginLoader, setLoginLoader ] = useState(false);
 
     const { top } = useSafeAreaInsets();
 
@@ -35,7 +36,8 @@ export const LoginModal = ({ visible = false, setLoginVisibleParent }: Props) =>
     }, [visible])
 
     const onSubmit = () => {
-        signIn({ email, password })
+        setLoginLoader(true);
+        signIn({ email, password, setLoginLoader })
         Keyboard.dismiss();
     }    
     
@@ -106,8 +108,14 @@ export const LoginModal = ({ visible = false, setLoginVisibleParent }: Props) =>
                             style={ styles.btn }
                             onPress={() => onSubmit()}
                             activeOpacity={0.8}
+                            disabled={loginLoader}
                         >
-                            <Text style={ styles.btnText }>Login</Text>
+                            {
+                                loginLoader ?
+                                    <ActivityIndicator size="small" color="#fff" />
+                                    :
+                                    <Text style={ styles.btnText }>Login</Text>
+                            }
                         </TouchableOpacity>
                     </View>
                 </View>

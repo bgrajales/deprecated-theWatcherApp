@@ -83,11 +83,12 @@ export const AuthProvider = ({ children }: any) => {
         setIsLoadingUser(false)
     }    
 
-    const signIn = async ( { email, password }: LoginData ) => {
+    const signIn = async ({ email, password, setLoginLoader }: LoginData ) => {
 
         try {
             const { data } = await watcherApi.post('/login', { email, password })
 
+            setLoginLoader(false)
             dispatch({
                 type: 'singUp',
                 payload: {
@@ -101,6 +102,8 @@ export const AuthProvider = ({ children }: any) => {
             await AsyncStorage.setItem('refreshToken', data.refreshToken)
 
         } catch (error: any) {
+
+            setLoginLoader(false)
             dispatch({
                 type: 'addError',
                 payload: error.response.data.error || 'Wrong information'
@@ -109,12 +112,13 @@ export const AuthProvider = ({ children }: any) => {
 
     };
 
-    const signUp = async ({ userName, email, password, repeatPassword, region }: RegisterData) => {
+    const signUp = async ({ userName, email, password, repeatPassword, region, setLoadingRegister }: RegisterData) => {
 
         try {
 
             const { data } = await watcherApi.post('/register', { userName, email, password, repeatPassword, region })
 
+            setLoadingRegister(false)
             dispatch({
                 type: 'singUp',
                 payload: {
@@ -128,7 +132,7 @@ export const AuthProvider = ({ children }: any) => {
             await AsyncStorage.setItem('refreshToken', data.refreshToken)
 
         } catch (error: any) {
-                
+            setLoadingRegister(false)
             dispatch({
                 type: 'addError',
                 payload: error.response.data.error || 'Wrong information'

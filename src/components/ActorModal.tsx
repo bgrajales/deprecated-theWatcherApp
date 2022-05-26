@@ -33,14 +33,7 @@ export const ActorModal = ({modalVisible, setActorModalVisible}: ActorModalProps
 
     }, [modalVisible])
 
-    // const renderTruncatedFooter = (handlePress: any) => {
-    //     return (
-    //         <Text style={{ marginTop: 5}} onPress={handlePress}>
-    //             Read more
-    //         </Text>
-    //     );
-    // }
-    console.log(actorTitles)
+    
     return (
         <Modal
             animationType="slide"
@@ -102,6 +95,7 @@ export const ActorModal = ({modalVisible, setActorModalVisible}: ActorModalProps
                         marginLeft: 10,
                         flex: 1,
                         justifyContent: 'center',
+                        marginRight: 12,
                     }}
                 >
                     <Text

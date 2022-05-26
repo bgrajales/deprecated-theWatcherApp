@@ -1,6 +1,8 @@
+import { useNavigation } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack'
 import React, { useContext, useEffect, useState } from 'react'
 import { ActivityIndicator, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import StarRating from 'react-native-star-rating';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -14,6 +16,9 @@ import { SeriesNavigator } from '../navigation/SeriesNavigation'
 interface Props extends StackScreenProps<DetailStackParams, 'SeriesDetailScreen'>{}
 
 export const SeriesDetailScreen = ({ route }: Props) => {
+
+    const { top } = useSafeAreaInsets()
+    const navigation = useNavigation()
 
     const series = route.params
     
@@ -122,6 +127,25 @@ export const SeriesDetailScreen = ({ route }: Props) => {
                     height: 200,
                 }}
               />
+
+              <TouchableOpacity
+                style={{
+                    position: 'absolute',
+                    top: top + 5,
+                    left: 5,
+                    width: 40,
+                    height: 40,
+                    backgroundColor: '#0055ff',
+                    zIndex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: 100,
+                }}
+                onPress={ () => navigation.goBack() }
+              >
+                <Icon name="chevron-back" size={30} color='#fff' />
+              </TouchableOpacity>
+
               <View
                 style={{
                     position: 'absolute',

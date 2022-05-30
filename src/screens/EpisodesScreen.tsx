@@ -18,6 +18,8 @@ interface Props {
 
 export const EpisodesScreen = ({ seriesId }: Props) => {
 
+    const [ loadingEpisodes, setLoadingEpisode ] = useState(false)
+
     const { user, token, updateWatchedSeries, updateSeries, colorScheme } = useContext( AuthContext )
 
     const [activeSection, setActiveSection] = useState({
@@ -293,21 +295,27 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
             ...styles.episodesBody,
             backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff',    
         }}>
-            <Accordion
-                activeSections={[activeSection.section as any]}
-                sections={seasons}
-                renderHeader={renderHeader}
-                renderContent={renderContent}
-                onChange={(activeSection) => {
-                    setActiveSection({
-                        section: activeSection[0] as any
-                    })
-                }}
-                touchableComponent={TouchableOpacity}
-                touchableProps={{
-                    activeOpacity: 0.5,
-                }}
-            />
+            {
+                seasons ? (
+                    <Accordion
+                        activeSections={[activeSection.section as any]}
+                        sections={seasons}
+                        renderHeader={renderHeader}
+                        renderContent={renderContent}
+                        onChange={(activeSection) => {
+                            setActiveSection({
+                                section: activeSection[0] as any
+                            })
+                        }}
+                        touchableComponent={TouchableOpacity}
+                        touchableProps={{
+                            activeOpacity: 0.5,
+                        }}
+                    />
+                ) : (
+                    null
+                )
+            }
         </ScrollView>
     )
 }

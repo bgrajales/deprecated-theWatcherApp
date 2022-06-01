@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native'
 import React, { useContext, useEffect, useState } from 'react'
-import { FlatList, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import { Dimensions, FlatList, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { AuthContext } from '../context/AuthContext'
 import { WatcherUser } from '../interfaces/authInterface'
@@ -36,7 +36,6 @@ export const WatchListComponent = () => {
         <ScrollView
             style={{
                 flex: 1,
-                paddingHorizontal: 20,
                 paddingTop: top + 5,
                 backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff'
             }}
@@ -46,7 +45,8 @@ export const WatchListComponent = () => {
                     fontSize: 30,
                     fontWeight: 'bold',
                     marginBottom: 20,
-                    color: colorScheme === 'dark' ? '#fff' : '#000'
+                    color: colorScheme === 'dark' ? '#fff' : '#000',
+                    paddingHorizontal: 20,
                 }}
             >
                 {
@@ -59,6 +59,7 @@ export const WatchListComponent = () => {
                         flex: 1,
                         paddingBottom: 20,
                         flexDirection: 'row',
+                        paddingHorizontal: 20,
                     }}
                 >
                     <Text style={{ 
@@ -96,7 +97,8 @@ export const WatchListComponent = () => {
                         moviesWatchList.map( ( movie, index ) => {
                             return (
                                 <TouchableOpacity style={{ 
-                                    width: '30%',
+                                    width: Dimensions.get('window').width / 3,
+                                    paddingHorizontal: 5,
                                     shadowColor: "#000",
                                     shadowOffset: {
                                         width: 0,
@@ -133,6 +135,7 @@ export const WatchListComponent = () => {
                         flex: 1,
                         paddingBottom: 20,
                         flexDirection: 'row',
+                        paddingHorizontal: 20,
                     }}
                 >
                     <Text style={{ 
@@ -168,7 +171,8 @@ export const WatchListComponent = () => {
                         seriesWatchList.map( ( serie, index ) => {
                             return (
                                 <TouchableOpacity style={{ 
-                                    width: '30%',
+                                    width: Dimensions.get('window').width / 3,
+                                    paddingHorizontal: 5,
                                     shadowColor: "#000",
                                     shadowOffset: {
                                         width: 0,

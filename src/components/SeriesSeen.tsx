@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native'
 import React, { useContext, useEffect, useState } from 'react'
-import { ActivityIndicator, Dimensions, FlatList, Image, ScrollView, SectionList, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Dimensions, FlatList, Image, ScrollView, SectionList, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Carousel from 'react-native-snap-carousel'
 import { getSeriesNextEpisodes } from '../api/TMDBActions'
@@ -8,6 +8,7 @@ import { AuthContext } from '../context/AuthContext'
 import { NextEpisodeResponse } from '../interfaces/movieInterface'
 import { english } from '../lenguages/english'
 import { spanish } from '../lenguages/spanish'
+import { MovieCard } from './MovieCard'
 
 export const SeriesSeen = () => {
 
@@ -163,7 +164,13 @@ export const SeriesSeen = () => {
                                     activeOpacity={0.7}
                                 >
                                     <Image
-                                        source={{ uri: `https://image.tmdb.org/t/p/w500${item.still_path}` }}
+                                        source={{ 
+                                            uri: `${
+                                                item.still_path ?
+                                                `https://image.tmdb.org/t/p/w500${item.still_path}` :
+                                                `https://critics.io/img/movies/poster-placeholder.png`
+                                            }` 
+                                        }}
                                         style={{
                                             width: 80,
                                             height: 80,
@@ -194,7 +201,12 @@ export const SeriesSeen = () => {
                                                 fontSize: 16,
                                                 color: '#fff', 
                                                 fontWeight: 'bold',
-                                            }}>{ item.serieName } - { item.name }</Text>                                            
+                                            }}>
+                                                {/* { item.serieName } - { item.name } */}
+                                                {
+                                                    item.serieName.concat(' - ', item.name).substring(0, 19)
+                                                } ...
+                                            </Text>                                            
                                         </View>
                                         <Text style={{
                                             marginTop: 5,
@@ -215,7 +227,7 @@ export const SeriesSeen = () => {
                                 </TouchableOpacity>
                             )}
                             sliderWidth={Dimensions.get('window').width}
-                            itemWidth={Dimensions.get('window').width - 80}
+                            itemWidth={Dimensions.get('window').width - 60}
                             itemHeight={200}
                         />
                     </View>
@@ -270,46 +282,16 @@ export const SeriesSeen = () => {
                             {
                                 user.series.filter( serie => serie.episodesTotal > serie.episodesWatched ).map( ( serie, index ) => {
                                     return (
-                                        <TouchableOpacity style={{ 
-                                            width: '30%',
-                                            shadowColor: "#000",
-                                            shadowOffset: {
-                                                width: 0,
-                                                height: 2,
-                                            },
-                                            shadowOpacity: 0.25,
-                                            shadowRadius: 3.84,
-                                            elevation: 5,
-                                            marginBottom: 10,
-                                        }} 
-                                            activeOpacity={0.7}
-                                            onPress={ () => { navigation.navigate('SeriesDetailScreen', serie ) } }
+                                        <MovieCard 
                                             key={ index.toString() }
-                                        >
-                                            <Image
-                                                source={{ uri: `https://image.tmdb.org/t/p/w500${serie.posterPath}` }}
-                                                style={{ width: "100%", height: 200, borderRadius: 10 }}
-                                            />
-            
-                                            <View style={{
-                                                flex: 1,
-                                                width: '100%',
-                                                backgroundColor: '#f5f5f5',
-                                                height: 8,
-                                                position: 'absolute',
-                                                bottom: 0,
-                                                borderBottomRightRadius: 10,
-                                                borderBottomLeftRadius: 10,                                  
-                                            }}>
-                                            <View style={{
-                                                flex: 1,
-                                                backgroundColor: (serie.episodesWatched / serie.episodesTotal * 100) === 100 ? '#4BB543' : '#0055FF',
-                                                width: `${serie.episodesWatched / serie.episodesTotal * 100}%`,
-                                                borderBottomRightRadius: (serie.episodesWatched / serie.episodesTotal * 100) === 100 ? 10 : 0,
-                                                borderBottomLeftRadius: 10,  
-                                            }} />
-                                            </View>
-                                        </TouchableOpacity>
+                                            movie={ serie }
+                                            type='series'
+                                            width={ Dimensions.get('window').width / 3.2 }
+                                            height={ 200 }
+                                            progressBar={ true }
+                                            episodesTotal={ serie.episodesTotal }
+                                            episodesWatched={ serie.episodesWatched }
+                                        />
                                     )
                                 })
                             }
@@ -368,46 +350,16 @@ export const SeriesSeen = () => {
                             {
                                 user.series.filter( serie => serie.episodesTotal === serie.episodesWatched ).map( ( serie, index ) => {
                                     return (
-                                        <TouchableOpacity style={{ 
-                                            width: '30%',
-                                            shadowColor: "#000",
-                                            shadowOffset: {
-                                                width: 0,
-                                                height: 2,
-                                            },
-                                            shadowOpacity: 0.25,
-                                            shadowRadius: 3.84,
-                                            elevation: 5,
-                                            marginBottom: 10,
-                                        }} 
-                                            activeOpacity={0.7}
-                                            onPress={ () => { navigation.navigate('SeriesDetailScreen', serie ) } }
+                                        <MovieCard 
                                             key={ index.toString() }
-                                        >
-                                            <Image
-                                                source={{ uri: `https://image.tmdb.org/t/p/w500${serie.posterPath}` }}
-                                                style={{ width: "100%", height: 200, borderRadius: 10 }}
-                                            />
-            
-                                            <View style={{
-                                                flex: 1,
-                                                width: '100%',
-                                                backgroundColor: '#f5f5f5',
-                                                height: 8,
-                                                position: 'absolute',
-                                                bottom: 0,
-                                                borderBottomRightRadius: 10,
-                                                borderBottomLeftRadius: 10,                                  
-                                            }}>
-                                            <View style={{
-                                                flex: 1,
-                                                backgroundColor: (serie.episodesWatched / serie.episodesTotal * 100) === 100 ? '#4BB543' : '#0055FF',
-                                                width: `${serie.episodesWatched / serie.episodesTotal * 100}%`,
-                                                borderBottomRightRadius: (serie.episodesWatched / serie.episodesTotal * 100) === 100 ? 10 : 0,
-                                                borderBottomLeftRadius: 10,  
-                                            }} />
-                                            </View>
-                                        </TouchableOpacity>
+                                            movie={ serie }
+                                            type='series'
+                                            width={ Dimensions.get('window').width / 3.2 }
+                                            height={ 200 }
+                                            progressBar={ true }
+                                            episodesTotal={ serie.episodesTotal }
+                                            episodesWatched={ serie.episodesWatched }
+                                        />
                                     )
                                 })
                             }

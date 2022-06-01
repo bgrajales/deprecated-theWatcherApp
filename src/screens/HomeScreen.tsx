@@ -49,6 +49,11 @@ export const HomeScreen = () => {
 
     }
 
+    return () => {
+      setMovieGenreTitle('');
+      setSerieGenreTitle('');
+    }
+
   }, [user])
 
   const setGenresListUseEffect = async (type: 'movie' | 'tv' , genreId: number) => {

@@ -1,0 +1,189 @@
+/*
+The CSS export should solely be used as a reference.
+For a more detailed animation export the JSON file should be used.
+*/
+#LogoInside {
+    transform: translateX(-50%) translateY(-50%);
+    animation: LogoInside__x__1 610ms 0ms ease-in-out forwards, LogoInside__x__2 250ms 610ms ease-in-out forwards, LogoInside__x__3 630ms 860ms ease-in-out forwards, LogoInside__x__4 310ms 1490ms ease-in-out forwards, LogoInside__x__5 600ms 1800ms ease-in-out forwards, LogoInside__x__6 250ms 2400ms ease-in-out forwards, LogoInside__x__7 670ms 2650ms ease-in-out forwards, LogoInside__x__8 210ms 3320ms ease-in-out forwards, LogoInside__x__9 650ms 3530ms ease-in-out forwards, LogoInside__x__10 210ms 4180ms ease-in-out forwards, LogoInside__y__1 610ms 0ms ease-in-out forwards, LogoInside__y__2 250ms 610ms ease-in-out forwards, LogoInside__y__3 630ms 860ms ease-in-out forwards, LogoInside__y__4 310ms 1490ms ease-in-out forwards, LogoInside__y__5 620ms 1800ms ease-in-out forwards, LogoInside__y__6 230ms 2420ms ease-in-out forwards, LogoInside__y__7 670ms 2650ms ease-in-out forwards, LogoInside__y__8 210ms 3320ms ease-in-out forwards, LogoInside__y__9 650ms 3530ms ease-in-out forwards, LogoInside__y__10 210ms 4180ms ease-in-out forwards;
+}
+
+@keyframes LogoInside__x__1 {
+    from {
+        left: 539.5px;
+    }
+
+    to {
+        left: 539.5px;
+    }
+}
+@keyframes LogoInside__x__2 {
+    from {
+        left: 539.5px;
+    }
+
+    to {
+        left: 443px;
+    }
+}
+@keyframes LogoInside__x__3 {
+    from {
+        left: 443px;
+    }
+
+    to {
+        left: 443px;
+    }
+}
+@keyframes LogoInside__x__4 {
+    from {
+        left: 443px;
+    }
+
+    to {
+        left: 617.5px;
+    }
+}
+@keyframes LogoInside__x__5 {
+    from {
+        left: 617.5px;
+    }
+
+    to {
+        left: 617.5px;
+    }
+}
+@keyframes LogoInside__x__6 {
+    from {
+        left: 617.5px;
+    }
+
+    to {
+        left: 450.5px;
+    }
+}
+@keyframes LogoInside__x__7 {
+    from {
+        left: 450.5px;
+    }
+
+    to {
+        left: 450.5px;
+    }
+}
+@keyframes LogoInside__x__8 {
+    from {
+        left: 450.5px;
+    }
+
+    to {
+        left: 633.5px;
+    }
+}
+@keyframes LogoInside__x__9 {
+    from {
+        left: 633.5px;
+    }
+
+    to {
+        left: 636px;
+    }
+}
+@keyframes LogoInside__x__10 {
+    from {
+        left: 636px;
+    }
+
+    to {
+        left: 539.5px;
+    }
+}
+@keyframes LogoInside__y__1 {
+    from {
+        top: 540px;
+    }
+
+    to {
+        top: 540px;
+    }
+}
+@keyframes LogoInside__y__2 {
+    from {
+        top: 540px;
+    }
+
+    to {
+        top: 443px;
+    }
+}
+@keyframes LogoInside__y__3 {
+    from {
+        top: 443px;
+    }
+
+    to {
+        top: 443px;
+    }
+}
+@keyframes LogoInside__y__4 {
+    from {
+        top: 443px;
+    }
+
+    to {
+        top: 443px;
+    }
+}
+@keyframes LogoInside__y__5 {
+    from {
+        top: 443px;
+    }
+
+    to {
+        top: 443px;
+    }
+}
+@keyframes LogoInside__y__6 {
+    from {
+        top: 443px;
+    }
+
+    to {
+        top: 643px;
+    }
+}
+@keyframes LogoInside__y__7 {
+    from {
+        top: 643px;
+    }
+
+    to {
+        top: 643px;
+    }
+}
+@keyframes LogoInside__y__8 {
+    from {
+        top: 643px;
+    }
+
+    to {
+        top: 636px;
+    }
+}
+@keyframes LogoInside__y__9 {
+    from {
+        top: 636px;
+    }
+
+    to {
+        top: 636px;
+    }
+}
+@keyframes LogoInside__y__10 {
+    from {
+        top: 636px;
+    }
+
+    to {
+        top: 540px;
+    }
+}

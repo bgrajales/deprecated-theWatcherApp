@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { ProfileScreen } from '../screens/ProfileScreen';
-import { Platform } from 'react-native';
+import { Image, Platform, View } from 'react-native';
 import { DetailStack } from './DetailStack';
 import { SearchDetailStack } from './SearchStack';
 import { AuthContext } from '../context/AuthContext';
@@ -21,7 +21,21 @@ export const TabsNavigator = () => {
   const { user, colorScheme, isLoadingUser } = useContext(AuthContext);
 
   if ( isLoadingUser ) {
-    return <AppLoading />
+    // return <AppLoading />
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Image
+          source={{uri: 'https://res.cloudinary.com/dcho0pw74/image/upload/v1654034791/logoAnimation_hc8ec3.gif'}}
+          style={{width: 200, height: 200}}
+        />
+      </View>
+    )
   }
 
   return (

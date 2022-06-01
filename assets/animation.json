@@ -1,0 +1,297 @@
+{
+  "LogoInside": {
+    "anchorPoint": "MIDDLECENTER",
+    "keyframes": {
+      "x": [
+        {
+          "id": "628e7743-a3de-48cd-be64-7fe5b9ae396c",
+          "ms": 0,
+          "property": "x",
+          "value": 539.5,
+          "easing": "linear",
+          "easingCurve": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "e2248715-b945-4715-a9cc-b99dc12861d9",
+          "ms": 610,
+          "property": "x",
+          "value": 539.5,
+          "easing": "easeInOut",
+          "easingCurve": [
+            0.42,
+            0,
+            0.58,
+            1
+          ]
+        },
+        {
+          "id": "86ad48f1-4b52-4dbc-b723-eedddbe04ec1",
+          "ms": 860,
+          "property": "x",
+          "value": 443,
+          "easing": "easeInOut",
+          "easingCurve": [
+            0.42,
+            0,
+            0.58,
+            1
+          ]
+        },
+        {
+          "id": "8bffd604-dfcb-488c-a1fe-6d01e385a30b",
+          "ms": 1490,
+          "property": "x",
+          "value": 443,
+          "easing": "easeInOut",
+          "easingCurve": [
+            0.42,
+            0,
+            0.58,
+            1
+          ]
+        },
+        {
+          "id": "46bc9eb9-18fc-4d1b-b78f-0d6f5bac336a",
+          "ms": 1800,
+          "property": "x",
+          "value": 617.5,
+          "easing": "easeInOut",
+          "easingCurve": [
+            0.42,
+            0,
+            0.58,
+            1
+          ]
+        },
+        {
+          "id": "f7a20d79-487c-4be8-aff6-210901a77894",
+          "ms": 2400,
+          "property": "x",
+          "value": 617.5,
+          "easing": "easeInOut",
+          "easingCurve": [
+            0.42,
+            0,
+            0.58,
+            1
+          ]
+        },
+        {
+          "id": "14a4a513-e92e-44a8-9253-7f0faedeb8ca",
+          "ms": 2650,
+          "property": "x",
+          "value": 450.5,
+          "easing": "easeInOut",
+          "easingCurve": [
+            0.42,
+            0,
+            0.58,
+            1
+          ]
+        },
+        {
+          "id": "1b83279d-f55f-4627-946d-02187feabe61",
+          "ms": 3320,
+          "property": "x",
+          "value": 450.5,
+          "easing": "easeInOut",
+          "easingCurve": [
+            0.42,
+            0,
+            0.58,
+            1
+          ]
+        },
+        {
+          "id": "1212a0ed-445f-4253-afb9-39d234c5cd69",
+          "ms": 3530,
+          "property": "x",
+          "value": 633.5,
+          "easing": "easeInOut",
+          "easingCurve": [
+            0.42,
+            0,
+            0.58,
+            1
+          ]
+        },
+        {
+          "id": "440acade-31ac-49ec-bd06-fc9505b16566",
+          "ms": 4180,
+          "property": "x",
+          "value": 636,
+          "easing": "easeInOut",
+          "easingCurve": [
+            0.42,
+            0,
+            0.58,
+            1
+          ]
+        },
+        {
+          "id": "9da6aea6-0847-41c8-9e42-4ed2ad4e655c",
+          "ms": 4390,
+          "property": "x",
+          "value": 539.5,
+          "easing": "easeInOut",
+          "easingCurve": [
+            0.42,
+            0,
+            0.58,
+            1
+          ]
+        }
+      ],
+      "y": [
+        {
+          "id": "f9ee9efb-1b40-4688-8e40-c50f9e1f85b6",
+          "ms": 0,
+          "property": "y",
+          "value": 540,
+          "easing": "linear",
+          "easingCurve": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "8b2d7618-60cb-484c-8413-d1d9393032c4",
+          "ms": 610,
+          "property": "y",
+          "value": 540,
+          "easing": "easeInOut",
+          "easingCurve": [
+            0.42,
+            0,
+            0.58,
+            1
+          ]
+        },
+        {
+          "id": "6794948c-5827-41fd-9021-b8381ea514d8",
+          "ms": 860,
+          "property": "y",
+          "value": 443,
+          "easing": "easeInOut",
+          "easingCurve": [
+            0.42,
+            0,
+            0.58,
+            1
+          ]
+        },
+        {
+          "id": "6fb4714d-5413-46a0-bdfa-f854c2b92391",
+          "ms": 1490,
+          "property": "y",
+          "value": 443,
+          "easing": "easeInOut",
+          "easingCurve": [
+            0.42,
+            0,
+            0.58,
+            1
+          ]
+        },
+        {
+          "id": "116d9da7-c7d6-4a0a-a90b-9b6a12fa49cc",
+          "ms": 1800,
+          "property": "y",
+          "value": 443,
+          "easing": "easeInOut",
+          "easingCurve": [
+            0.42,
+            0,
+            0.58,
+            1
+          ]
+        },
+        {
+          "id": "7c7538ef-7457-4065-bd02-4b3c6cf60c15",
+          "ms": 2420,
+          "property": "y",
+          "value": 443,
+          "easing": "easeInOut",
+          "easingCurve": [
+            0.42,
+            0,
+            0.58,
+            1
+          ]
+        },
+        {
+          "id": "1f753d1c-3d2d-46b7-bfe2-510fd326d069",
+          "ms": 2650,
+          "property": "y",
+          "value": 643,
+          "easing": "easeInOut",
+          "easingCurve": [
+            0.42,
+            0,
+            0.58,
+            1
+          ]
+        },
+        {
+          "id": "514b85ec-cbce-40d1-b415-ad4c86844679",
+          "ms": 3320,
+          "property": "y",
+          "value": 643,
+          "easing": "easeInOut",
+          "easingCurve": [
+            0.42,
+            0,
+            0.58,
+            1
+          ]
+        },
+        {
+          "id": "db6c8aec-a6a8-4c31-99d3-36887261056c",
+          "ms": 3530,
+          "property": "y",
+          "value": 636,
+          "easing": "easeInOut",
+          "easingCurve": [
+            0.42,
+            0,
+            0.58,
+            1
+          ]
+        },
+        {
+          "id": "87c0420b-b9e5-430e-bd81-18d51443c5f1",
+          "ms": 4180,
+          "property": "y",
+          "value": 636,
+          "easing": "easeInOut",
+          "easingCurve": [
+            0.42,
+            0,
+            0.58,
+            1
+          ]
+        },
+        {
+          "id": "9e9d1e05-bd40-4708-9734-fd28f9903fe0",
+          "ms": 4390,
+          "property": "y",
+          "value": 540,
+          "easing": "easeInOut",
+          "easingCurve": [
+            0.42,
+            0,
+            0.58,
+            1
+          ]
+        }
+      ]
+    }
+  }
+}

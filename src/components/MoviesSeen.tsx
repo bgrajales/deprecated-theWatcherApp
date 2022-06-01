@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { AuthContext } from '../context/AuthContext'
 import { english } from '../lenguages/english'
 import { spanish } from '../lenguages/spanish'
+import { MovieCard } from './MovieCard'
 
 export const MoviesSeen = () => {
 
@@ -53,34 +54,15 @@ export const MoviesSeen = () => {
                         )}}
                         renderItem={ ({ item }: any) => {
                             return (
-                                <TouchableOpacity style={{ 
-                                    flex: 1/3, 
-                                    marginHorizontal: 8,
-                                    shadowColor: "#000",
-                                    shadowOffset: {
-                                        width: 0,
-                                        height: 2,
-                                    },
-                                    shadowOpacity: 0.25,
-                                    shadowRadius: 3.84,
-    
-                                    elevation: 5,
-                                }} activeOpacity={0.8}
-                                    onPress={ () => { navigation.navigate('MovieDetailScreen', item ) } }
-                                >
-                                    <Image 
-                                        source={{ uri: `https://image.tmdb.org/t/p/w500${item.posterPath}` }}
-                                        style={{ width: "100%", height: 200, borderRadius: 10 }}
-                                    />
-                                </TouchableOpacity>
+                                <MovieCard 
+                                    movie={ item }
+                                    type='movie'
+                                    width={ Dimensions.get('window').width / 3 }
+                                    height={ 200 }
+                                />
                             )
                         }}
                         numColumns={ 3 }
-                        ItemSeparatorComponent={ () => {
-                            return (
-                                <View style={{ height: 20}}></View>
-                            )
-                        }}
                         contentContainerStyle={{
                             paddingBottom: 20,
                         }}
@@ -128,7 +110,7 @@ export const MoviesSeen = () => {
                         }
                     </Text>
                     
-                </View>
+                    </View>
 
                 }
             </View>

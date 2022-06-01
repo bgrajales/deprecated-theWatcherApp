@@ -28,6 +28,7 @@ export interface Movie {
     video:             boolean;
     vote_average:      number;
     vote_count:        number;
+    posterPath?: string;
 }
 
 // Movie by ID details
@@ -145,6 +146,7 @@ export interface Series {
     poster_path:       string;
     vote_average:      number;
     vote_count:        number;
+    posterPath?: string;
 }
 
 export interface SeriesFull {
@@ -338,6 +340,7 @@ export interface UserMovies {
     id: string;
     posterPath: string;
     runTime: number;
+    poster_path?: string;
 }
 
 export interface UserSeries {
@@ -346,6 +349,7 @@ export interface UserSeries {
     episodesTotal: number;
     episodesWatched: number;
     seasonsDetail: SeasonDetailSeries[];
+    poster_path?: string;
 }
 
 export interface SeasonDetailSeries {

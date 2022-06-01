@@ -39,7 +39,11 @@ export const SearchScreen = () => {
       searchParam = searchText
     }
 
-    const searchedElements = multiDB.get<SearchResponse>(`/search/multi?query=${searchParam}`)
+    const lenguageParams = {
+      language: user?.settings.leng || 'en-US',
+    }
+
+    const searchedElements = multiDB.get<SearchResponse>(`/search/multi?query=${searchParam}`, { params: lenguageParams })
 
     const searchPromise = await Promise.all([searchedElements])
 

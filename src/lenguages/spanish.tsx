@@ -13,7 +13,11 @@ export const spanish = {
     aboutFeatureFive: "Comenta en tus series y peliculas favoritas y mira lo que otros piensan",
     
     lengOverview: "Resumen",
-    
+    noData: "No hay datos sobre este titulo",
+    tutModalTitle: "Bienvenido a The Watcher!",
+    tutModalBtn: "Entendido!",
+
+
     episodeModalSeason: "Temporada",
     episodeModalEpisode: "Episodio",
     episodeModalStills: "Fotos",

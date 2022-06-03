@@ -417,3 +417,26 @@ export const changeLenguageAction = async (username: string, newLeng: string) =>
     }
 
 }
+
+export const changeNewAccounAction = async (username: string) => {
+
+    const headers = {
+        // authorization: token,
+        'Content-Type': 'application/json'
+    }
+
+    const resp = await watcherApi.post("/changeNewAccount", { username }, { headers });
+
+    if (resp.data.error) {
+        return {
+            result: false
+        };
+    } else {
+        return {
+            result: true,
+            action: resp.data,
+        };
+    }
+
+
+}

@@ -85,9 +85,9 @@ export const SeriesDetailScreen = ({ route }: Props) => {
           serieTotalEpisodes: serieFull?.number_of_episodes,
           seriesSeasons: serieFull?.seasons
         })
-        setWatcherLoader(false)
         if ( resp.result ) {
           updateSeries(resp.seriesUpdate)
+          setWatcherLoader(false)
         }
       }
 
@@ -108,6 +108,24 @@ export const SeriesDetailScreen = ({ route }: Props) => {
     }
 
     return (
+      <>
+        <TouchableOpacity
+          style={{
+              position: 'absolute',
+              top: top + 5,
+              left: 5,
+              width: 40,
+              height: 40,
+              backgroundColor: '#0055ff',
+              zIndex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 100,
+          }}
+          onPress={ () => navigation.goBack() }
+        >
+          <Icon name="chevron-back" size={30} color='#fff' />
+        </TouchableOpacity>
         <ScrollView
           showsVerticalScrollIndicator={ false }
           contentContainerStyle={{
@@ -127,24 +145,6 @@ export const SeriesDetailScreen = ({ route }: Props) => {
                     height: 200,
                 }}
               />
-
-              <TouchableOpacity
-                style={{
-                    position: 'absolute',
-                    top: top + 5,
-                    left: 5,
-                    width: 40,
-                    height: 40,
-                    backgroundColor: '#0055ff',
-                    zIndex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    borderRadius: 100,
-                }}
-                onPress={ () => navigation.goBack() }
-              >
-                <Icon name="chevron-back" size={30} color='#fff' />
-              </TouchableOpacity>
 
               <View
                 style={{
@@ -208,7 +208,7 @@ export const SeriesDetailScreen = ({ route }: Props) => {
                             color='#0055ff'
                           />
                         </View>
-                  ) : user?.watchlist.find( (m: any) => {
+                  ) : user && user?.watchlist.find( (m: any) => {
                     return parseInt(m.elementId) === serieFull?.id
                   } ) ? (
                     <TouchableOpacity
@@ -232,7 +232,7 @@ export const SeriesDetailScreen = ({ route }: Props) => {
                         
                       />
                     </TouchableOpacity>
-                  ) : (
+                  ) : user ? (
                     <TouchableOpacity
                       style={{
                         backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff',
@@ -253,7 +253,7 @@ export const SeriesDetailScreen = ({ route }: Props) => {
                         color="#0055FF"
                       />
                     </TouchableOpacity>
-                  )
+                  ) : null
                 }
                 <View style={{ width: 10 }}/>
                 {
@@ -275,7 +275,7 @@ export const SeriesDetailScreen = ({ route }: Props) => {
                             color='#0055ff'
                           />
                         </View>
-                  ) : user?.series.find( (m: any) => { return parseInt(m.id) === serieFull?.id })?.episodesWatched === serieFull?.number_of_episodes ? (
+                  ) : user && user?.series.find( (m: any) => { return parseInt(m.id) === serieFull?.id })?.episodesWatched === serieFull?.number_of_episodes ? (
                     <TouchableOpacity 
                       style={{
                         backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff',
@@ -298,7 +298,7 @@ export const SeriesDetailScreen = ({ route }: Props) => {
                         }}
                       />
                     </TouchableOpacity>
-                  ) : (
+                  ) : user ? (
                     <TouchableOpacity 
                       style={{
                         backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff',
@@ -321,7 +321,7 @@ export const SeriesDetailScreen = ({ route }: Props) => {
                         }}
                       />
                     </TouchableOpacity>
-                  )
+                  ) : null
                 }
                 <View style={{ width: 10 }}/>
                 <View
@@ -349,5 +349,6 @@ export const SeriesDetailScreen = ({ route }: Props) => {
             </View>
             <SeriesNavigator seriesId={ serieFull!.id }/>
         </ScrollView>
+      </>
     )
 }

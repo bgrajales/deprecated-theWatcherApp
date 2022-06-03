@@ -108,95 +108,143 @@ export const SeriesDetailsComponent = ({seriesId}: Props ) => {
             </Text>
         </View>
     }
-        <View style={ styles.section }>
-            <Text style={{ 
-                ...styles.title, 
-                color: colorScheme === 'dark' ? '#fff' : '#000'
-            }}>
-                {/* {english.lengOverview} */}
-                {
-                    user?.settings.leng === 'es-ES' ? spanish.lengOverview : english.lengOverview
-                }
-            </Text>
-            <Text style={{ 
-                ...styles.text, 
-                color: colorScheme === 'dark' ? '#e6e6e6' : '#000'
-            }}>{ serieFull?.overview }</Text>
-        </View>
-        
-        <View style={ styles.section }>
-            <Text style={{ 
-                ...styles.title, 
-                color: colorScheme === 'dark' ? '#fff' : '#000'
-            }}>Videos</Text>
-            <Carousel
-                data={ videos }
-                renderItem={ ({ item }) => (
-                    <YoutubePlayer
-                        width={ 300 }
-                        height={ 170 }
-                        videoId={ item.key }
-                        play={ false }
-                        webViewStyle={{
-                        width: 300,
-                        height: 170,
-                        borderRadius: 10,
-                        }}
-                        webViewProps={{
-                        allowsFullscreenVideo: true,
-                        }}                            
-                    />
-                )}
-                sliderWidth={ Dimensions.get('window').width }
-                itemWidth={ 300 }
-                itemHeight={ 170 }
-                layout={ 'default' }
-                loop={ false }
-            />
-        </View>
-        
-        <View style={ styles.section }>
-            <Text style={{ 
-                ...styles.title, 
-                color: colorScheme === 'dark' ? '#fff' : '#000'
-            }}>Cast</Text>
-            <FlatList 
-                horizontal={ true }
-                data={ cast }
-                keyExtractor={ ( cast ) => cast.id.toString() }
-                renderItem={ ({ item }) => (
-                    <TouchableOpacity 
-                        style={ styles.castDiv }
-                        onPress={ () => setActorModalVisible({
-                            visible: true,
-                            actor: item
-                        }) }
-                    >
-                    <Image
-                        source={ { uri: item.profile_path ? `https://image.tmdb.org/t/p/w500${item.profile_path}` : `https://critics.io/img/movies/poster-placeholder.png` } }
-                        style={{
-                            width: 120,
-                            height: 180,
-                            marginRight: 10,
+        {
+            serieFull?.overview !== '' ? (
+                <View style={ styles.section }>
+                <Text style={{ 
+                    ...styles.title, 
+                    color: colorScheme === 'dark' ? '#fff' : '#000'
+                }}>
+                    {
+                        user?.settings.leng === 'es-ES' ? spanish.lengOverview : english.lengOverview
+                    }
+                </Text>
+                <Text style={{ 
+                    ...styles.text, 
+                    color: colorScheme === 'dark' ? '#e6e6e6' : '#000'
+                }}>{ serieFull?.overview }</Text>
+            </View>
+            ) : null
+        }
+
+        {
+            videos?.length > 0 ? (
+            <View style={ styles.section }>
+                <Text style={{ 
+                    ...styles.title, 
+                    color: colorScheme === 'dark' ? '#fff' : '#000'
+                }}>Videos</Text>
+                <Carousel
+                    data={ videos }
+                    renderItem={ ({ item }) => (
+                        <YoutubePlayer
+                            width={ 300 }
+                            height={ 170 }
+                            videoId={ item.key }
+                            play={ false }
+                            webViewStyle={{
+                            width: 300,
+                            height: 170,
                             borderRadius: 10,
+                            }}
+                            webViewProps={{
+                            allowsFullscreenVideo: true,
+                            }}                            
+                        />
+                    )}
+                    sliderWidth={ Dimensions.get('window').width }
+                    itemWidth={ 300 }
+                    itemHeight={ 170 }
+                    layout={ 'default' }
+                    loop={ false }
+                />
+            </View>
+            ) : null
+        }
+        
+        {
+            cast?.length > 0 ? (
+                <View style={ styles.section }>
+                <Text style={{ 
+                    ...styles.title, 
+                    color: colorScheme === 'dark' ? '#fff' : '#000'
+                }}>Cast</Text>
+                <FlatList 
+                    horizontal={ true }
+                    data={ cast }
+                    keyExtractor={ ( cast ) => cast.id.toString() }
+                    renderItem={ ({ item }) => (
+                        <TouchableOpacity 
+                            style={ styles.castDiv }
+                            onPress={ () => setActorModalVisible({
+                                visible: true,
+                                actor: item
+                            }) }
+                        >
+                        <Image
+                            source={ { uri: item.profile_path ? `https://image.tmdb.org/t/p/w500${item.profile_path}` : `https://critics.io/img/movies/poster-placeholder.png` } }
+                            style={{
+                                width: 120,
+                                height: 180,
+                                marginRight: 10,
+                                borderRadius: 10,
+                            }}
+                        />
+                        <LinearGradient
+                            colors={["rgba(0,0,0, 0)",  "rgba(0,0,0, 1)", "rgba(0,0,0, 1)"]}
+                            style={ styles.castInfo }
+                        >
+                            <Text style={ styles.castName }>{ item.name }</Text>
+                            <Text style={ styles.castChar }>{ item.character }</Text>
+                        </LinearGradient>
+                        </TouchableOpacity>
+                    )}
+                    style={{
+                        paddingHorizontal: 20,
+                    }}
+                    showsHorizontalScrollIndicator={ false }
+                    contentContainerStyle={{ paddingRight: 20 }}
+                />
+                </View>
+            ) : null
+        }
+        
+        {
+            serieFull?.overview === '' && videos?.length === 0 && cast?.length === 0 ? (
+                <View style={{
+                    width: '100%',
+                    marginTop: 20,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: '100%'
+                }}>
+                    <Text style={{
+                        ...styles.title,
+                        color: colorScheme === 'dark' ? '#fff' : '#000'
+                    }}>
+                        {
+                            user?.settings.leng === 'es-ES' ? spanish.noData : english.noData
+                        }
+                    </Text>
+                    <Image 
+                        source={{
+                        uri: `${
+                            colorScheme === 'dark' 
+                            ? 'https://res.cloudinary.com/dcho0pw74/image/upload/v1654122202/logoAnimationDark_mwgsas.gif' 
+                            : 'https://res.cloudinary.com/dcho0pw74/image/upload/v1654034791/logoAnimation_hc8ec3.gif'
+                        }` 
+                        }}
+                        style={{
+                            width: 200,
+                            height: 200,
                         }}
                     />
-                    <LinearGradient
-                        colors={["rgba(0,0,0, 0)",  "rgba(0,0,0, 1)", "rgba(0,0,0, 1)"]}
-                        style={ styles.castInfo }
-                    >
-                        <Text style={ styles.castName }>{ item.name }</Text>
-                        <Text style={ styles.castChar }>{ item.character }</Text>
-                    </LinearGradient>
-                    </TouchableOpacity>
-                )}
-                style={{
-                    paddingHorizontal: 20,
-                }}
-                showsHorizontalScrollIndicator={ false }
-                contentContainerStyle={{ paddingRight: 20 }}
-            />
-        </View>
+                </View>
+            ) : null
+
+        }
+        
+       
 
         <ActorModal modalVisible={actorModalVisible} setActorModalVisible={setActorModalVisible} />
     </ScrollView>

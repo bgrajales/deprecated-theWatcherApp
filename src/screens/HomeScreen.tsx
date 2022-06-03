@@ -1,12 +1,14 @@
+import { BlurView } from 'expo-blur'
 import React, { useContext, useEffect, useState } from 'react'
 
-import { ActivityIndicator, Dimensions, FlatList, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, Dimensions, FlatList, Image, Modal, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Carousel from 'react-native-snap-carousel'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { getGenresLists } from '../api/TMDBActions'
 import { CarrouselCards } from '../components/CarrouselCards'
 import { MovieCard } from '../components/MovieCard'
+import { TutorialModal } from '../components/TutorialModal'
 import { AuthContext } from '../context/AuthContext'
 
 import { useMovies } from '../hooks/useMovies'
@@ -91,6 +93,10 @@ export const HomeScreen = () => {
         contentContainerStyle={{ paddingBottom: 75 }}
       >
 
+        {
+          user &&
+          <TutorialModal />
+        }
         {/* Main Carrousel */}
         <View style={ homeStyles.categContainer }>
           <Text style={{ 

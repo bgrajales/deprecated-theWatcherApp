@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import Collapsible from 'react-native-collapsible';
 
-import Accordion from 'react-native-collapsible/Accordion';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { markSeasonAsWatchedAction, updateEpisode } from '../api/watcherActions';
 import { EpisodeModal } from '../components/EpisodeModal';
@@ -23,7 +23,7 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
     const { user, token, updateWatchedSeries, updateSeries, colorScheme } = useContext( AuthContext )
 
     const [activeSection, setActiveSection] = useState({
-        section: null,
+        section: -1,
     })
     const [ showEpisode, setShowEpisode ] = useState(false)
 
@@ -51,12 +51,18 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
     const renderHeader = ( season: SeriesSeason ) => {
  
         return(
-            <View style={{ 
+            <TouchableOpacity style={{ 
                 ...styles.accHeader, 
                 borderBottomRightRadius: activeSection.section === season.id ? 0 : 10,
                 borderBottomLeftRadius: activeSection.section === season.id ? 0 : 10,
                 backgroundColor: colorScheme === 'dark' ? '#353535' : '#fff'
-            }}>
+            }}
+            onPress={() => {
+                setActiveSection({
+                    section: activeSection.section === season.id ? -1 : season.id
+                })
+            }}
+            >
                 <Text style={{ 
                     ...styles.accHeaderText,
                     color: colorScheme === 'dark' ? '#fff' : '#000'
@@ -93,11 +99,10 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
                 </View>
 
                 {
-                    watchSeasonLoader.seasonId === season.id && watchSeasonLoader.loader ? (
+                    user && watchSeasonLoader.seasonId === season.id && watchSeasonLoader.loader ? (
                         <ActivityIndicator size={25} color="#0055ff" />
-                    ) : (user?.series?.find( serie => parseInt(serie.id) === seriesId )?.seasonsDetail?.find( seasonArr => parseInt(seasonArr.id) === season.id )?.episodes.length || 0 ) / season.episodes.length * 100 === 100 
-                    ?   <>
-                            
+                    ) : user && (user?.series?.find( serie => parseInt(serie.id) === seriesId )?.seasonsDetail?.find( seasonArr => parseInt(seasonArr.id) === season.id )?.episodes.length || 0 ) / season.episodes.length * 100 === 100 
+                    ?   <>              
                             <TouchableOpacity
                                 onPress={() => {
                                     markSeasonAsWatched(season, 'remove')
@@ -106,7 +111,7 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
                                 <Icon name="checkmark-circle" size={30} color="#0055ff" />
                             </TouchableOpacity>
                         </>
-                    :   <>
+                    : user ?    <>
                             <TouchableOpacity
                                 onPress={() => {
                                     markSeasonAsWatched(season, 'add')
@@ -115,8 +120,9 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
                                 <Icon name="ellipse-outline" size={30} color="#0055ff" />
                             </TouchableOpacity>
                         </>
+                    : null
                 }
-            </View>
+            </TouchableOpacity>
         )
 
     }
@@ -213,7 +219,7 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
                             }}>
 
                                 {
-                                    watchEpisodeLoader.epId === episode.id && watchEpisodeLoader.loader ? (
+                                    user && watchEpisodeLoader.epId === episode.id && watchEpisodeLoader.loader ? (
                                         <View style={{ 
                                             ...styles.accContentEyeImage, 
                                             width: 40,
@@ -224,7 +230,7 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
                                                 color='#0055ff'
                                             />
                                         </View>
-                                    ) : (
+                                    ) : user ? (
                                         <TouchableOpacity
                                             style={ styles.accContentEyeImage }
                                             activeOpacity={ 0.6 }
@@ -247,12 +253,8 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
                                                 }}
                                             />
                                         </TouchableOpacity>
-                                    )
+                                    ) : null
                                 }
-                                
-
-                                
-
                                 <TouchableOpacity 
                                     style={ styles.accContentImageText}
                                     activeOpacity={0.6}
@@ -260,7 +262,11 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
                                 >
                                     <Image 
                                         style={ styles.accContentItemPoster }
-                                        source={{ uri: episode.still_path ? `https://image.tmdb.org/t/p/w500${episode.still_path}` : `https://critics.io/img/movies/poster-placeholder.png` }}
+                                        source={{ uri: episode.still_path 
+                                            ? `https://image.tmdb.org/t/p/w500${episode.still_path}` 
+                                            : season.poster_path ? `https://image.tmdb.org/t/p/w500${season.poster_path}`
+                                            : `https://critics.io/img/movies/poster-placeholder.png` 
+                                        }}
                                     />
                                     <View style={ styles.accContentText}>
                                         <Text style={{ 
@@ -296,25 +302,26 @@ export const EpisodesScreen = ({ seriesId }: Props) => {
             backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff',    
         }}>
             {
-                seasons ? (
-                    <Accordion
-                        activeSections={[activeSection.section as any]}
-                        sections={seasons}
-                        renderHeader={renderHeader}
-                        renderContent={renderContent}
-                        onChange={(activeSection) => {
-                            setActiveSection({
-                                section: activeSection[0] as any
-                            })
-                        }}
-                        touchableComponent={TouchableOpacity}
-                        touchableProps={{
-                            activeOpacity: 0.5,
-                        }}
-                    />
-                ) : (
-                    null
-                )
+                seasons && seasons.map( ( season: SeriesSeason ) => {
+                    return (
+                        <>
+                            {
+                                renderHeader(season)
+                            }
+                            <Collapsible
+                                key={ season.id }
+                                collapsed={
+                                    activeSection.section !== season.id
+                                }
+                            >
+                                {
+                                   activeSection.section === season.id &&  renderContent(season)
+                                }
+                            </Collapsible>
+                        </>
+                    )
+                })
+            
             }
         </ScrollView>
     )

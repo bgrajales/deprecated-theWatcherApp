@@ -25,6 +25,10 @@ export const SearchScreen = () => {
     } else if ( searchText.length === 0 ) {
       setSearchElementsArray([])
     }
+
+    return () => {
+      setSearchElementsArray([])
+    }
   }, [searchText]);
 
   const getElements = async () => {

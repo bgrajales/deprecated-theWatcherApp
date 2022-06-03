@@ -31,6 +31,11 @@ export const ActorModal = ({modalVisible, setActorModalVisible}: ActorModalProps
             getActorAction( modalVisible.actor.id, setActorProps, setActorTitles, user?.settings.leng || 'en-US')
         }
 
+        return () => {
+            setActorProps( undefined )
+            setActorTitles( undefined )
+        }
+
     }, [modalVisible])
 
     

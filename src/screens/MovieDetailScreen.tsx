@@ -253,6 +253,24 @@ export const MovieDetailScreen = ({ route }: Props) => {
     }
 
     return (
+      <>
+       <TouchableOpacity
+          style={{
+              position: 'absolute',
+              top: top + 5,
+              left: 5,
+              width: 40,
+              height: 40,
+              backgroundColor: '#0055ff',
+              zIndex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 100,
+          }}
+          onPress={ () => navigation.goBack() }
+        >
+          <Icon name="chevron-back" size={30} color='#fff' />
+        </TouchableOpacity>
         <ScrollView
           showsVerticalScrollIndicator={ false }
           contentContainerStyle={{
@@ -273,24 +291,6 @@ export const MovieDetailScreen = ({ route }: Props) => {
                     height: 280,
                 }}
               />
-
-              <TouchableOpacity
-                style={{
-                    position: 'absolute',
-                    top: top + 5,
-                    left: 5,
-                    width: 40,
-                    height: 40,
-                    backgroundColor: '#0055ff',
-                    zIndex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    borderRadius: 100,
-                }}
-                onPress={ () => navigation.goBack() }
-              >
-                <Icon name="chevron-back" size={30} color='#fff' />
-              </TouchableOpacity>
 
               <View
                 style={{
@@ -359,7 +359,7 @@ export const MovieDetailScreen = ({ route }: Props) => {
                             color='#0055ff'
                           />
                         </View>
-                      ) : user?.watchlist.find( (m: any) => {
+                      ) : user && user?.watchlist.find( (m: any) => {
                         return parseInt(m.elementId) === movieFull?.id
                       } ) ? (
                         <TouchableOpacity
@@ -382,7 +382,7 @@ export const MovieDetailScreen = ({ route }: Props) => {
                             color="#0055FF"
                           />
                         </TouchableOpacity>
-                      ) : (
+                      ) : user ?  (
                         <TouchableOpacity
                           style={{
                             backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff',
@@ -403,7 +403,7 @@ export const MovieDetailScreen = ({ route }: Props) => {
                             color="#0055FF"
                           />
                         </TouchableOpacity>
-                      )
+                      ) : null
                     }
                     <View style={{ width: 10 }}/>
                     {
@@ -425,7 +425,7 @@ export const MovieDetailScreen = ({ route }: Props) => {
                             color='#0055ff'
                           />
                         </View>
-                      ) : user?.movies.find( (m: any) => {
+                      ) : user && user?.movies.find( (m: any) => {
                         return parseInt(m.id) === movieFull?.id
                       } ) ? (
                         <TouchableOpacity 
@@ -450,7 +450,7 @@ export const MovieDetailScreen = ({ route }: Props) => {
                             }}
                           />
                         </TouchableOpacity>
-                      ) : (
+                      ) : user ? (
                         <TouchableOpacity 
                           style={{
                             backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff',
@@ -473,7 +473,7 @@ export const MovieDetailScreen = ({ route }: Props) => {
                             }}
                           />
                         </TouchableOpacity>
-                      )
+                      ) : null
                     }                  
                   </View>
                   <View style={{ width: 15 }}/>
@@ -720,18 +720,24 @@ export const MovieDetailScreen = ({ route }: Props) => {
                       >
                           <View style={{ 
                               justifyContent: 'space-between', 
-                              backgroundColor: '#fff', 
+                              backgroundColor: colorScheme === 'dark' ? '#080808' : '#fff', 
                               width: '95%',
                               borderRadius: 10,
                               padding: 10, 
                           }}>
                               <View style={{ ...styles.subTitleDiv, width: '100%', justifyContent: 'space-between', marginTop: 0}}>
-                                  <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
+                                  <Text style={{ 
+                                    fontSize: 20, 
+                                    fontWeight: 'bold', 
+                                    color: colorScheme === 'dark' ? '#fff' : '#000',
+                                  }}>
                                     {
                                       user?.settings.leng === 'es-ES' ? spanish.episodeModalNewComment : english.episodeModalNewComment
                                     }
                                   </Text>
-                                  <Icon name="md-close" size={30} color="#000" onPress={() => setWriteCommentVisible(false)} />
+                                  <Icon name="md-close" size={30} color={
+                                    colorScheme === 'dark' ? '#fff' : '#000'
+                                  } onPress={() => setWriteCommentVisible(false)} />
                               </View>
                               <TextInput
                                   placeholder={
@@ -744,10 +750,14 @@ export const MovieDetailScreen = ({ route }: Props) => {
                                       marginTop: 10,
                                       borderColor: '#e9e9e9',
                                       borderWidth: 2,
+                                      color: colorScheme === 'dark' ? '#fff' : '#000',
                                   }}
                                   autoCorrect={true}
                                   autoCapitalize="sentences"
                                   multiline={true}
+                                  placeholderTextColor={
+                                    colorScheme === 'dark' ? '#fff' : '#000'
+                                  }
 
                                   // value={commentToPost}
                                   onChangeText={(text) => setCommentToPost(text)}
@@ -775,6 +785,34 @@ export const MovieDetailScreen = ({ route }: Props) => {
                           </View>
                       </BlurView>
                   </Modal>
+                  {
+                    commentsToShow.length === 0 &&
+                    <View style={{ 
+                        width: '100%', 
+                        alignItems: 'center'
+                    }}>
+                        <Image 
+                            source={{
+                            uri: `${
+                                colorScheme === 'dark' 
+                                ? 'https://res.cloudinary.com/dcho0pw74/image/upload/v1654122202/logoAnimationDark_mwgsas.gif' 
+                                : 'https://res.cloudinary.com/dcho0pw74/image/upload/v1654034791/logoAnimation_hc8ec3.gif'
+                            }` 
+                            }}
+                            style={{width: 100, height: 100}}
+                        />
+                        <Text
+                            style={{
+                                fontSize: 16,
+                                marginTop: 10,
+                                fontWeight: 'bold',
+                                color: colorScheme === 'dark' ? '#fff' : '#000'
+                            }}
+                        >
+                            No comments yet
+                        </Text>
+                    </View>
+                }
                   <View
                       style={{
                           width: '100%',
@@ -787,7 +825,10 @@ export const MovieDetailScreen = ({ route }: Props) => {
                       {
                           commentsToShow.map((item: Comments, index: number) => (
                               <View
-                                  style={ styles.commentCard }
+                                  style={{ 
+                                    ...styles.commentCard,
+                                    backgroundColor: colorScheme === 'dark' ? '#080808' : '#fff', 
+                                  }}
                                   key={index}
                               >
                                   <View style={{ width: '100%', marginTop: 0, flexDirection: 'row', borderBottomColor: '#0055FF', borderBottomWidth: 1, paddingBottom: 5, alignItems: 'center'}}>
@@ -795,6 +836,7 @@ export const MovieDetailScreen = ({ route }: Props) => {
                                           fontSize: 14, 
                                           fontWeight: 'bold', 
                                           marginRight: 5,
+                                          color: colorScheme === 'dark' ? '#fff' : '#000'
                                       }}>{ item.userName }</Text>
                                       <Text style={{ fontSize: 12, color: '#999'}}>Author</Text>
                                       <Text style={{ fontSize: 12, color: '#999', marginLeft: 10 }}>{
@@ -804,6 +846,7 @@ export const MovieDetailScreen = ({ route }: Props) => {
                                   <Text style={{ 
                                       marginTop: 10,
                                       fontSize: 16,
+                                      color: colorScheme === 'dark' ? '#fff' : '#000'
                                   }}>{ item.comment }</Text>
 
                                   <View
@@ -813,7 +856,7 @@ export const MovieDetailScreen = ({ route }: Props) => {
                                           justifyContent: 'space-evenly',
                                           alignItems: 'center',
                                           marginTop: 10,
-                                          backgroundColor: '#e8e8e8',
+                                          backgroundColor: colorScheme === 'dark' ? '#121212' : '#e8e8e8',
                                           padding: 10,
                                           borderRadius: 10,
                                       }}
@@ -858,7 +901,7 @@ export const MovieDetailScreen = ({ route }: Props) => {
                                 style={{
                                     width: '95%',
                                     maxHeight: '90%',
-                                    backgroundColor: '#fff',
+                                    backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff',
                                     borderRadius: 10,
                                     padding: 10,
                                     marginTop: 10,
@@ -869,12 +912,17 @@ export const MovieDetailScreen = ({ route }: Props) => {
                                   commentToShow.id ? (
                                     <>
                                       <View style={{ ...styles.subTitleDiv, width: '100%', justifyContent: 'space-between', marginTop: 0}}>
-                                        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{commentToShow.userName}</Text>
+                                        <Text style={{ 
+                                          fontSize: 20, 
+                                          fontWeight: 'bold', 
+                                          color: colorScheme === 'dark' ? '#fff' : '#000'  
+                                        }}>{commentToShow.userName}</Text>
                                         <Icon name="md-close" size={30} color="#000" onPress={() => setShowReplies(false)} />
                                       </View>
                                       <Text style={{
                                           marginTop: 10,
                                           fontSize: 16,
+                                          color: colorScheme === 'dark' ? '#fff' : '#000'
                                       }}>{ commentToShow.comment }</Text>
                                       <View
                                           style={{
@@ -883,7 +931,7 @@ export const MovieDetailScreen = ({ route }: Props) => {
                                               justifyContent: 'space-evenly',
                                               alignItems: 'center',
                                               marginTop: 10,
-                                              backgroundColor: '#e8e8e8',
+                                              backgroundColor: colorScheme === 'dark' ? '#080808' : '#e8e8e8',
                                               padding: 10,
                                               borderRadius: 10,
                                           }}
@@ -925,8 +973,12 @@ export const MovieDetailScreen = ({ route }: Props) => {
                                                             flex: 1,
                                                             borderTopStartRadius: 10,
                                                             borderBottomStartRadius: 10,
+                                                            color: colorScheme === 'dark' ? '#fff' : '#000'
                                                         }}
                                                         placeholder="Write a reply"
+                                                        placeholderTextColor={
+                                                            colorScheme === 'dark' ? '#fff' : '#000'
+                                                        }
                                                         onChangeText={(text) => setReplyText(text)}
                                                     />
                                                     <TouchableOpacity
@@ -963,7 +1015,10 @@ export const MovieDetailScreen = ({ route }: Props) => {
                                           {
                                             commentToShow.replies.map((item: any, index: number) => (
                                               <View
-                                                  style={ styles.commentCard }
+                                                  style={{ 
+                                                    ...styles.commentCard, 
+                                                    backgroundColor: colorScheme === 'dark' ? '#080808' : '#e8e8e8',
+                                                  }}
                                                   key={index}
                                               >
                                                   <View style={{ width: '100%', marginTop: 0, flexDirection: 'row', borderBottomColor: '#0055FF', borderBottomWidth: 1, paddingBottom: 5, alignItems: 'center'}}>
@@ -971,6 +1026,7 @@ export const MovieDetailScreen = ({ route }: Props) => {
                                                           fontSize: 14,
                                                           fontWeight: 'bold',
                                                           marginRight: 5,
+                                                          color: colorScheme === 'dark' ? '#fff' : '#000'
                                                       }}>{ item.userName }</Text>
                                                       <Text style={{ fontSize: 12, color: '#999'}}>Author</Text>
                                                       <Text style={{ fontSize: 12, color: '#999', marginLeft: 10 }}>{
@@ -980,6 +1036,7 @@ export const MovieDetailScreen = ({ route }: Props) => {
                                                   <Text style={{
                                                       marginTop: 10,
                                                       fontSize: 16,
+                                                      color: colorScheme === 'dark' ? '#fff' : '#000'
                                                   }}>{ item.comment }</Text>                                          
                                               </View>
                                             ))
@@ -1000,6 +1057,7 @@ export const MovieDetailScreen = ({ route }: Props) => {
           <ActorModal modalVisible={actorModalVisible} setActorModalVisible={setActorModalVisible} />
 
         </ScrollView>
+      </>
     )
 }
 

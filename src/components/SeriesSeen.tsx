@@ -30,10 +30,21 @@ export const SeriesSeen = () => {
         getNextEpisodesAsync(seriesWatching)
 
     }
+
+    return () => {
+        setNextEpisodes([])
+    }
   }, [])
 
   const getNextEpisodesAsync = async (seriesId: number[]) => {
     const getNext = await getSeriesNextEpisodes({seriesId})
+    
+    getNext.forEach(nextEp => {
+        if(!nextEp.still_path) {
+            nextEp.still_path = user?.series.find(serie => parseInt(serie.id) === parseInt(nextEp.serieId))?.posterPath
+        }
+    })
+
     setNextEpisodes(
         getNext.sort((a, b) => {
             if(a.air_date < b.air_date) return -1
@@ -173,7 +184,7 @@ export const SeriesSeen = () => {
                                         }}
                                         style={{
                                             width: 80,
-                                            height: 80,
+                                            height: '100%',
                                             borderRadius: 10,
                                             marginRight: 20,
                                             
@@ -204,10 +215,22 @@ export const SeriesSeen = () => {
                                             }}>
                                                 {/* { item.serieName } - { item.name } */}
                                                 {
-                                                    item.serieName.concat(' - ', item.name).substring(0, 19)
-                                                } ...
-                                            </Text>                                            
+                                                    item.serieName
+                                                }
+                                            </Text>
                                         </View>
+                                        <Text
+                                            style={{
+                                                fontSize: 16,
+                                                color: colorScheme === 'dark' ? '#fff' : '#000',
+                                                fontWeight: 'bold',
+                                                marginTop: 2,
+                                            }}
+                                        >
+                                        {
+                                            item.name
+                                        }    
+                                        </Text>                                           
                                         <Text style={{
                                             marginTop: 5,
                                             fontSize: 18,

@@ -28,6 +28,10 @@ export const Settings = () => {
             setLenguagePickerValue('en-US')
         }
 
+        return () => {
+            setLenguagePickerValue('')
+        }
+
     }, [])
 
     useEffect(() => {
@@ -36,6 +40,9 @@ export const Settings = () => {
             changeLenguage(lenguageItemToChange)
         }
 
+        return () => {
+            setLenguageItemToChange('')
+        }
     },[lenguageItemToChange])
     
 
@@ -117,18 +124,6 @@ export const Settings = () => {
                 }
             </Text>
             <View style={styles.container}>
-                {/* <View style={styles.subDiv}>
-                    <Text style={styles.subTitle}>
-                        Account
-                    </Text>
-                    <TouchableOpacity style={styles.btn}>
-                        <Text>
-                            Change Password
-                        </Text>
-                        <Icon name='pencil' size={20} color='#000' />
-                    </TouchableOpacity>
-                </View> */}
-
                 <View style={styles.subDiv}>
                     <Text style={styles.subTitle}>
                         {

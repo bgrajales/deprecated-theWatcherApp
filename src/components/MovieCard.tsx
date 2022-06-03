@@ -37,7 +37,7 @@ export const MovieCard = ({ movie, height = 350, width = 230, type, progressBar=
   useEffect(() => {
     setTimeout(() => {
         setIsLoading(false)
-    }, 1000)
+    }, 1500)
 
     return () => {
         setIsLoading(true)

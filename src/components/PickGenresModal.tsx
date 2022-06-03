@@ -95,6 +95,10 @@ export const PickGenresModal = () => {
             setSeriesGenresPicked(newSeriesGenresPicked)
         }
 
+        return () => {
+            setMoviesGenresPicked([])
+            setSeriesGenresPicked([])
+        }
 
     }, [])
     

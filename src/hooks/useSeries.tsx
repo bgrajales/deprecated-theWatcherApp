@@ -41,6 +41,10 @@ export const useSeries = () => {
 
     useEffect(() => {
         getSeries();
+
+        return () => {
+            setIsLoading(false);
+        }
     }, []);
 
     return {

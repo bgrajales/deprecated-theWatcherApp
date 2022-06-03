@@ -19,6 +19,10 @@ export const SearchInput = ({ onDebounce }: Props) => {
 
     useEffect(() => {
         onDebounce(debauncedValue)
+
+        return () => {
+            onDebounce('')
+        }
     }, [debauncedValue])
     
 

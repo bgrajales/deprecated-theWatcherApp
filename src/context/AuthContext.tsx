@@ -27,7 +27,7 @@ type AuthContextProps = {
     updateSeries: ( series: UserSeries[] ) => void;
     colorScheme: string | null | undefined;
     isLoadingUser: boolean;
-    updateSettings: ( settings: { leng: string; } ) => void;
+    updateSettings: ( settings: { leng: string, newAccount: boolean } ) => void;
 }
 
 const authInitialState: AuthState = {
@@ -48,6 +48,10 @@ export const AuthProvider = ({ children }: any) => {
 
     useEffect(() => {
         checkToken()
+
+        return () => {
+            setIsLoadingUser(true)
+        }
     }, [])
 
     const checkToken = async () => {

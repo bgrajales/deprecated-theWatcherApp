@@ -29,10 +29,19 @@ export const LoginModal = ({ visible = false, setLoginVisibleParent }: Props) =>
             if ( errorMessage.length === 0 ) return;
             Alert.alert('Login Failed', errorMessage, [{ text: 'Ok', onPress: removeError }])
         }
+
+        return () => {
+            removeError();
+        }
+
     }, [errorMessage])
 
     useEffect(() => {
         setIsVisible(visible);
+
+        return () => {
+            setIsVisible(false);
+        }
     }, [visible])
 
     const onSubmit = () => {

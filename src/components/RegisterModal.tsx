@@ -35,10 +35,18 @@ export const RegisterModal = ({ visible = false, setRegisterVisibleParent }: Pro
             if ( errorMessage.length === 0 ) return;
             Alert.alert('Register Failed', errorMessage, [{ text: 'Ok', onPress: removeError }])
         }
+
+        return () => {
+            removeError();
+        }
     }, [errorMessage])
 
     useEffect(() => {
         setIsVisible(visible);
+
+        return () => {
+            setIsVisible(false);
+        }
     }, [visible])
 
     const onSubmit = async () => {

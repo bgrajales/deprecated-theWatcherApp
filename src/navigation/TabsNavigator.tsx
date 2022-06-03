@@ -28,10 +28,18 @@ export const TabsNavigator = () => {
           flex: 1,
           justifyContent: 'center',
           alignItems: 'center',
+          backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff'
         }}
       >
         <Image
-          source={{uri: 'https://res.cloudinary.com/dcho0pw74/image/upload/v1654034791/logoAnimation_hc8ec3.gif'}}
+          // source={{uri: 'https://res.cloudinary.com/dcho0pw74/image/upload/v1654034791/logoAnimation_hc8ec3.gif'}}
+          source={{
+            uri: `${
+              colorScheme === 'dark' 
+              ? 'https://res.cloudinary.com/dcho0pw74/image/upload/v1654122202/logoAnimationDark_mwgsas.gif' 
+              : 'https://res.cloudinary.com/dcho0pw74/image/upload/v1654034791/logoAnimation_hc8ec3.gif'
+            }` 
+          }}
           style={{width: 200, height: 200}}
         />
       </View>

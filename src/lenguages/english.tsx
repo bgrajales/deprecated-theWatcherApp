@@ -13,7 +13,10 @@ export const english = {
     aboutFeatureFive: "Comment on your favourite shows and movies and see what others think",
     
     lengOverview: "Overview",
-    
+    noData: "There is no data about this title",
+    tutModalTitle: "Welcome to The Watcher ",
+    tutModalBtn: "Got it!",
+
     episodeModalSeason: "Season",
     episodeModalEpisode: "Episode",
     episodeModalStills: "Stills",

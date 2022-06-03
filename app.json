@@ -2,7 +2,7 @@
   "expo": {
     "name": "The Watcher App",
     "slug": "theWatcherApp",
-    "version": "1.7.3",
+    "version": "1.7.6",
     "orientation": "portrait",
     "icon": "./assets/icon1.png",
     "userInterfaceStyle": "automatic",
@@ -23,7 +23,7 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.bgrajales.thewatcherandroid",
-      "versionCode": 16,
+      "versionCode": 19,
       "permissions": [],
       "userInterfaceStyle": "automatic"
     },
@@ -32,7 +32,7 @@
     },
     "ios": {
       "bundleIdentifier": "com.thewatcher.ios",
-      "buildNumber": "1.7.3",
+      "buildNumber": "1.7.6",
       "supportsTablet": false
     },
     "description": "App to keep track of movies and series watched, comment on them and follow new ones"

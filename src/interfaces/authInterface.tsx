@@ -34,6 +34,8 @@ export interface WatcherUser {
     seriesGenres: { genreId: number; genre: string; }[],
     watchlist: { elementId: string; posterPath: string; type: string; }[],
     settings: {
-        leng: string;
+        leng: string,
+        newAccount: boolean,
+        verifyCode?: string,
     }
 }

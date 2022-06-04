@@ -6,9 +6,10 @@ import { FadeLoading } from 'react-native-fade-loading';
 
 import { Movie, Series, UserMovies, UserSeries } from '../interfaces/movieInterface';
 import { AuthContext } from '../context/AuthContext';
+import StarRating from 'react-native-star-rating';
 
 interface Props {
-    movie: Movie | Series | UserMovies | UserSeries ;
+    movie: any;
     height?: number;
     width?: number;
     type: string;
@@ -16,9 +17,10 @@ interface Props {
     progressBar?: boolean;
     episodesTotal?: number;
     episodesWatched?: number;
+    element?: string;
 }
 
-export const MovieCard = ({ movie, height = 350, width = 230, type, progressBar=false, episodesTotal = 0, episodesWatched = 0 }: Props) => {
+export const MovieCard = ({ movie, height = 350, width = 230, type, progressBar=false, episodesTotal = 0, episodesWatched = 0, element }: Props) => {
 
   const navigation = useNavigation<any>()
 
@@ -26,9 +28,11 @@ export const MovieCard = ({ movie, height = 350, width = 230, type, progressBar=
 
   let uri
 
-  if ( movie.poster_path ) {
+if (element === 'homeBackDrop') {
+    uri = `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
+} else if ( movie.poster_path ) {
     uri = `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-} else if (movie.posterPath ) {
+} else if ( movie.posterPath ) {
     uri = `https://image.tmdb.org/t/p/w500${movie.posterPath}`
 }
 
@@ -44,43 +48,7 @@ export const MovieCard = ({ movie, height = 350, width = 230, type, progressBar=
     }
   }, [])
 
-
-
-  if (isLoading) {
-    return (
-        <View
-            style={{
-                width: width,
-                height: height,
-                borderRadius: 10,
-                paddingBottom: 20,
-                paddingHorizontal: 5,
-            }}
-        >
-            <FadeLoading
-                style={{
-                    width: '100%',
-                    height: '100%',
-                    borderRadius: 10,
-                }}
-                primaryColor={
-                    colorScheme === 'dark' ? '#252525' : '#003AAF'
-                }
-                secondaryColor={
-                    colorScheme === 'dark' ? '#383838' : '#0055ff'
-                }
-                duration={2000}
-                children={
-                    <View />
-                }
-                visible={true}
-                animated={true}
-            />
-        </View>
-    );
-
-  }
-
+ 
   return (
     <TouchableOpacity
         onPress={ () => {
@@ -96,13 +64,95 @@ export const MovieCard = ({ movie, height = 350, width = 230, type, progressBar=
             paddingHorizontal: 5,
         }}
     >
+        {
+            isLoading && 
+            <View
+                style={{
+                    width: width,
+                    height: height,
+                    borderRadius: 10,
+                    paddingBottom: 20,
+                    paddingHorizontal: 5,
+                }}
+            >
+                <FadeLoading
+                    style={{
+                        width: '100%',
+                        height: '100%',
+                        borderRadius: 10,
+                    }}
+                    primaryColor={
+                        colorScheme === 'dark' ? '#252525' : '#003AAF'
+                    }
+                    secondaryColor={
+                        colorScheme === 'dark' ? '#383838' : '#0055ff'
+                    }
+                    duration={2000}
+                    children={
+                        <View />
+                    }
+                    visible={true}
+                    animated={true}
+                />
+            </View>
+        }
         <View style={ styles.imageContainer }>
             <Image
                 style={ styles.image }
                 source={{ uri }}
             />
             {
-                progressBar && episodesTotal && episodesWatched &&
+                !isLoading && element && element === 'homeBackDrop' && typeof movie &&
+                <>
+                    <View
+                        style={{
+                            position: 'absolute',
+                            top: 10,
+                            left: 10,
+                            backgroundColor: '#0055ff',
+                            borderRadius: 10,
+                            paddingHorizontal: 10,
+                            paddingVertical: 5,
+                        }}
+                    >
+                        <Text
+                            style={{
+                                color: '#fff',
+                                fontSize: 16,
+                                fontWeight: 'bold',
+                            }}
+                        >{ movie.title }</Text>
+                    </View>
+                    {
+                        movie.vote_average !== 0 &&
+                        <View
+                            style={{
+                            backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff',
+                            height: 40,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            paddingVertical: 10,
+                            paddingHorizontal: 12,
+                            position: 'absolute',
+                            bottom: 10,
+                            right: 10,
+                            borderRadius: 10,
+                            }}
+                        >
+                            <StarRating
+                                disabled={ true }
+                                maxStars={ 5 }
+                                rating={ movie.vote_average / 2 }
+                                starSize={ 20 }
+                                fullStarColor={ '#FFD700' }
+                                emptyStarColor={ '#FFD700' }
+                            />
+                        </View>
+                    }
+                </>
+            }
+            {
+                progressBar && episodesTotal && episodesWatched && !isLoading &&
                 <View style={{
                         flex: 1,
                         width: '100%',

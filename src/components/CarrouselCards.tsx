@@ -25,7 +25,7 @@ export const CarrouselCards = ({ moviePosters, seriesPosters, title, iconName }:
             }}>{title}</Text>
             <Icon name={iconName} color={
               colorScheme === 'dark' ? '#fff' : '#000'
-            } size={ 30 } style={{ marginLeft: 10 }}/>
+            } size={ 20 } style={{ marginLeft: 10 }}/>
         </View>
         {
             moviePosters &&
@@ -69,7 +69,7 @@ const homeStyles = StyleSheet.create({
     },
   
     categTitle: {
-      fontSize: 26,
+      fontSize: 20,
       fontWeight: 'bold',
     },
   

@@ -16,6 +16,7 @@ export const spanish = {
     noData: "No hay datos sobre este titulo",
     tutModalTitle: "Bienvenido a The Watcher!",
     tutModalBtn: "Entendido!",
+    popularActors: "Actores Populares",
 
 
     episodeModalSeason: "Temporada",
